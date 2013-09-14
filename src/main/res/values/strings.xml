@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">UrlSetter</string>
+	<string name="resolving_url">Looking for url %s</string>
+	<string name="select_application_for">Select application for %s</string>
+	<string name="could_not_launch_corresponded_app">Could not launch url - did not find corresponded app</string>
+	<string name="error_while_resolving_url">Error while resolving url (%s)</string>
+	<string name="app_explanation">The app unshortens URL and ask you to launch it with corresponded apps. It will launch app without chooser dialog if you have app set as default.</string>
+</resources>
