@@ -18,9 +18,12 @@ package com.emartynov.android.app.urlsetter.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
+import android.text.format.DateUtils;
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.UrlApplication;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
@@ -40,14 +43,16 @@ import android.widget.Toast;
 
 public class UrlActivity extends InjectedActivity
 {
+    public static final long TIMEOUT_IN_SECONDS = 3 * DateUtils.SECOND_IN_MILLIS;
     @Inject
     Bus bus;
+    private Timer timer;
 
     public void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
 
-        bus = ( (UrlApplication) getApplication() ).getBus();
+        bus = ((UrlApplication) getApplication()).getBus();
 
         bus.register( this );
 
@@ -56,7 +61,25 @@ public class UrlActivity extends InjectedActivity
         Toast toast = Toast.makeText( this, getString( R.string.resolving_url, uri ), Toast.LENGTH_LONG );
         toast.show();
 
+        createLongOperationTimer();
+
         bus.post( new ResolveURL( uri ) );
+    }
+
+    private void createLongOperationTimer ()
+    {
+        cancelTimer();
+
+        timer = new Timer();
+        timer.schedule( new TimerTask()
+        {
+            @Override
+            public void run ()
+            {
+                Toast toast = Toast.makeText( UrlActivity.this, getString( R.string.operation_takes_longer ), Toast.LENGTH_SHORT );
+                toast.show();
+            }
+        }, TIMEOUT_IN_SECONDS );
     }
 
     @Override
@@ -70,6 +93,8 @@ public class UrlActivity extends InjectedActivity
     @Subscribe
     public void launchURL ( FoundURL event )
     {
+        cancelTimer();
+
         PackageManager packageManager = getPackageManager();
 
         Intent intent = new Intent( Intent.ACTION_VIEW );
@@ -121,6 +146,14 @@ public class UrlActivity extends InjectedActivity
         }
     }
 
+    private void cancelTimer ()
+    {
+        if ( timer != null )
+        {
+            timer.cancel();
+        }
+    }
+
     private void launchChooser ( final ArrayList<Intent> intents )
     {
         runOnUiThread( new Runnable()
@@ -130,7 +163,7 @@ public class UrlActivity extends InjectedActivity
             {
                 Intent firstIntent = intents.remove( 0 );
                 Intent chooserIntent = Intent.createChooser( firstIntent, getString( R.string.select_application_for, firstIntent.getData() ) );
-                chooserIntent.putExtra( Intent.EXTRA_INITIAL_INTENTS, intents.toArray( new Parcelable[ intents.size() ] ) );
+                chooserIntent.putExtra( Intent.EXTRA_INITIAL_INTENTS, intents.toArray( new Parcelable[intents.size()] ) );
                 startActivity( chooserIntent );
 
                 finish();
@@ -171,7 +204,7 @@ public class UrlActivity extends InjectedActivity
     {
         intent.setPackage( info.activityInfo.applicationInfo.packageName );
         intent.setComponent( ComponentName.unflattenFromString( info.activityInfo.applicationInfo.packageName + "/" +
-                 info.activityInfo.name) );
+                info.activityInfo.name ) );
     }
 
     @Subscribe
