@@ -16,14 +16,13 @@
 
 package com.emartynov.android.app.urlsetter.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javax.inject.Inject;
-
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.widget.Toast;
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.UrlApplication;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
@@ -32,18 +31,14 @@ import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.widget.Toast;
+import javax.inject.Inject;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class UrlActivity extends InjectedActivity
 {
-    public static final long TIMEOUT_IN_SECONDS = 3 * DateUtils.SECOND_IN_MILLIS;
+    public static final long TIMEOUT_IN_SECONDS = 5 * DateUtils.SECOND_IN_MILLIS;
+
     @Inject
     Bus bus;
     private Timer timer;
@@ -58,8 +53,7 @@ public class UrlActivity extends InjectedActivity
 
         Uri uri = getIntent().getData();
 
-        Toast toast = Toast.makeText( this, getString( R.string.resolving_url, uri ), Toast.LENGTH_LONG );
-        toast.show();
+        showLongToast( getString( R.string.resolving_url, uri ) );
 
         createLongOperationTimer();
 
@@ -76,10 +70,37 @@ public class UrlActivity extends InjectedActivity
             @Override
             public void run ()
             {
-                Toast toast = Toast.makeText( UrlActivity.this, getString( R.string.operation_takes_longer ), Toast.LENGTH_SHORT );
-                toast.show();
+                showLongToast( getString( R.string.operation_takes_longer ) );
             }
         }, TIMEOUT_IN_SECONDS );
+    }
+
+    private void showLongToast ( final String toastText )
+    {
+        runOnUiThread( new Runnable()
+        {
+            @Override
+            public void run ()
+            {
+                Toast toast = Toast.makeText( UrlActivity.this, toastText, Toast.LENGTH_SHORT );
+                toast.show();
+            }
+        } );
+    }
+
+    private void showLongToastAndFinish ( final String toastText )
+    {
+        runOnUiThread( new Runnable()
+        {
+            @Override
+            public void run ()
+            {
+                Toast toast = Toast.makeText( UrlActivity.this, toastText, Toast.LENGTH_SHORT );
+                toast.show();
+
+                finish();
+            }
+        } );
     }
 
     @Override
@@ -95,55 +116,25 @@ public class UrlActivity extends InjectedActivity
     {
         cancelTimer();
 
-        PackageManager packageManager = getPackageManager();
+        showLongToastAndFinish( getString( R.string.resolved_url, event.getUri() ) );
+
+        setupAliasActivityIntentFilter( true );
 
         Intent intent = new Intent( Intent.ACTION_VIEW );
         intent.setData( event.getUri() );
 
-        ResolveInfo defaultInfo = packageManager.resolveActivity( intent, PackageManager.MATCH_DEFAULT_ONLY );
+        startActivity( intent );
 
-        if ( !"com.android.internal.app.ResolverActivity".equals( defaultInfo.activityInfo.name ) )
-        {
-            specifyApp( defaultInfo, intent );
-            launchApp( intent );
+        setupAliasActivityIntentFilter( false );
 
-            return;
-        }
+        finish();
+    }
 
-        List<ResolveInfo> possibleIntents = packageManager.queryIntentActivities( intent, PackageManager.MATCH_DEFAULT_ONLY );
-        ArrayList<Intent> intents = new ArrayList<Intent>( possibleIntents.size() );
-
-        if ( possibleIntents.size() > 0 )
-        {
-            for ( ResolveInfo resolveInfo : possibleIntents )
-            {
-                if ( !resolveInfo.activityInfo.packageName.startsWith( getBaseContext().getPackageName() ) )
-                {
-                    Intent target = new Intent( intent );
-                    target.setData( event.getUri() );
-                    specifyApp( resolveInfo, target );
-
-                    intents.add( target );
-                }
-
-            }
-            if ( intents.size() == 0 )
-            {
-                informNoAppToShow();
-            }
-            else if ( intents.size() == 1 )
-            {
-                launchApp( intents.get( 0 ) );
-            }
-            else
-            {
-                launchChooser( intents );
-            }
-        }
-        else
-        {
-            informNoAppToShow();
-        }
+    private void setupAliasActivityIntentFilter ( boolean disabled )
+    {
+        int state = disabled ? PackageManager.COMPONENT_ENABLED_STATE_DISABLED : PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+        ComponentName componentName = new ComponentName( getPackageName(), getPackageName() + ".ProcessActivity" );
+        getPackageManager().setComponentEnabledSetting( componentName, state, PackageManager.DONT_KILL_APP );
     }
 
     private void cancelTimer ()
@@ -154,72 +145,13 @@ public class UrlActivity extends InjectedActivity
         }
     }
 
-    private void launchChooser ( final ArrayList<Intent> intents )
-    {
-        runOnUiThread( new Runnable()
-        {
-            @Override
-            public void run ()
-            {
-                Intent firstIntent = intents.remove( 0 );
-                Intent chooserIntent = Intent.createChooser( firstIntent, getString( R.string.select_application_for, firstIntent.getData() ) );
-                chooserIntent.putExtra( Intent.EXTRA_INITIAL_INTENTS, intents.toArray( new Parcelable[intents.size()] ) );
-                startActivity( chooserIntent );
-
-                finish();
-            }
-        } );
-    }
-
-    private void informNoAppToShow ()
-    {
-        runOnUiThread( new Runnable()
-        {
-            @Override
-            public void run ()
-            {
-                String errorString = getString( R.string.could_not_launch_corresponded_app );
-                Toast.makeText( UrlActivity.this, errorString, Toast.LENGTH_LONG ).show();
-
-                finish();
-            }
-        } );
-    }
-
-    private void launchApp ( final Intent intent )
-    {
-        runOnUiThread( new Runnable()
-        {
-            @Override
-            public void run ()
-            {
-                startActivity( intent );
-
-                finish();
-            }
-        } );
-    }
-
-    private void specifyApp ( ResolveInfo info, Intent intent )
-    {
-        intent.setPackage( info.activityInfo.applicationInfo.packageName );
-        intent.setComponent( ComponentName.unflattenFromString( info.activityInfo.applicationInfo.packageName + "/" +
-                info.activityInfo.name ) );
-    }
-
     @Subscribe
     public void downloadError ( final DownloadingError event )
     {
-        runOnUiThread( new Runnable()
-        {
-            @Override
-            public void run ()
-            {
-                String errorString = getString( R.string.error_while_resolving_url, event.getException() );
-                Toast.makeText( UrlActivity.this, errorString, Toast.LENGTH_LONG ).show();
+        cancelTimer();
 
-                finish();
-            }
-        } );
+        String errorString = getString( R.string.error_while_resolving_url, event.getException() );
+
+        showLongToastAndFinish( errorString );
     }
 }
