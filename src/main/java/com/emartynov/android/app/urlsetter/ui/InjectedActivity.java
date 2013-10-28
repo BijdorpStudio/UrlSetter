@@ -18,6 +18,7 @@ package com.emartynov.android.app.urlsetter.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import com.emartynov.android.app.urlsetter.UrlApplication;
 
 public class InjectedActivity extends Activity
 {
@@ -26,6 +27,6 @@ public class InjectedActivity extends Activity
     {
         super.onCreate( savedInstanceState );
 
-//        ((UrlApplication)getApplication()).inject(this);
+        ((UrlApplication)getApplication()).inject(this);
     }
 }

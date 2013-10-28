@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.widget.Toast;
 import com.emartynov.android.app.urlsetter.R;
-import com.emartynov.android.app.urlsetter.UrlApplication;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
@@ -46,8 +45,6 @@ public class UrlActivity extends InjectedActivity
     public void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
-
-        bus = ((UrlApplication) getApplication()).getBus();
 
         bus.register( this );
 

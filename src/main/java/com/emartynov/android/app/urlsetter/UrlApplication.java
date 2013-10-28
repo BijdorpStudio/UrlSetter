@@ -16,28 +16,31 @@
 
 package com.emartynov.android.app.urlsetter;
 
+import com.emartynov.android.app.urlsetter.inject.UrlModule;
 import com.emartynov.android.app.urlsetter.model.URLResolver;
-import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
+import com.emartynov.android.app.urlsetter.ui.InjectedActivity;
 
 import android.app.Application;
+import dagger.ObjectGraph;
 
 public class UrlApplication extends Application
 {
-    private Bus bus;
     private URLResolver urlResolver;
+    private ObjectGraph objectGraph;
 
     @Override
     public void onCreate ()
     {
         super.onCreate();
 
-        bus = new Bus( ThreadEnforcer.ANY );
-        urlResolver = new URLResolver( bus );
+        UrlModule urlModule = new UrlModule();
+        objectGraph = ObjectGraph.create( urlModule );
+
+        urlResolver = new URLResolver( urlModule.getBus() );
     }
 
-    public Bus getBus ()
+    public void inject ( InjectedActivity injectedActivity )
     {
-        return bus;
+        objectGraph.inject( injectedActivity );
     }
 }
