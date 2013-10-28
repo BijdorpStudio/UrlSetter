@@ -116,8 +116,6 @@ public class UrlActivity extends InjectedActivity
     {
         cancelTimer();
 
-        showLongToastAndFinish( getString( R.string.resolved_url, event.getUri() ) );
-
         setupAliasActivityIntentFilter( true );
 
         Intent intent = new Intent( Intent.ACTION_VIEW );
@@ -125,9 +123,26 @@ public class UrlActivity extends InjectedActivity
 
         startActivity( intent );
 
-        setupAliasActivityIntentFilter( false );
+        showLongToast( getString( R.string.resolved_url, event.getUri() ) );
 
-        finish();
+        new Thread( new Runnable()
+        {
+            @Override
+            public void run ()
+            {
+                try
+                {
+                    Thread.sleep( 1000 );
+                }
+                catch ( InterruptedException ignored )
+                {
+                }
+
+                setupAliasActivityIntentFilter( false );
+
+                finish();
+            }
+        } ).start();
     }
 
     private void setupAliasActivityIntentFilter ( boolean disabled )
