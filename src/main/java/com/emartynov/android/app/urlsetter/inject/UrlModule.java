@@ -18,14 +18,16 @@ package com.emartynov.android.app.urlsetter.inject;
 
 import javax.inject.Singleton;
 
-import com.emartynov.android.app.urlsetter.ui.UrlActivity;
+import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
+import com.emartynov.android.app.urlsetter.model.URLResolver;
+import com.emartynov.android.app.urlsetter.service.mixpanel.MixLogger;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
 import dagger.Module;
 import dagger.Provides;
 
-@Module ( injects = UrlActivity.class )
+@Module (injects = {UrlActivity.class, URLResolver.class})
 public class UrlModule
 {
     @Provides
@@ -33,5 +35,12 @@ public class UrlModule
     public Bus getBus ()
     {
         return new Bus( ThreadEnforcer.ANY );
+    }
+
+    @Provides
+    @Singleton
+    public MixLogger getLogger ()
+    {
+        return new MixLogger();
     }
 }

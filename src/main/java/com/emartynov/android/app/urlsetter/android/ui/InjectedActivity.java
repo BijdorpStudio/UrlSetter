@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.emartynov.android.app.urlsetter.ui;
+package com.emartynov.android.app.urlsetter.android.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import com.emartynov.android.app.urlsetter.UrlApplication;
+import com.emartynov.android.app.urlsetter.android.UrlApplication;
 
 public class InjectedActivity extends Activity
 {

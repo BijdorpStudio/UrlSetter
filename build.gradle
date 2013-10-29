@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.3'
+        classpath 'com.android.tools.build:gradle:0.6.+'
     }
 }
 apply plugin: 'android'
@@ -39,4 +39,6 @@ dependencies {
     compile 'com.squareup:otto:1.3.4'
     compile 'com.squareup.dagger:dagger-compiler:1.1.0'
     compile 'com.squareup.dagger:dagger:1.1.0'
+
+    compile files('libs/MixpanelAPI.jar')
 }

@@ -18,17 +18,29 @@ package com.emartynov.android.app.urlsetter.model.event;
 
 import android.net.Uri;
 
-public class FoundURL
-{
-    private final Uri uri;
+import java.util.Map;
 
-    public FoundURL ( Uri uri )
+public class FoundURL extends UrlEvent
+{
+    private final Uri resolvedUri;
+
+    public FoundURL ( Uri originUri, Uri resolvedUri )
     {
-        this.uri = uri;
+        super( originUri );
+
+        this.resolvedUri = resolvedUri;
     }
 
-    public Uri getUri ()
+    public Uri getResolvedUri ()
     {
-        return uri;
+        return resolvedUri;
+    }
+
+    @Override
+    public Map<String, String> getLoggingParams ()
+    {
+        Map<String, String> params = super.getLoggingParams();
+        params.put( "ResolvedUri", resolvedUri.toString() );
+        return params;
     }
 }

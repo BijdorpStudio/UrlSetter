@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package com.emartynov.android.app.urlsetter.ui;
+package com.emartynov.android.app.urlsetter.android.ui;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.widget.Toast;
 import com.emartynov.android.app.urlsetter.R;
+import com.emartynov.android.app.urlsetter.android.packagemanager.ComponentSwitcher;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
+import com.emartynov.android.app.urlsetter.service.mixpanel.MixLogger;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,21 +42,26 @@ public class UrlActivity extends InjectedActivity
 
     @Inject
     Bus bus;
+    @Inject
+    MixLogger logger;
+
     private Timer timer;
 
     public void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
 
+        createLongOperationTimer();
+
         bus.register( this );
 
         Uri uri = getIntent().getData();
 
-        showLongToast( getString( R.string.resolving_url, uri ) );
-
-        createLongOperationTimer();
+        showShortToast( getString( R.string.resolving_url, uri ) );
 
         bus.post( new ResolveURL( uri ) );
+
+        logger.init( this );
     }
 
     private void createLongOperationTimer ()
@@ -67,33 +74,37 @@ public class UrlActivity extends InjectedActivity
             @Override
             public void run ()
             {
-                showLongToast( getString( R.string.operation_takes_longer ) );
+                showShortToast( getString( R.string.operation_takes_longer ) );
             }
         }, TIMEOUT_IN_SECONDS );
     }
 
-    private void showLongToast ( final String toastText )
+    private void showShortToast ( final String toastText )
     {
         runOnUiThread( new Runnable()
         {
             @Override
             public void run ()
             {
-                Toast toast = Toast.makeText( UrlActivity.this, toastText, Toast.LENGTH_SHORT );
-                toast.show();
+                showToast( toastText );
             }
         } );
     }
 
-    private void showLongToastAndFinish ( final String toastText )
+    private void showToast ( String toastText )
+    {
+        Toast toast = Toast.makeText( this, toastText, Toast.LENGTH_LONG );
+        toast.show();
+    }
+
+    private void showShortToastAndFinish ( final String toastText )
     {
         runOnUiThread( new Runnable()
         {
             @Override
             public void run ()
             {
-                Toast toast = Toast.makeText( UrlActivity.this, toastText, Toast.LENGTH_SHORT );
-                toast.show();
+                showToast( toastText );
 
                 finish();
             }
@@ -106,6 +117,8 @@ public class UrlActivity extends InjectedActivity
         super.onDestroy();
 
         bus.unregister( this );
+
+        logger.flush();
     }
 
     @Subscribe
@@ -113,14 +126,21 @@ public class UrlActivity extends InjectedActivity
     {
         cancelTimer();
 
-        setupAliasActivityIntentFilter( true );
+        showUri( event.getResolvedUri() );
+
+        logger.trackEvent( "Resolved", event.getLoggingParams() );
+    }
+
+    private void showUri ( Uri uri )
+    {
+        ComponentSwitcher.disableComponent( this, getPackageName(), getPackageName() + ".ProcessActivity" );
 
         Intent intent = new Intent( Intent.ACTION_VIEW );
-        intent.setData( event.getUri() );
+        intent.setData( uri );
 
         startActivity( intent );
 
-        showLongToast( getString( R.string.resolved_url, event.getUri() ) );
+        showShortToast( getString( R.string.resolved_url, uri ) );
 
         new Thread( new Runnable()
         {
@@ -135,18 +155,11 @@ public class UrlActivity extends InjectedActivity
                 {
                 }
 
-                setupAliasActivityIntentFilter( false );
+                ComponentSwitcher.enableComponent( UrlActivity.this, getPackageName(), getPackageName() + ".ProcessActivity" );
 
                 finish();
             }
         } ).start();
-    }
-
-    private void setupAliasActivityIntentFilter ( boolean disabled )
-    {
-        int state = disabled ? PackageManager.COMPONENT_ENABLED_STATE_DISABLED : PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-        ComponentName componentName = new ComponentName( getPackageName(), getPackageName() + ".ProcessActivity" );
-        getPackageManager().setComponentEnabledSetting( componentName, state, PackageManager.DONT_KILL_APP );
     }
 
     private void cancelTimer ()
@@ -164,6 +177,10 @@ public class UrlActivity extends InjectedActivity
 
         String errorString = getString( R.string.error_while_resolving_url, event.getException() );
 
-        showLongToastAndFinish( errorString );
+        showShortToastAndFinish( errorString );
+
+        showUri( event.getUri() );
+
+        logger.trackEvent( "Error", event.getLoggingParams() );
     }
 }

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.emartynov.android.app.urlsetter;
+package com.emartynov.android.app.urlsetter.android;
 
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
 import com.emartynov.android.app.urlsetter.model.URLResolver;
-import com.emartynov.android.app.urlsetter.ui.InjectedActivity;
+import com.emartynov.android.app.urlsetter.android.ui.InjectedActivity;
 
 import android.app.Application;
 import dagger.ObjectGraph;
@@ -36,7 +36,7 @@ public class UrlApplication extends Application
         UrlModule urlModule = new UrlModule();
         objectGraph = ObjectGraph.create( urlModule );
 
-        urlResolver = new URLResolver( urlModule.getBus() );
+        urlResolver = objectGraph.get( URLResolver.class );
     }
 
     public void inject ( InjectedActivity injectedActivity )

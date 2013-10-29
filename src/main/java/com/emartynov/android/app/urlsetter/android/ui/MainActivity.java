@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.emartynov.android.app.urlsetter.ui;
+package com.emartynov.android.app.urlsetter.android.ui;
 
 import com.emartynov.android.app.urlsetter.R;
 

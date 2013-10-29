@@ -16,17 +16,54 @@
 
 package com.emartynov.android.app.urlsetter.model.event;
 
-public class DownloadingError
+import android.net.Uri;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Map;
+
+public class DownloadingError extends UrlEvent
 {
     private Exception exception;
 
-    public DownloadingError ( Exception e )
+    public DownloadingError ( Uri uri, Exception e )
     {
+        super( uri );
         exception = e;
+
+        exception.printStackTrace();
     }
 
     public Exception getException ()
     {
         return exception;
+    }
+
+    @Override
+    public Map<String, String> getLoggingParams ()
+    {
+        Map<String, String> loggingParams = super.getLoggingParams();
+
+        loggingParams.put( "Type", exception.getClass().getSimpleName() );
+        loggingParams.put( "Message", getMessage() );
+        loggingParams.put( "StackTrace", getStackTrace() );
+
+        return loggingParams;
+    }
+
+    private String getMessage ()
+    {
+        String localizedMessage = exception.getLocalizedMessage();
+        return localizedMessage == null ? "No Message" : localizedMessage;
+    }
+
+    private String getStackTrace ()
+    {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream stream = new PrintStream( out );
+        exception.printStackTrace( stream );
+        stream.flush();
+
+        return new String( out.toByteArray() );
     }
 }

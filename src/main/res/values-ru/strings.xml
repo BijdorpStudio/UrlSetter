@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">UrlSetter</string>
     <string name="resolving_url">Работаем с сылкой %s</string>
-    <string name="error_while_resolving_url">Произошла ошибка пока искали конечный интернет адрес (%s)</string>
+    <string name="error_while_resolving_url">Произошла ошибка пока искали конечный интернет адрес</string>
     <string name="app_explanation">
         Приложение ищет конечный интернет адрес и запускает соответствующее приложение если возможно
     </string>

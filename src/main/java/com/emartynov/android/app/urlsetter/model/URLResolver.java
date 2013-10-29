@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
+import com.squareup.okhttp.Connection;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -70,14 +71,17 @@ public class URLResolver
             {
                 connection = httpClient.open( new URL( uri.toString() ) );
                 connection.setRequestMethod( "HEAD" );
+                connection.setRequestProperty( "Accept-Encoding", "musixmatch" );
 
                 int responseCode = connection.getResponseCode();
                 if ( responseCode == HttpURLConnection.HTTP_OK )
-                    bus.post( new FoundURL( Uri.parse( connection.getURL().toString() ) ) );
+                {
+                    bus.post( new FoundURL( uri, Uri.parse( connection.getURL().toString() ) ) );
+                }
             }
             catch ( Exception e )
             {
-                bus.post( new DownloadingError( e ) );
+                bus.post( new DownloadingError( uri, e ) );
             }
             finally
             {

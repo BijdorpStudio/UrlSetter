@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">UrlSetter</string>
     <string name="resolving_url">Looking for url %s</string>
-    <string name="error_while_resolving_url">Error happened while resolving url (%s)</string>
+    <string name="error_while_resolving_url">Sorry, error happened while resolving url</string>
     <string name="app_explanation">
         The app unshortens URL and ask you to launch it with corresponded apps. It will launch app without chooser
         dialog if you have app set as default.
