@@ -71,7 +71,7 @@ public class URLResolver
             {
                 connection = httpClient.open( new URL( uri.toString() ) );
                 connection.setRequestMethod( "HEAD" );
-                connection.setRequestProperty( "Accept-Encoding", "musixmatch" );
+                connection.setRequestProperty( "Accept-Encoding", "" );
 
                 int responseCode = connection.getResponseCode();
                 if ( responseCode == HttpURLConnection.HTTP_OK )

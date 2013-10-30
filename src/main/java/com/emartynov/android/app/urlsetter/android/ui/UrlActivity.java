@@ -93,7 +93,7 @@ public class UrlActivity extends InjectedActivity
 
     private void showToast ( String toastText )
     {
-        Toast toast = Toast.makeText( this, toastText, Toast.LENGTH_LONG );
+        Toast toast = Toast.makeText( this, toastText, Toast.LENGTH_SHORT );
         toast.show();
     }
 
