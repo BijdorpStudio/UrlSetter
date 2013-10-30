@@ -1,12 +1,18 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
     }
 }
+
 apply plugin: 'android'
+apply plugin: 'android-test'
 
 repositories {
     mavenCentral()
@@ -40,5 +46,9 @@ dependencies {
     compile 'com.squareup.dagger:dagger-compiler:1.1.0'
     compile 'com.squareup.dagger:dagger:1.1.0'
 
-    compile files('libs/MixpanelAPI.jar')
+    compile files( 'libs/MixpanelAPI.jar' )
+
+    testCompile 'junit:junit:4.10'
+    testCompile 'org.robolectric:robolectric:2.1.+'
+    testCompile 'com.squareup:fest-android:1.0.+'
 }
