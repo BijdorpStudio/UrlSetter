@@ -17,7 +17,7 @@ public class UrlEvent
     public Map<String, String> getLoggingParams ()
     {
         Map<String, String> params = new HashMap<String, String>();
-        params.put( "Uri", uri.toString() );
+        params.put( "Host", uri.getHost() );
         return params;
     }
 

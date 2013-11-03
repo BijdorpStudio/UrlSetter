@@ -36,11 +36,4 @@ public class FoundURL extends UrlEvent
         return resolvedUri;
     }
 
-    @Override
-    public Map<String, String> getLoggingParams ()
-    {
-        Map<String, String> params = super.getLoggingParams();
-        params.put( "ResolvedUri", resolvedUri.toString() );
-        return params;
-    }
 }
