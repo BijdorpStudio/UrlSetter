@@ -26,13 +26,11 @@ import com.emartynov.android.app.urlsetter.android.packagemanager.ComponentSwitc
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
-import com.emartynov.android.app.urlsetter.service.mixpanel.MixLogger;
+import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,7 +41,7 @@ public class UrlActivity extends InjectedActivity
     @Inject
     Bus bus;
     @Inject
-    MixLogger logger;
+    Mixpanel logger;
 
     private Timer timer;
 

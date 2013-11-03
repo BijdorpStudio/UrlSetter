@@ -22,7 +22,7 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
 import com.emartynov.android.app.urlsetter.model.URLResolver;
-import com.emartynov.android.app.urlsetter.service.mixpanel.MixLogger;
+import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
@@ -58,8 +58,8 @@ public class UrlModule
 
     @Provides
     @Singleton
-    public MixLogger getLogger ()
+    public Mixpanel getLogger ()
     {
-        return new MixLogger( config.getProperty( "mixpanel.token" ) );
+        return new Mixpanel( config.getProperty( "mixpanel.token" ) );
     }
 }

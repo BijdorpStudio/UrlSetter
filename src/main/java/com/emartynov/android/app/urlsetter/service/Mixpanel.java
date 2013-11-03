@@ -1,4 +1,4 @@
-package com.emartynov.android.app.urlsetter.service.mixpanel;
+package com.emartynov.android.app.urlsetter.service;
 
 import android.content.Context;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
@@ -8,12 +8,12 @@ import javax.inject.Inject;
 import java.util.Map;
 import java.util.Properties;
 
-public class MixLogger
+public class Mixpanel
 {
     private final String token;
     private MixpanelAPI logger;
 
-    public MixLogger ( String apiToken )
+    public Mixpanel ( String apiToken )
     {
         this.token = apiToken;
     }
