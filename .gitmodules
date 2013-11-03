@@ -1,0 +1,3 @@
+[submodule "keys"]
+	path = keys
+	url = git@bitbucket.org:emartynov/android-private-keys.git
