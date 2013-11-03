@@ -33,7 +33,7 @@ android {
                 srcDir 'src/resources'
             }
             assets {
-                
+                srcDir 'keys/assets'
             }
         }
     }

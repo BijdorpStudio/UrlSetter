@@ -23,6 +23,8 @@ import com.emartynov.android.app.urlsetter.android.ui.InjectedActivity;
 import android.app.Application;
 import dagger.ObjectGraph;
 
+import java.io.IOException;
+
 public class UrlApplication extends Application
 {
     private URLResolver urlResolver;
@@ -33,10 +35,24 @@ public class UrlApplication extends Application
     {
         super.onCreate();
 
-        UrlModule urlModule = new UrlModule();
+        UrlModule urlModule = getUrlModule();
         objectGraph = ObjectGraph.create( urlModule );
 
         urlResolver = objectGraph.get( URLResolver.class );
+    }
+
+    private UrlModule getUrlModule ()
+    {
+        UrlModule urlModule = new UrlModule();
+        try
+        {
+            urlModule.init( this );
+        }
+        catch ( IOException e )
+        {
+            throw new RuntimeException( "App properties loading failed", e );
+        }
+        return urlModule;
     }
 
     public void inject ( InjectedActivity injectedActivity )

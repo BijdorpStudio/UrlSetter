@@ -4,17 +4,23 @@ import android.content.Context;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
 import java.util.Map;
+import java.util.Properties;
 
 public class MixLogger
 {
-    private static final String TOKEN = "5c3c45630dcfc6e626870f0b11055643";
-
+    private final String token;
     private MixpanelAPI logger;
+
+    public MixLogger ( String apiToken )
+    {
+        this.token = apiToken;
+    }
 
     public void init ( Context context )
     {
-        logger = MixpanelAPI.getInstance( context, TOKEN );
+        logger = MixpanelAPI.getInstance( context, token );
     }
 
     public void flush ()
