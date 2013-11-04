@@ -1,10 +1,13 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.6.+'
-        classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.+'
+        classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
     }
 }
 
@@ -20,22 +23,8 @@ android {
     buildToolsVersion "19"
 
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 16
-    }
-
-    sourceSets {
-        main {
-            java {
-                srcDir 'src/java'
-            }
-            resources {
-                srcDir 'src/resources'
-            }
-            assets {
-                srcDir 'assets'
-            }
-        }
     }
 }
 
