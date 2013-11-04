@@ -19,6 +19,7 @@ package com.emartynov.android.app.urlsetter.android.ui;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
 import com.squareup.otto.Bus;
 
@@ -32,6 +33,8 @@ public class UrlActivity extends InjectedActivity
     public void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
+
+        Crashlytics.start( this );
 
         Uri uri = getIntent().getData();
 

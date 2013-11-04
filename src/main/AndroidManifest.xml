@@ -35,5 +35,6 @@
         </activity-alias>
 
         <service android:name=".android.UrlService" android:exported="false"/>
+        <meta-data android:name="com.crashlytics.ApiKey" android:value="2c5611b13d7f41bce8b51eb1522de8aee395d2b4"/>
     </application>
 </manifest>

@@ -24,6 +24,7 @@ import android.os.IBinder;
 
 import android.text.format.DateUtils;
 import android.widget.Toast;
+import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.android.packagemanager.ComponentSwitcher;
 import com.emartynov.android.app.urlsetter.model.URLResolver;
@@ -54,6 +55,8 @@ public class UrlService extends Service
     @Override
     public void onCreate ()
     {
+        Crashlytics.start( this );
+
         ((UrlApplication) getApplication()).inject( this );
 
         urlResolver = new URLResolver( bus );
@@ -148,6 +151,7 @@ public class UrlService extends Service
 
         Intent intent = new Intent( Intent.ACTION_VIEW );
         intent.setData( uri );
+        intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
 
         startActivity( intent );
 
@@ -193,6 +197,8 @@ public class UrlService extends Service
     public void downloadError ( final DownloadingError event )
     {
         cancelTimer();
+
+        Crashlytics.logException( event.getException() );
 
         String errorString = getString( R.string.error_while_resolving_url, event.getException() );
 

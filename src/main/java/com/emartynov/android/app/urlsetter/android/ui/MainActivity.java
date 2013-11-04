@@ -16,6 +16,7 @@
 
 package com.emartynov.android.app.urlsetter.android.ui;
 
+import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.R;
 
 import android.app.Activity;
@@ -30,6 +31,9 @@ public class MainActivity extends Activity
     public void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
+
+        Crashlytics.start( this );
+
         setContentView( R.layout.main );
     }
 }

@@ -17,6 +17,7 @@
 package com.emartynov.android.app.urlsetter.android;
 
 import android.content.Intent;
+import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
 import com.emartynov.android.app.urlsetter.model.URLResolver;
 import com.emartynov.android.app.urlsetter.android.ui.InjectedActivity;
@@ -34,6 +35,8 @@ public class UrlApplication extends Application
     public void onCreate ()
     {
         super.onCreate();
+
+        Crashlytics.start( this );
 
         UrlModule urlModule = getUrlModule();
         objectGraph = ObjectGraph.create( urlModule );
