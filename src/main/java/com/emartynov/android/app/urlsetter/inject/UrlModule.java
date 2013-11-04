@@ -29,8 +29,9 @@ import com.squareup.otto.ThreadEnforcer;
 import dagger.Module;
 import dagger.Provides;
 
-import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 @Module (injects = {UrlActivity.class, URLResolver.class})
@@ -40,9 +41,8 @@ public class UrlModule
 
     public void init ( Context context ) throws IOException
     {
-        AssetFileDescriptor descriptor = context.getAssets().openFd( "service.properties" );
-        FileReader reader = new FileReader( descriptor.getFileDescriptor() );
-
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader( context.getAssets().open( "service.properties" ) ) );
         config = new Properties();
         config.load( reader );
 

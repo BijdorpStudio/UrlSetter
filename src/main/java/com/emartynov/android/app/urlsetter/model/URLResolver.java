@@ -16,7 +16,9 @@
 
 package com.emartynov.android.app.urlsetter.model;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,7 +38,8 @@ import android.net.Uri;
 public class URLResolver
 {
     private final Bus bus;
-    private ExecutorService executor = Executors.newFixedThreadPool( 2 );
+    private final ExecutorService executor = Executors.newFixedThreadPool( 2 );
+    private final OkHttpClient httpClient = new OkHttpClient();
 
     @Inject
     public URLResolver ( Bus bus )
@@ -64,32 +67,75 @@ public class URLResolver
         @Override
         public void run ()
         {
-            OkHttpClient httpClient = new OkHttpClient();
-            HttpURLConnection connection = null;
 
             try
             {
-                connection = httpClient.open( new URL( uri.toString() ) );
-                connection.setRequestMethod( "HEAD" );
-                connection.setRequestProperty( "Accept-Encoding", "" );
+                Uri resolvedUri = findRedirect( uri );
 
-                int responseCode = connection.getResponseCode();
-                if ( responseCode == HttpURLConnection.HTTP_OK )
-                {
-                    bus.post( new FoundURL( uri, Uri.parse( connection.getURL().toString() ) ) );
-                }
+                bus.post( new FoundURL( uri, resolvedUri ) );
             }
             catch ( Exception e )
             {
                 bus.post( new DownloadingError( uri, e ) );
             }
-            finally
+        }
+    }
+
+    private Uri findRedirect ( Uri sourceUri ) throws IOException
+    {
+        String currentUrl;
+        String nextUrl = sourceUri.toString();
+
+        do
+        {
+            currentUrl = nextUrl;
+            nextUrl = processUrl( currentUrl );
+        }
+        while ( nextUrl != null );
+
+        return Uri.parse( currentUrl );
+    }
+
+    private String processUrl ( String url ) throws IOException
+    {
+        HttpURLConnection connection = null;
+
+        try
+        {
+            connection = httpClient.open( new URL( url ) );
+            connection.setRequestMethod( "HEAD" );
+            connection.setRequestProperty( "Accept-Encoding", "" );
+            connection.setInstanceFollowRedirects( false );
+            connection.setConnectTimeout( 10000 );
+
+            int responseCode = connection.getResponseCode();
+            if ( responseCode == HttpURLConnection.HTTP_OK )
             {
-                if ( connection != null )
-                {
-                    connection.disconnect();
-                }
+                return null;
+            }
+            else if ( isRedirection( responseCode ) )
+            {
+                return connection.getHeaderField( "Location" ).replace( " ", "%20" );
+            }
+            else
+            {
+                throw new ProtocolException( "Bad response: " + responseCode );
             }
         }
+        finally
+        {
+            if ( connection != null )
+            {
+                connection.disconnect();
+            }
+        }
+    }
+
+    private boolean isRedirection ( int responseCode )
+    {
+        return responseCode == HttpURLConnection.HTTP_MOVED_PERM
+                || responseCode == HttpURLConnection.HTTP_MOVED_TEMP
+                || responseCode == HttpURLConnection.HTTP_MULT_CHOICE
+                || responseCode == HttpURLConnection.HTTP_SEE_OTHER;
     }
 }
