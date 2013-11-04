@@ -20,6 +20,7 @@ import javax.inject.Singleton;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
 import com.emartynov.android.app.urlsetter.model.URLResolver;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
@@ -34,7 +35,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-@Module (injects = {UrlActivity.class, URLResolver.class})
+@Module (injects = {UrlActivity.class, UrlService.class})
 public class UrlModule
 {
     private Properties config;

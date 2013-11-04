@@ -16,6 +16,7 @@
 
 package com.emartynov.android.app.urlsetter.android;
 
+import android.content.Intent;
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
 import com.emartynov.android.app.urlsetter.model.URLResolver;
 import com.emartynov.android.app.urlsetter.android.ui.InjectedActivity;
@@ -27,7 +28,6 @@ import java.io.IOException;
 
 public class UrlApplication extends Application
 {
-    private URLResolver urlResolver;
     private ObjectGraph objectGraph;
 
     @Override
@@ -38,7 +38,7 @@ public class UrlApplication extends Application
         UrlModule urlModule = getUrlModule();
         objectGraph = ObjectGraph.create( urlModule );
 
-        urlResolver = objectGraph.get( URLResolver.class );
+        startService( new Intent( this, UrlService.class ) );
     }
 
     private UrlModule getUrlModule ()
@@ -58,5 +58,10 @@ public class UrlApplication extends Application
     public void inject ( InjectedActivity injectedActivity )
     {
         objectGraph.inject( injectedActivity );
+    }
+
+    public void inject ( UrlService urlService )
+    {
+        objectGraph.inject( urlService );
     }
 }

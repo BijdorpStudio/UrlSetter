@@ -4,7 +4,7 @@
           android:versionCode="1"
           android:versionName="1.0">
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16"/>
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="16"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -33,5 +33,7 @@
                 <action android:name="android.intent.action.VIEW"/>
             </intent-filter>
         </activity-alias>
+
+        <service android:name=".android.UrlService" android:exported="false"/>
     </application>
 </manifest>

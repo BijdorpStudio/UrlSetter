@@ -16,32 +16,27 @@
 
 package com.emartynov.android.app.urlsetter.model;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.inject.Inject;
-
+import android.net.Uri;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
-import com.squareup.okhttp.Connection;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
-import android.net.Uri;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class URLResolver
 {
     private final Bus bus;
-    private final ExecutorService executor = Executors.newFixedThreadPool( 2 );
     private final OkHttpClient httpClient = new OkHttpClient();
+    private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool( 2 );
 
-    @Inject
     public URLResolver ( Bus bus )
     {
         this.bus = bus;
@@ -53,6 +48,11 @@ public class URLResolver
     public void resolveURL ( ResolveURL event )
     {
         executor.execute( new ResolveUrlRunnable( event.getUri() ) );
+    }
+
+    public boolean isIdle ()
+    {
+        return executor.getTaskCount() - executor.getCompletedTaskCount() == 0;
     }
 
     private class ResolveUrlRunnable implements Runnable
