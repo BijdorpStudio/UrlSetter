@@ -19,6 +19,8 @@ package com.emartynov.android.app.urlsetter.inject;
 import javax.inject.Singleton;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
@@ -38,16 +40,13 @@ import java.util.Properties;
 @Module (injects = {UrlActivity.class, UrlService.class})
 public class UrlModule
 {
-    private Properties config;
 
-    public void init ( Context context ) throws IOException
+    private String mixpanelToken;
+
+    public void init ( Context context ) throws PackageManager.NameNotFoundException
     {
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader( context.getAssets().open( "service.properties" ) ) );
-        config = new Properties();
-        config.load( reader );
-
-        reader.close();
+        ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo( context.getPackageName(), PackageManager.GET_META_DATA );
+        mixpanelToken = appInfo.metaData.getString( "com.mixpanel.ApiToken" );
     }
 
     @Provides
@@ -61,6 +60,6 @@ public class UrlModule
     @Singleton
     public Mixpanel getLogger ()
     {
-        return new Mixpanel( config.getProperty( "mixpanel.token" ) );
+        return new Mixpanel( mixpanelToken );
     }
 }

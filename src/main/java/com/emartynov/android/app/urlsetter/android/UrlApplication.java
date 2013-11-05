@@ -51,20 +51,16 @@ public class UrlApplication extends Application
         {
             urlModule.init( this );
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             throw new RuntimeException( "App properties loading failed", e );
         }
         return urlModule;
     }
 
-    public void inject ( InjectedActivity injectedActivity )
+    public void inject ( Object objectToInject )
     {
-        objectGraph.inject( injectedActivity );
+        objectGraph.inject( objectToInject );
     }
 
-    public void inject ( UrlService urlService )
-    {
-        objectGraph.inject( urlService );
-    }
 }
