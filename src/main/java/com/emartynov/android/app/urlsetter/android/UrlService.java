@@ -141,6 +141,8 @@ public class UrlService extends Service
     {
         cancelTimer();
 
+        showToastOnUI( getString( R.string.resolved_url, event.getResolvedUri() ) );
+
         showUri( event.getResolvedUri() );
 
         logger.trackEvent( "Resolved", event.getLoggingParams() );
@@ -155,8 +157,6 @@ public class UrlService extends Service
         intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
 
         startActivity( intent );
-
-        showToastOnUI( getString( R.string.resolved_url, uri ) );
 
         new Thread( new Runnable()
         {
