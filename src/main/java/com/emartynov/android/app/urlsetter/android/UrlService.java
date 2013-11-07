@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
-
 import android.text.format.DateUtils;
 import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
@@ -83,6 +82,8 @@ public class UrlService extends Service
     public int onStartCommand ( Intent intent, int flags, int startId )
     {
         handler = new Handler();
+
+        bus.post( new ResolveURL( intent.getData() ) );
 
         return START_STICKY;
     }

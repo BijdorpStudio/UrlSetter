@@ -16,29 +16,23 @@
 
 package com.emartynov.android.app.urlsetter.android.ui;
 
-import android.net.Uri;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import com.crashlytics.android.Crashlytics;
-import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
-import com.squareup.otto.Bus;
+import com.emartynov.android.app.urlsetter.android.UrlService;
 
-import javax.inject.Inject;
-
-public class UrlActivity extends InjectedActivity
+public class UrlActivity extends Activity
 {
-    @Inject
-    Bus bus;
-
     public void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
 
         Crashlytics.start( this );
 
-        Uri uri = getIntent().getData();
-
-        bus.post( new ResolveURL( uri ) );
+        Intent service = new Intent( getIntent() );
+        service.setClass( this, UrlService.class );
+        startService( service );
 
         finish();
     }

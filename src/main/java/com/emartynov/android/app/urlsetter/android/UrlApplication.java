@@ -16,16 +16,10 @@
 
 package com.emartynov.android.app.urlsetter.android;
 
-import android.content.Intent;
+import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
-import com.emartynov.android.app.urlsetter.model.URLResolver;
-import com.emartynov.android.app.urlsetter.android.ui.InjectedActivity;
-
-import android.app.Application;
 import dagger.ObjectGraph;
-
-import java.io.IOException;
 
 public class UrlApplication extends Application
 {
@@ -40,8 +34,6 @@ public class UrlApplication extends Application
 
         UrlModule urlModule = getUrlModule();
         objectGraph = ObjectGraph.create( urlModule );
-
-        startService( new Intent( this, UrlService.class ) );
     }
 
     private UrlModule getUrlModule ()
