@@ -30,16 +30,24 @@
                         android:name=".ProcessActivity"
                         android:targetActivity=".android.ui.UrlActivity">
             <intent-filter>
-                <data android:scheme="http"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <action android:name="android.intent.action.VIEW"/>
+
+                <data android:host="t.co" android:scheme="http"/>
+                <data android:host="bit.ly" android:scheme="http"/>
+                <data android:host="goo.gl" android:scheme="http"/>
+                <data android:host="owl.ly" android:scheme="http"/>
+                <data android:host="ow.ly" android:scheme="http"/>
+                <data android:host="deck.ly" android:scheme="http"/>
+                <data android:host="su.pr" android:scheme="http"/>
+                <data android:host="lnk.co" android:scheme="http"/>
             </intent-filter>
         </activity-alias>
 
         <service android:name=".android.UrlService" android:exported="false"/>
 
-        <meta-data android:name="com.crashlytics.ApiKey" android:value="2c5611b13d7f41bce8b51eb1522de8aee395d2b4" />
-        <meta-data android:name="com.mixpanel.ApiToken" android:value="5c3c45630dcfc6e626870f0b11055643" />
+        <meta-data android:name="com.crashlytics.ApiKey" android:value="2c5611b13d7f41bce8b51eb1522de8aee395d2b4"/>
+        <meta-data android:name="com.mixpanel.ApiToken" android:value="5c3c45630dcfc6e626870f0b11055643"/>
     </application>
 </manifest>

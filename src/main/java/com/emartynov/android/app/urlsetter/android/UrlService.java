@@ -25,7 +25,6 @@ import android.text.format.DateUtils;
 import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.R;
-import com.emartynov.android.app.urlsetter.android.packagemanager.ComponentSwitcher;
 import com.emartynov.android.app.urlsetter.model.URLResolver;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
@@ -150,32 +149,13 @@ public class UrlService extends Service
 
     private void showUri ( Uri uri )
     {
-        ComponentSwitcher.disableComponent( this, getPackageName(), getPackageName() + ".ProcessActivity" );
-
         Intent intent = new Intent( Intent.ACTION_VIEW );
         intent.setData( uri );
         intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
 
         startActivity( intent );
 
-        new Thread( new Runnable()
-        {
-            @Override
-            public void run ()
-            {
-                try
-                {
-                    Thread.sleep( 1000 );
-                }
-                catch ( InterruptedException ignored )
-                {
-                }
-
-                ComponentSwitcher.enableComponent( UrlService.this, getPackageName(), getPackageName() + ".ProcessActivity" );
-
-                checkToStop();
-            }
-        } ).start();
+        checkToStop();
     }
 
     private void checkToStop ()
