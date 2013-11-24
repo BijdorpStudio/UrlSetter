@@ -95,7 +95,7 @@ public class UrlService extends Service
             bus.post( new ResolveURL( data ) );
         }
 
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     private void createLongOperationTimer ()
@@ -151,7 +151,7 @@ public class UrlService extends Service
     {
         cancelTimer();
 
-        showToastOnUI( getString( R.string.resolved_url, event.getResolvedUri() ) );
+//        showToastOnUI( getString( R.string.resolved_url, event.getResolvedUri() ) );
 
         showUri( event.getResolvedUri() );
 
