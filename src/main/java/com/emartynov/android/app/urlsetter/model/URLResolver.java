@@ -19,6 +19,7 @@ package com.emartynov.android.app.urlsetter.model;
 import android.net.Uri;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
+import com.emartynov.android.app.urlsetter.model.event.ResolveFacebookURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -50,6 +51,13 @@ public class URLResolver
         executor.execute( new ResolveUrlRunnable( event.getUri() ) );
     }
 
+    @Subscribe
+    public void resolveFacebookURL ( ResolveFacebookURL event )
+    {
+        Uri uri = event.getUri();
+        executor.execute( new ResolveUrlRunnable( Uri.parse( uri.getQueryParameter( "u" ) ) ) );
+    }
+
     public boolean isIdle ()
     {
         return executor.getTaskCount() - executor.getCompletedTaskCount() == 0;
@@ -67,7 +75,6 @@ public class URLResolver
         @Override
         public void run ()
         {
-
             try
             {
                 Uri resolvedUri = findRedirect( uri );

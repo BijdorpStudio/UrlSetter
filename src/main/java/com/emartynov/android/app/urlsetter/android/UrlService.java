@@ -28,6 +28,7 @@ import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.model.URLResolver;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
+import com.emartynov.android.app.urlsetter.model.event.ResolveFacebookURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
@@ -40,6 +41,7 @@ import java.util.TimerTask;
 public class UrlService extends Service
 {
     public static final long TIMEOUT_IN_SECONDS = 5 * DateUtils.SECOND_IN_MILLIS;
+    private static final String FACEBOOK_HOST = "m.facebook.com";
 
     private URLResolver urlResolver;
     @Inject
@@ -82,7 +84,16 @@ public class UrlService extends Service
     {
         handler = new Handler();
 
-        bus.post( new ResolveURL( intent.getData() ) );
+        Uri data = intent.getData();
+
+        if ( FACEBOOK_HOST.equals( data.getHost() ) )
+        {
+            bus.post( new ResolveFacebookURL( data ) );
+        }
+        else
+        {
+            bus.post( new ResolveURL( data ) );
+        }
 
         return START_STICKY;
     }
