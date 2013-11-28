@@ -55,7 +55,11 @@ public class URLResolver
     public void resolveFacebookURL ( ResolveFacebookURL event )
     {
         Uri uri = event.getUri();
-        executor.execute( new ResolveUrlRunnable( Uri.parse( uri.getQueryParameter( "u" ) ) ) );
+        String hiddenUrl = uri.getQueryParameter( "u" );
+        if ( hiddenUrl != null )
+        {
+            executor.execute( new ResolveUrlRunnable( Uri.parse( hiddenUrl ) ) );
+        }
     }
 
     public boolean isIdle ()
@@ -113,7 +117,7 @@ public class URLResolver
             connection.setRequestMethod( "HEAD" );
             connection.setRequestProperty( "Accept-Encoding", "" );
             connection.setInstanceFollowRedirects( false );
-            connection.setConnectTimeout( 10000 );
+            connection.setConnectTimeout( 30000 );
 
             int responseCode = connection.getResponseCode();
             if ( responseCode == HttpURLConnection.HTTP_OK )

@@ -84,18 +84,24 @@ public class UrlService extends Service
     {
         handler = new Handler();
 
-        Uri data = intent.getData();
-
-        if ( FACEBOOK_HOST.equals( data.getHost() ) )
+        if ( intent != null )
         {
-            bus.post( new ResolveFacebookURL( data ) );
+            resolveUrl( intent.getData() );
+        }
+
+        return START_STICKY;
+    }
+
+    private void resolveUrl ( Uri uri )
+    {
+        if ( FACEBOOK_HOST.equals( uri.getHost() ) )
+        {
+            bus.post( new ResolveFacebookURL( uri ) );
         }
         else
         {
-            bus.post( new ResolveURL( data ) );
+            bus.post( new ResolveURL( uri ) );
         }
-
-        return START_REDELIVER_INTENT;
     }
 
     private void createLongOperationTimer ()
