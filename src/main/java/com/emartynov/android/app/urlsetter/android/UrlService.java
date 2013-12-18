@@ -43,7 +43,8 @@ public class UrlService extends Service
     public static final long TIMEOUT_IN_SECONDS = 5 * DateUtils.SECOND_IN_MILLIS;
     private static final String FACEBOOK_HOST = "m.facebook.com";
 
-    private URLResolver urlResolver;
+    @Inject
+    URLResolver urlResolver;
     @Inject
     Bus bus;
     @Inject
@@ -58,8 +59,6 @@ public class UrlService extends Service
         Crashlytics.start( this );
 
         ((UrlApplication) getApplication()).inject( this );
-
-        urlResolver = new URLResolver( bus );
 
         bus.register( this );
         logger.init( this );
@@ -89,7 +88,7 @@ public class UrlService extends Service
             resolveUrl( intent.getData() );
         }
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     private void resolveUrl ( Uri uri )

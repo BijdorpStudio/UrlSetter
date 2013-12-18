@@ -16,26 +16,19 @@
 
 package com.emartynov.android.app.urlsetter.inject;
 
-import javax.inject.Singleton;
-
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
 import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
 import com.emartynov.android.app.urlsetter.model.URLResolver;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
-
 import dagger.Module;
 import dagger.Provides;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Properties;
+import javax.inject.Singleton;
 
 @Module (injects = {UrlActivity.class, UrlService.class})
 public class UrlModule
@@ -61,5 +54,12 @@ public class UrlModule
     public Mixpanel getLogger ()
     {
         return new Mixpanel( mixpanelToken );
+    }
+
+    @Provides
+    @Singleton
+    public URLResolver getURLResolver ( Bus bus )
+    {
+        return new URLResolver( bus );
     }
 }
