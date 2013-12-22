@@ -3,27 +3,33 @@
     <array name="services">
         <item>Twitter</item>
         <item>Google Play Store</item>
+        <item>Google Maps</item>
         <item>YouTube</item>
         <item>Wikipedia</item>
         <item>Instagram</item>
         <item>Foursquare</item>
         <item>Linkedin</item>
         <item>GitHub</item>
+        <item>Habrahabr.ru</item>
         <item>Bit.ly</item>
         <item>Goo.gl</item>
         <item>Buff.ly</item>
+        <item>Linkd.in</item>
     </array>
     <array name="urls">
         <item>t.co/LrwagumK7p</item>
         <item>play.google.com/store/apps/details?id=com.google.android.apps.maps</item>
+        <item>maps.google.com/maps?saddr=brighton&amp;daddr=timbuktu</item>
         <item>youtu.be/8E_ZpHRzXvg</item>
         <item>en.wikipedia.org/wiki/Symphony_No._5_(Beethoven)</item>
         <item>instagr.am/p/KqzGgBhM5f/</item>
         <item>4sq.com/claIfK</item>
-        <item>linkd.in/196Yq4M</item>
+        <item>linkedin.com/in/eugenmartynov</item>
         <item>github.com/emartynov/UrlSetter</item>
+        <item>habrahabr.ru/company/piter/blog/206914/</item>
         <item>bit.ly/1hvIZp3</item>
-        <item>goo.gl/maps/I6bv</item>
+        <item>goo.gl/1y05hc</item>
         <item>buff.ly/1dZlzpG</item>
+        <item>linkd.in/196Yq4M</item>
     </array>
 </resources>
