@@ -9,4 +9,5 @@
     </string>
     <string name="operation_takes_longer">Sorry, but url resolving takes longer than expected</string>
     <string name="resolved_url">Unshortened url is %s</string>
+    <string name="service_url_examples">Services</string>
 </resources>

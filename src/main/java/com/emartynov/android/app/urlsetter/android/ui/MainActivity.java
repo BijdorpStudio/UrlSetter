@@ -44,8 +44,11 @@ public class MainActivity extends ActionBarActivity
     private void initList ()
     {
         ListView view = (ListView) findViewById( android.R.id.list );
+
         String[] services = getResources().getStringArray( R.array.services );
         String[] urls = getResources().getStringArray( R.array.urls );
+
+        view.addHeaderView( getLayoutInflater().inflate( R.layout.main_header, view, false ) );
         view.setAdapter( new UrlExampleAdapter( services, urls, getLayoutInflater() ) );
     }
 }
