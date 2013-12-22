@@ -109,14 +109,20 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <action android:name="android.intent.action.VIEW"/>
 
-                <data android:host="m.facebook.com" android:scheme="http"/>
+                <data
+                    android:host="m.facebook.com"
+                    android:scheme="http"
+                    android:path="/l.php" />
             </intent-filter>
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <action android:name="android.intent.action.VIEW"/>
 
-                <data android:host="m.facebook.com" android:scheme="https"/>
+                <data
+                    android:host="m.facebook.com"
+                    android:scheme="https"
+                    android:path="/l.php" />
             </intent-filter>
         </activity-alias>
 
