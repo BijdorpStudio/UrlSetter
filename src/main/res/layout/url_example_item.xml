@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:weightSum="2">
+
+    <TextView
+        android:id="@+id/service_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:gravity="right"
+        android:paddingRight="12dp"
+        android:textSize="18dp"
+        tools:text="Service"/>
+
+    <TextView
+        android:id="@+id/url_example"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:autoLink="web"
+        android:textSize="18dp"
+        tools:text="google.com"/>
+
+</LinearLayout>

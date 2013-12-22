@@ -16,17 +16,18 @@
 
 package com.emartynov.android.app.urlsetter.android.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+
 import com.emartynov.android.app.urlsetter.android.UrlApplication;
 
-public class InjectedActivity extends Activity
+public class InjectedActivity extends ActionBarActivity
 {
     @Override
     protected void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
 
-        ((UrlApplication)getApplication()).inject(this);
+        ( (UrlApplication) getApplication() ).inject( this );
     }
 }

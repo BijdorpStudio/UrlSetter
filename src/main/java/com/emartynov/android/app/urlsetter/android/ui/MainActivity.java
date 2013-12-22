@@ -16,13 +16,15 @@
 
 package com.emartynov.android.app.urlsetter.android.ui;
 
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.widget.ListView;
+
 import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.R;
+import com.emartynov.android.app.urlsetter.android.ui.adapter.UrlExampleAdapter;
 
-import android.app.Activity;
-import android.os.Bundle;
-
-public class MainActivity extends Activity
+public class MainActivity extends ActionBarActivity
 {
     /**
      * Called when the activity is first created.
@@ -35,5 +37,15 @@ public class MainActivity extends Activity
         Crashlytics.start( this );
 
         setContentView( R.layout.main );
+
+        initList();
+    }
+
+    private void initList ()
+    {
+        ListView view = (ListView) findViewById( android.R.id.list );
+        String[] services = getResources().getStringArray( R.array.services );
+        String[] urls = getResources().getStringArray( R.array.urls );
+        view.setAdapter( new UrlExampleAdapter( services, urls, getLayoutInflater() ) );
     }
 }
