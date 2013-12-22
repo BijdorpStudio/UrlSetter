@@ -32,6 +32,24 @@ android {
         versionCode 1
         versionName "1.0.0.2"
     }
+
+    signingConfigs {
+        release {
+            Properties p = new Properties()
+            p.load(new FileInputStream('keys/sign.properties'))
+
+            storeFile file(p.file)
+            storePassword p.password
+            keyAlias p.alias
+            keyPassword p.keyPassword
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
 }
 
 dependencies {
