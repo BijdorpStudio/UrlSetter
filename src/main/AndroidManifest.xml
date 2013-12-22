@@ -136,6 +136,46 @@
                     android:host="ow.ly"
                     android:scheme="https"/>
             </intent-filter>
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <data
+                    android:host="linkd.in"
+                    android:scheme="http"/>
+            </intent-filter>
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <data
+                    android:host="linkd.in"
+                    android:scheme="https"/>
+            </intent-filter>
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <data
+                    android:host="buff.ly"
+                    android:scheme="http"/>
+            </intent-filter>
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <data
+                    android:host="buff.ly"
+                    android:scheme="https"/>
+            </intent-filter>
         </activity-alias>
         <activity-alias
             android:enabled="true"
