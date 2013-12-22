@@ -17,6 +17,7 @@
 package com.emartynov.android.app.urlsetter.model;
 
 import android.net.Uri;
+
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveFacebookURL;
