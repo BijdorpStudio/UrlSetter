@@ -1,113 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.emartynov.android.app.urlsetter"
-          android:versionCode="1"
-          android:versionName="1.0">
+    package="com.emartynov.android.app.urlsetter"
+    android:versionCode="1"
+    android:versionName="1.0">
 
-    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="16"/>
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="16" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
-    <application android:label="@string/app_name"
-                 android:icon="@drawable/ic_launcher"
-                 android:name=".android.UrlApplication"
-                 android:allowBackup="true">
+    <application
+        android:label="@string/app_name"
+        android:icon="@drawable/ic_launcher"
+        android:name=".android.UrlApplication"
+        android:allowBackup="true">
 
-        <activity android:name=".android.ui.MainActivity"
-                  android:label="@string/app_name">
+        <activity
+            android:name=".android.ui.MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".android.ui.UrlActivity"
-                  android:theme="@android:style/Theme.NoDisplay"
-                  android:exported="false"/>
+        <activity
+            android:name=".android.ui.UrlActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:exported="false" />
 
-        <activity-alias android:enabled="true"
-                        android:exported="true"
-                        android:name=".ProcessActivity"
-                        android:targetActivity=".android.ui.UrlActivity">
+        <activity-alias
+            android:enabled="true"
+            android:exported="true"
+            android:name=".ProcessActivity"
+            android:targetActivity=".android.ui.UrlActivity">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="t.co" android:scheme="http"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="t.co"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="t.co" android:scheme="https"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="t.co"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="bit.ly" android:scheme="http"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="bit.ly"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="bit.ly" android:scheme="https"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="bit.ly"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="goo.gl" android:scheme="http"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="goo.gl"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="goo.gl" android:scheme="https"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="goo.gl"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="owl.ly" android:scheme="http"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="owl.ly"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="owl.ly" android:scheme="https"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="owl.ly"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="ow.ly" android:scheme="http"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="ow.ly"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="ow.ly" android:scheme="https"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="ow.ly"
+                    android:scheme="https" />
             </intent-filter>
         </activity-alias>
-        <activity-alias android:enabled="true"
-                        android:exported="true"
-                        android:name=".ProcessFacebookActivity"
-                        android:targetActivity=".android.ui.UrlActivity">
+        <activity-alias
+            android:enabled="true"
+            android:exported="true"
+            android:name=".ProcessFacebookActivity"
+            android:targetActivity=".android.ui.UrlActivity">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <action android:name="android.intent.action.VIEW" />
 
                 <data
                     android:host="m.facebook.com"
@@ -115,9 +153,10 @@
                     android:path="/l.php" />
             </intent-filter>
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <action android:name="android.intent.action.VIEW" />
 
                 <data
                     android:host="m.facebook.com"
@@ -126,9 +165,15 @@
             </intent-filter>
         </activity-alias>
 
-        <service android:name=".android.UrlService" android:exported="false"/>
+        <service
+            android:name=".android.UrlService"
+            android:exported="false" />
 
-        <meta-data android:name="com.crashlytics.ApiKey" android:value="2c5611b13d7f41bce8b51eb1522de8aee395d2b4"/>
-        <meta-data android:name="com.mixpanel.ApiToken" android:value="5c3c45630dcfc6e626870f0b11055643"/>
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="2c5611b13d7f41bce8b51eb1522de8aee395d2b4" />
+        <meta-data
+            android:name="com.mixpanel.ApiToken"
+            android:value="5c3c45630dcfc6e626870f0b11055643" />
     </application>
 </manifest>
