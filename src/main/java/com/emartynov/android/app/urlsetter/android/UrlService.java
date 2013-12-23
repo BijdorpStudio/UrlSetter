@@ -123,7 +123,8 @@ public class UrlService extends Service
             }
             else
             {
-                bus.post( new FoundURL( event.getUri(), Uri.parse( snapshot.getString( 0 ) ) ) );
+                Uri resolvedUri = Uri.parse( snapshot.getString( 0 ) );
+                bus.post( new FoundURL( event.getUri(), resolvedUri ) );
             }
         }
         catch ( IOException e )
