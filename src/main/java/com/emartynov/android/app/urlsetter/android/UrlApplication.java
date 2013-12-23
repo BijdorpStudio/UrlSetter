@@ -18,8 +18,10 @@ package com.emartynov.android.app.urlsetter.android;
 
 import android.app.Application;
 
-import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
+import com.emartynov.android.app.urlsetter.service.Crashlytics;
+
+import javax.inject.Inject;
 
 import dagger.ObjectGraph;
 
@@ -27,15 +29,26 @@ public class UrlApplication extends Application
 {
     private ObjectGraph objectGraph;
 
+    @Inject
+    Crashlytics crashlitycs;
+
     @Override
     public void onCreate ()
     {
         super.onCreate();
 
-        Crashlytics.start( this );
-
         Object urlModule = getUrlModule();
+
+        if ( urlModule == null )
+        {
+            throw new NullPointerException( "TEST" );
+        }
+
         objectGraph = ObjectGraph.create( urlModule );
+
+        objectGraph.inject( this );
+
+        crashlitycs.start( this );
     }
 
     protected Object getUrlModule ()
