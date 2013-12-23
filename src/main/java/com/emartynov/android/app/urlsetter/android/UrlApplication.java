@@ -17,8 +17,10 @@
 package com.emartynov.android.app.urlsetter.android;
 
 import android.app.Application;
+
 import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
+
 import dagger.ObjectGraph;
 
 public class UrlApplication extends Application
@@ -32,11 +34,11 @@ public class UrlApplication extends Application
 
         Crashlytics.start( this );
 
-        UrlModule urlModule = getUrlModule();
+        Object urlModule = getUrlModule();
         objectGraph = ObjectGraph.create( urlModule );
     }
 
-    private UrlModule getUrlModule ()
+    protected Object getUrlModule ()
     {
         UrlModule urlModule = new UrlModule();
         try

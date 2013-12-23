@@ -23,6 +23,7 @@ import android.content.pm.PackageManager;
 import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
+import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.jakewharton.disklrucache.DiskLruCache;
 import com.squareup.otto.Bus;
@@ -71,6 +72,13 @@ public class UrlModule
     public UrlResolver getURLResolver ( Bus bus )
     {
         return new UrlResolver( bus );
+    }
+
+    @Provides
+    @Singleton
+    public Crashlytics getCrashlytics ()
+    {
+        return new Crashlytics();
     }
 
     @Provides
