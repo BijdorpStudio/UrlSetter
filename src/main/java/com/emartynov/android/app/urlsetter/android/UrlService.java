@@ -31,11 +31,13 @@ import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveFacebookURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
+import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.jakewharton.disklrucache.DiskLruCache;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -63,7 +65,7 @@ public class UrlService extends Service
     {
         Crashlytics.start( this );
 
-        ((UrlApplication) getApplication()).inject( this );
+        ( (UrlApplication) getApplication() ).inject( this );
 
         bus.register( this );
         logger.init( this );
@@ -100,12 +102,39 @@ public class UrlService extends Service
     {
         if ( FACEBOOK_HOST.equals( uri.getHost() ) )
         {
-            bus.post( new ResolveFacebookURL( uri ) );
+            getFromCacheOrResolve( new ResolveFacebookURL( uri ) );
         }
         else
         {
-            bus.post( new ResolveURL( uri ) );
+            getFromCacheOrResolve( new ResolveURL( uri ) );
         }
+    }
+
+    private void getFromCacheOrResolve ( UrlEvent event )
+    {
+        String key = getUriKey( event.getUri() );
+
+        try
+        {
+            DiskLruCache.Snapshot snapshot = cache.get( key );
+            if ( snapshot == null )
+            {
+                bus.post( event );
+            }
+            else
+            {
+                bus.post( new FoundURL( event.getUri(), Uri.parse( snapshot.getString( 0 ) ) ) );
+            }
+        }
+        catch ( IOException e )
+        {
+            bus.post( event );
+        }
+    }
+
+    private String getUriKey ( Uri uri )
+    {
+        return String.valueOf( uri.hashCode() ).substring( 0, 64 );
     }
 
     private void createLongOperationTimer ()
@@ -161,11 +190,22 @@ public class UrlService extends Service
     {
         cancelTimer();
 
-//        showToastOnUI( getString( R.string.resolved_url, event.getResolvedUri() ) );
-
         showUri( event.getResolvedUri() );
 
         logger.trackEvent( "Resolved", event.getLoggingParams() );
+
+        cacheUri( event );
+    }
+
+    private void cacheUri ( FoundURL event )
+    {
+        try
+        {
+            cache.edit( getUriKey( event.getUri() ) ).set( 0, event.getResolvedUri().toString() );
+        }
+        catch ( IOException ignored )
+        {
+        }
     }
 
     private void showUri ( Uri uri )

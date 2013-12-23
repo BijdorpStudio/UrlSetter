@@ -78,7 +78,7 @@ public class UrlModule
     {
         try
         {
-            return DiskLruCache.open( cacheDir, appVersion, 2, 1024 * 1024 );
+            return DiskLruCache.open( cacheDir, appVersion, 1, 100 * 1024 );
         }
         catch ( IOException e )
         {
