@@ -38,7 +38,7 @@ public class UrlActivityTest
         assertThat( activity.isFinishing() ).isTrue();
     }
 
-    @Module ( overrides = true, includes = UrlModule.class )
+    @Module ( overrides = true, includes = UrlModule.class, injects = UrlActivity.class )
     class TestUrlModule
     {
         @Provides
