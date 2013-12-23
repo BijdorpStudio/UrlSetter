@@ -23,20 +23,23 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.text.format.DateUtils;
 import android.widget.Toast;
+
 import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.R;
-import com.emartynov.android.app.urlsetter.model.URLResolver;
+import com.emartynov.android.app.urlsetter.model.UrlResolverTemp;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveFacebookURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
+import com.jakewharton.disklrucache.DiskLruCache;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
-import javax.inject.Inject;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.inject.Inject;
 
 public class UrlService extends Service
 {
@@ -44,11 +47,13 @@ public class UrlService extends Service
     private static final String FACEBOOK_HOST = "m.facebook.com";
 
     @Inject
-    URLResolver urlResolver;
+    UrlResolverTemp urlResolver;
     @Inject
     Bus bus;
     @Inject
     Mixpanel logger;
+    @Inject
+    DiskLruCache cache;
 
     private Timer timer;
     private Handler handler;

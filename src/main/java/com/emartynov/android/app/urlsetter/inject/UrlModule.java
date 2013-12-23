@@ -19,27 +19,37 @@ package com.emartynov.android.app.urlsetter.inject;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+
 import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
-import com.emartynov.android.app.urlsetter.model.URLResolver;
+import com.emartynov.android.app.urlsetter.model.UrlResolverTemp;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
+import com.jakewharton.disklrucache.DiskLruCache;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
-import dagger.Module;
-import dagger.Provides;
+
+import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Singleton;
 
-@Module (injects = {UrlActivity.class, UrlService.class})
+import dagger.Module;
+import dagger.Provides;
+
+@Module (injects = { UrlActivity.class, UrlService.class })
 public class UrlModule
 {
-
     private String mixpanelToken;
+    private File cacheDir;
+    private int appVersion;
 
     public void init ( Context context ) throws PackageManager.NameNotFoundException
     {
         ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo( context.getPackageName(), PackageManager.GET_META_DATA );
         mixpanelToken = appInfo.metaData.getString( "com.mixpanel.ApiToken" );
+
+        appVersion = context.getPackageManager().getPackageInfo( context.getPackageName(), 0 ).versionCode;
+        cacheDir = context.getFilesDir();
     }
 
     @Provides
@@ -58,8 +68,21 @@ public class UrlModule
 
     @Provides
     @Singleton
-    public URLResolver getURLResolver ( Bus bus )
+    public UrlResolverTemp getURLResolver ( Bus bus )
     {
-        return new URLResolver( bus );
+        return new UrlResolverTemp( bus );
+    }
+
+    @Provides
+    public DiskLruCache getCache ()
+    {
+        try
+        {
+            return DiskLruCache.open( cacheDir, appVersion, 2, 1024 * 1024 );
+        }
+        catch ( IOException e )
+        {
+            return null;
+        }
     }
 }

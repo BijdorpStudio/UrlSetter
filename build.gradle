@@ -36,7 +36,7 @@ android {
     signingConfigs {
         release {
             Properties p = new Properties()
-            p.load(new FileInputStream('keys/sign.properties'))
+            p.load(new FileInputStream(rootProject.file('keys/sign.properties')))
 
             storeFile file(p.file)
             storePassword p.password
@@ -53,16 +53,22 @@ android {
 }
 
 dependencies {
+    // Android
     compile 'com.android.support:support-v4:19.0.+'
     compile 'com.android.support:appcompat-v7:19.0.+'
+    // Square
     compile 'com.squareup.okhttp:okhttp:1.2.1'
     compile 'com.squareup:otto:1.3.4'
     compile 'com.squareup.dagger:dagger-compiler:1.1.0'
     compile 'com.squareup.dagger:dagger:1.1.0'
+    // Jake Wharton
+    compile 'com.jakewharton:disklrucache:2.0.2'
+    // Crashlytics
     compile 'com.crashlytics.android:crashlytics:1.+'
-
+    // MixPpanel
     compile files('libs/MixpanelAPI.jar')
 
+    // tests
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.2'
     testCompile 'com.squareup:fest-android:1.0.+'
