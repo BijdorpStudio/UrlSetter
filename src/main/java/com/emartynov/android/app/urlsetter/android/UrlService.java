@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.R;
-import com.emartynov.android.app.urlsetter.model.UrlResolverTemp;
+import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveFacebookURL;
@@ -47,7 +47,7 @@ public class UrlService extends Service
     private static final String FACEBOOK_HOST = "m.facebook.com";
 
     @Inject
-    UrlResolverTemp urlResolver;
+    UrlResolver urlResolver;
     @Inject
     Bus bus;
     @Inject

@@ -22,7 +22,7 @@ import android.content.pm.PackageManager;
 
 import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
-import com.emartynov.android.app.urlsetter.model.UrlResolverTemp;
+import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.jakewharton.disklrucache.DiskLruCache;
 import com.squareup.otto.Bus;
@@ -68,9 +68,9 @@ public class UrlModule
 
     @Provides
     @Singleton
-    public UrlResolverTemp getURLResolver ( Bus bus )
+    public UrlResolver getURLResolver ( Bus bus )
     {
-        return new UrlResolverTemp( bus );
+        return new UrlResolver( bus );
     }
 
     @Provides

@@ -33,13 +33,13 @@ import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class UrlResolverTemp
+public class UrlResolver
 {
     private final Bus bus;
     private final OkHttpClient httpClient = new OkHttpClient();
     private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool( 2 );
 
-    public UrlResolverTemp ( Bus bus )
+    public UrlResolver ( Bus bus )
     {
         this.bus = bus;
 
