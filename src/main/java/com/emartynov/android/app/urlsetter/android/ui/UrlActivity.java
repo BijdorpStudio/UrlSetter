@@ -16,15 +16,17 @@
 
 package com.emartynov.android.app.urlsetter.android.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.emartynov.android.app.urlsetter.android.UrlApplication;
 import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 
 import javax.inject.Inject;
 
-public class UrlActivity extends InjectedActivity
+public class UrlActivity extends Activity
 {
     @Inject
     Crashlytics crashlytics;
@@ -32,6 +34,8 @@ public class UrlActivity extends InjectedActivity
     public void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
+
+        ( (UrlApplication) getApplication() ).inject( this );
 
         crashlytics.start( this );
 

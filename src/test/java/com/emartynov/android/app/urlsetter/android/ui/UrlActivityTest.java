@@ -1,15 +1,14 @@
 package com.emartynov.android.app.urlsetter.android.ui;
 
-import com.emartynov.android.app.urlsetter.android.RobolectricGradleTestRunner;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-@RunWith ( RobolectricGradleTestRunner.class )
+@RunWith (RobolectricTestRunner.class)
 public class UrlActivityTest
 {
     private UrlActivity activity;
