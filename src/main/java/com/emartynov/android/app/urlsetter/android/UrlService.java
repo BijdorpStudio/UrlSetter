@@ -38,6 +38,8 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -137,8 +139,37 @@ public class UrlService extends Service
 
     private String getUriKey ( Uri uri )
     {
-        String key = String.valueOf( uri.hashCode() );
+        String key;
+        try
+        {
+            key = getMD5( uri );
+        }
+        catch ( NoSuchAlgorithmException e )
+        {
+            key = String.valueOf( Math.abs( uri.hashCode() ) );
+        }
         return key.length() > 64 ? key.substring( 0, 64 ) : key;
+    }
+
+    private String getMD5 ( Uri uri ) throws NoSuchAlgorithmException
+    {
+        MessageDigest digest = MessageDigest.getInstance( "MD5" );
+        digest.update( uri.toString().getBytes() );
+        byte messageDigest[] = digest.digest();
+
+        // Create Hex String
+        StringBuilder hexString = new StringBuilder();
+        for ( int i = 0; i < messageDigest.length; i++ )
+        {
+            String h = Integer.toHexString( 0xFF & messageDigest[ i ] );
+            while ( h.length() < 2 )
+            {
+                h = "0" + h;
+            }
+            hexString.append( h );
+        }
+
+        return hexString.toString();
     }
 
     private void createLongOperationTimer ()
@@ -205,7 +236,9 @@ public class UrlService extends Service
     {
         try
         {
-            cache.edit( getUriKey( event.getUri() ) ).set( 0, event.getResolvedUri().toString() );
+            DiskLruCache.Editor editor = cache.edit( getUriKey( event.getUri() ) );
+            editor.set( 0, event.getResolvedUri().toString() );
+            editor.commit();
         }
         catch ( IOException ignored )
         {
