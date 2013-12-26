@@ -101,21 +101,31 @@ public class UrlResolver
         do
         {
             currentUrl = nextUrl;
-            nextUrl = processUrl( currentUrl );
+            nextUrl = processHeadUrl( currentUrl );
         }
         while ( nextUrl != null );
 
         return Uri.parse( currentUrl );
     }
 
-    private String processUrl ( String url ) throws IOException
+    private String processHeadUrl ( String url ) throws IOException
+    {
+        return processUrl( url, "HEAD" );
+    }
+
+    private String processGetUrl ( String url ) throws IOException
+    {
+        return processUrl( url, "GET" );
+    }
+
+    private String processUrl ( String url, String method ) throws IOException
     {
         HttpURLConnection connection = null;
 
         try
         {
             connection = httpClient.open( new URL( url ) );
-            connection.setRequestMethod( "HEAD" );
+            connection.setRequestMethod( method );
             connection.setRequestProperty( "Accept-Encoding", "" );
             connection.setInstanceFollowRedirects( false );
             connection.setConnectTimeout( 30000 );
@@ -128,6 +138,10 @@ public class UrlResolver
             else if ( isRedirection( responseCode ) )
             {
                 return connection.getHeaderField( "Location" ).replace( " ", "%20" );
+            }
+            else if ( "HEAD".equals( method ) && responseCode == 405 ) //method is not supported
+            {
+                return processGetUrl( url );
             }
             else
             {
