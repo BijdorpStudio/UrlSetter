@@ -9,4 +9,9 @@ public class TestUrlApplication extends UrlApplication
     {
         return module;
     }
+
+    public TestUrlModule getTestModule ()
+    {
+        return (TestUrlModule) module;
+    }
 }

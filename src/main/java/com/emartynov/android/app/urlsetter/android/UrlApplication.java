@@ -39,13 +39,7 @@ public class UrlApplication extends Application
 
         Object urlModule = getUrlModule();
 
-        if ( urlModule == null )
-        {
-            throw new NullPointerException( "TEST" );
-        }
-
         objectGraph = ObjectGraph.create( urlModule );
-
         objectGraph.inject( this );
 
         crashlitycs.start( this );
