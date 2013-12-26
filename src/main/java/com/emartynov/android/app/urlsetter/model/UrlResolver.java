@@ -35,6 +35,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class UrlResolver
 {
+    public static final String HEAD_METHOD = "HEAD";
+    public static final String GET_METHOD = "GET";
+
     private final Bus bus;
     private final OkHttpClient httpClient = new OkHttpClient();
     private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool( 2 );
@@ -110,12 +113,12 @@ public class UrlResolver
 
     private String processHeadUrl ( String url ) throws IOException
     {
-        return processUrl( url, "HEAD" );
+        return processUrl( url, HEAD_METHOD );
     }
 
     private String processGetUrl ( String url ) throws IOException
     {
-        return processUrl( url, "GET" );
+        return processUrl( url, GET_METHOD );
     }
 
     private String processUrl ( String url, String method ) throws IOException
@@ -139,13 +142,13 @@ public class UrlResolver
             {
                 return connection.getHeaderField( "Location" ).replace( " ", "%20" );
             }
-            else if ( "HEAD".equals( method ) && responseCode == 405 ) //method is not supported
+            else if ( HEAD_METHOD.equals( method ) && responseCode == HttpURLConnection.HTTP_BAD_METHOD ) //method is not supported
             {
                 return processGetUrl( url );
             }
             else
             {
-                throw new ProtocolException( "Bad response: " + responseCode );
+                throw new ProtocolException( "Bad response: " + responseCode + "; with url: " + url );
             }
         }
         finally
