@@ -27,9 +27,9 @@ import android.widget.Toast;
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
-import com.emartynov.android.app.urlsetter.model.event.FoundURL;
-import com.emartynov.android.app.urlsetter.model.event.ResolveFacebookURL;
-import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
+import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
+import com.emartynov.android.app.urlsetter.model.event.ResolveFacebookUrl;
+import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
@@ -74,7 +74,7 @@ public class UrlService extends Service
     }
 
     @Subscribe
-    public void resolveUrl ( ResolveURL event )
+    public void resolveUrl ( ResolveUrl event )
     {
         createLongOperationTimer();
 
@@ -104,11 +104,11 @@ public class UrlService extends Service
     {
         if ( FACEBOOK_HOST.equals( uri.getHost() ) )
         {
-            getFromCacheOrResolve( new ResolveFacebookURL( uri ) );
+            getFromCacheOrResolve( new ResolveFacebookUrl( uri ) );
         }
         else
         {
-            getFromCacheOrResolve( new ResolveURL( uri ) );
+            getFromCacheOrResolve( new ResolveUrl( uri ) );
         }
     }
 
@@ -126,7 +126,7 @@ public class UrlService extends Service
             else
             {
                 Uri resolvedUri = Uri.parse( snapshot.getString( 0 ) );
-                bus.post( new FoundURL( event.getUri(), resolvedUri ) );
+                bus.post( new FoundUrl( event.getUri(), resolvedUri ) );
             }
         }
         catch ( IOException e )
@@ -190,7 +190,7 @@ public class UrlService extends Service
     }
 
     @Subscribe
-    public void launchURL ( FoundURL event )
+    public void launchURL ( FoundUrl event )
     {
         cancelTimer();
 
@@ -201,7 +201,7 @@ public class UrlService extends Service
         cacheUri( event );
     }
 
-    private void cacheUri ( FoundURL event )
+    private void cacheUri ( FoundUrl event )
     {
         try
         {

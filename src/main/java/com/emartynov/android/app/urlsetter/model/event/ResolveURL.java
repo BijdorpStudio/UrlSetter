@@ -18,9 +18,9 @@ package com.emartynov.android.app.urlsetter.model.event;
 
 import android.net.Uri;
 
-public class ResolveURL extends UrlEvent
+public class ResolveUrl extends UrlEvent
 {
-    public ResolveURL ( Uri uri )
+    public ResolveUrl ( Uri uri )
     {
         super( uri );
     }
