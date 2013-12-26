@@ -17,6 +17,7 @@
 package com.emartynov.android.app.urlsetter.android.ui;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.ListView;
 
 import com.emartynov.android.app.urlsetter.R;
@@ -50,5 +51,12 @@ public class MainActivity extends InjectedActivity
         String[] urls = getResources().getStringArray( R.array.urls );
 
         view.setAdapter( new UrlExampleAdapter( services, urls, getLayoutInflater() ) );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu ( Menu menu )
+    {
+        getMenuInflater().inflate( R.menu.main, menu );
+        return true;
     }
 }
