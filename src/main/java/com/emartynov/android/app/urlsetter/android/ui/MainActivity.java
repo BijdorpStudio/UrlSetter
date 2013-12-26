@@ -17,24 +17,25 @@
 package com.emartynov.android.app.urlsetter.android.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.ListView;
 
-import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.android.ui.adapter.UrlExampleAdapter;
+import com.emartynov.android.app.urlsetter.service.Crashlytics;
 
-public class MainActivity extends ActionBarActivity
+import javax.inject.Inject;
+
+public class MainActivity extends InjectedActivity
 {
-    /**
-     * Called when the activity is first created.
-     */
+    @Inject
+    Crashlytics crashlytics;
+
     @Override
     public void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
 
-        Crashlytics.start( this );
+        crashlytics.start( this );
 
         setContentView( R.layout.main );
 
@@ -48,7 +49,6 @@ public class MainActivity extends ActionBarActivity
         String[] services = getResources().getStringArray( R.array.services );
         String[] urls = getResources().getStringArray( R.array.urls );
 
-        view.addHeaderView( getLayoutInflater().inflate( R.layout.main_header, view, false ) );
         view.setAdapter( new UrlExampleAdapter( services, urls, getLayoutInflater() ) );
     }
 }

@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 
 import com.emartynov.android.app.urlsetter.android.UrlApplication;
 import com.emartynov.android.app.urlsetter.android.UrlService;
+import com.emartynov.android.app.urlsetter.android.ui.MainActivity;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
@@ -38,7 +39,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-@Module ( injects = { UrlActivity.class, UrlService.class, UrlApplication.class } )
+@Module (injects = { UrlActivity.class, UrlService.class, UrlApplication.class, MainActivity.class })
 public class UrlModule
 {
     private String mixpanelToken;

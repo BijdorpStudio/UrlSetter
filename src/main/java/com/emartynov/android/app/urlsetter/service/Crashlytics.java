@@ -8,4 +8,9 @@ public class Crashlytics
     {
         com.crashlytics.android.Crashlytics.start( context );
     }
+
+    public void logException ( Exception exception )
+    {
+        com.crashlytics.android.Crashlytics.logException( exception );
+    }
 }

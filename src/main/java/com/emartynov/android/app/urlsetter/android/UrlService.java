@@ -24,7 +24,6 @@ import android.os.IBinder;
 import android.text.format.DateUtils;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
@@ -32,6 +31,7 @@ import com.emartynov.android.app.urlsetter.model.event.FoundURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveFacebookURL;
 import com.emartynov.android.app.urlsetter.model.event.ResolveURL;
 import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
+import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.jakewharton.disklrucache.DiskLruCache;
 import com.squareup.otto.Bus;
@@ -56,6 +56,8 @@ public class UrlService extends Service
     Mixpanel logger;
     @Inject
     DiskLruCache cache;
+    @Inject
+    Crashlytics crashlytics;
 
     private Timer timer;
     private Handler handler;
@@ -63,9 +65,9 @@ public class UrlService extends Service
     @Override
     public void onCreate ()
     {
-        Crashlytics.start( this );
-
         ( (UrlApplication) getApplication() ).inject( this );
+
+        crashlytics.start( this );
 
         bus.register( this );
         logger.init( this );
@@ -135,7 +137,8 @@ public class UrlService extends Service
 
     private String getUriKey ( Uri uri )
     {
-        return String.valueOf( uri.hashCode() ).substring( 0, 64 );
+        String key = String.valueOf( uri.hashCode() );
+        return key.length() > 64 ? key.substring( 0, 64 ) : key;
     }
 
     private void createLongOperationTimer ()
@@ -241,7 +244,7 @@ public class UrlService extends Service
     {
         cancelTimer();
 
-        Crashlytics.logException( event.getException() );
+        crashlytics.logException( event.getException() );
 
         String errorString = getString( R.string.error_while_resolving_url, event.getException() );
 
