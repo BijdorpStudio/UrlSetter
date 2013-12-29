@@ -28,7 +28,8 @@
 
         <activity
             android:name=".android.ui.AboutActivity"
-            android:label="@string/title_activity_about"/>
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".android.ui.MainActivity"/>
 
         <activity
             android:name=".android.ui.UrlActivity"

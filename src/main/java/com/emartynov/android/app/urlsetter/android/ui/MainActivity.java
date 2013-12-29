@@ -16,8 +16,10 @@
 
 package com.emartynov.android.app.urlsetter.android.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.emartynov.android.app.urlsetter.R;
@@ -58,5 +60,19 @@ public class MainActivity extends InjectedActivity
     {
         getMenuInflater().inflate( R.menu.main, menu );
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected ( MenuItem item )
+    {
+        if ( item.getItemId() == R.id.action_about )
+        {
+            startActivity( new Intent( this, AboutActivity.class ) );
+            return true;
+        }
+        else
+        {
+            return super.onOptionsItemSelected( item );
+        }
     }
 }
