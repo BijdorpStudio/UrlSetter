@@ -4,7 +4,7 @@
     <string name="resolving_url">Looking for url %s</string>
     <string name="error_while_resolving_url">Sorry, error happened while resolving url</string>
     <string name="app_explanation">
-        The app resolves shortened URL (like t.co/LrwagumK7p) and opens it with corresponded application after
+        The app resolves shortened URL (like t.co/LrwagumK7p) and opens result with corresponded application after
     </string>
     <string name="operation_takes_longer">Sorry, but url resolving takes longer than expected</string>
     <string name="resolved_url">Unshortened url is %s</string>
@@ -13,4 +13,13 @@
     <string name="action_about">About</string>
     <string name="title_activity_about">About</string>
     <string name="twitter_name">by @BijdorpStudio</string>
+    <string name="credits_label">Credits</string>
+    <string name="app_using_libraries_text">UrlSetter uses following libraries:</string>
+    <string name="app_source_code">Full source of application is available at github.com/emartynov/UrlSetter</string>
+    <string name="okhttp_library_text">Square OkHttp\nsquare.github.io/okhttp/</string>
+    <string name="dagger_library_text">Square Dagger\nsquare.github.io/dagger/</string>
+    <string name="otto_library_text">Square Otto\nsquare.github.io/otto/</string>
+    <string name="crashlytics_library_text">Crashlytics\nwww.crashlytics.com</string>
+    <string name="mixpanel_library_text">Mixpanel\nwww.mixpanel.com</string>
+    <string name="disklrucache_library_text">Jake Wharton\'s DiskLruCache\ngithub.com/JakeWharton/DiskLruCache</string>
 </resources>

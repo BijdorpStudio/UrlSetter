@@ -12,4 +12,7 @@
     <string name="action_settings">Настройки</string>
     <string name="action_about">О программе</string>
     <string name="title_activity_about">О Программе</string>
+    <string name="credits_label">Признательности</string>
+    <string name="app_using_libraries_text">UrlSetter использует следующие библиотеки:</string>
+    <string name="app_source_code">Исходный код приложения доступен по адресу github.com/emartynov/UrlSetter</string>
 </resources>

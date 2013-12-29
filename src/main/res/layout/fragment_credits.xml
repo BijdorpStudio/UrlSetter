@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/credits_label"
+        android:paddingBottom="@dimen/activity_vertical_margin"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/app_using_libraries_text"
+        android:paddingBottom="@dimen/activity_vertical_margin"/>
+
+    <TextView
+        style="@style/used_libraries_text"
+        android:text="@string/okhttp_library_text"/>
+
+    <TextView
+        style="@style/used_libraries_text"
+        android:text="@string/dagger_library_text"/>
+
+    <TextView
+        style="@style/used_libraries_text"
+        android:text="@string/otto_library_text"/>
+
+    <TextView
+        style="@style/used_libraries_text"
+        android:text="@string/disklrucache_library_text"/>
+
+    <TextView
+        style="@style/used_libraries_text"
+        android:text="@string/crashlytics_library_text"/>
+
+    <TextView
+        style="@style/used_libraries_text"
+        android:text="@string/mixpanel_library_text"/>
+
+</LinearLayout>

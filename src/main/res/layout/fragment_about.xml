@@ -3,8 +3,6 @@
               android:layout_height="match_parent"
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin"
-              android:paddingBottom="@dimen/activity_vertical_margin"
               android:orientation="vertical">
 
     <LinearLayout
@@ -64,9 +62,10 @@
     </LinearLayout>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_explanation"
-        android:autoLink="all"/>
+        style="@style/used_libraries_text"
+        android:text="@string/app_explanation"/>
 
+    <TextView
+        style="@style/used_libraries_text"
+        android:text="@string/app_source_code"/>
 </LinearLayout>
