@@ -21,10 +21,14 @@
             android:label="@string/service_url_examples"
             android:theme="@style/Theme.Appmain">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".android.ui.AboutActivity"
+            android:label="@string/title_activity_about"/>
 
         <activity
             android:name=".android.ui.UrlActivity"
