@@ -38,7 +38,7 @@ public class MainActivity extends InjectedActivity
 
         crashlytics.start( this );
 
-        setContentView( R.layout.main );
+        setContentView( R.layout.activity_main );
 
         initList();
     }
