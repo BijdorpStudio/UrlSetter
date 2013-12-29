@@ -38,11 +38,11 @@ public class MainActivity extends InjectedActivity
     {
         super.onCreate( savedInstanceState );
 
+        setTitle( R.string.service_url_examples );
+
         crashlytics.start( this );
 
         setContentView( R.layout.activity_main );
-
-        setTitle( R.string.service_url_examples );
 
         initList();
     }
