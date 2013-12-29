@@ -165,6 +165,7 @@ public class UrlResolver
         return responseCode == HttpURLConnection.HTTP_MOVED_PERM
                 || responseCode == HttpURLConnection.HTTP_MOVED_TEMP
                 || responseCode == HttpURLConnection.HTTP_MULT_CHOICE
-                || responseCode == HttpURLConnection.HTTP_SEE_OTHER;
+                || responseCode == HttpURLConnection.HTTP_SEE_OTHER
+                || responseCode == 307;
     }
 }
