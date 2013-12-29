@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+
+
 buildscript {
     repositories {
         mavenCentral ()
@@ -49,7 +51,7 @@ android {
         targetSdkVersion 16
 
         versionCode 1
-        versionName "1.0.0.3"
+        versionName "1.0.0.4"
     }
 
     signingConfigs {
