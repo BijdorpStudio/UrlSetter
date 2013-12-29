@@ -19,62 +19,62 @@
 
 <resources>
 
-    <style name="Theme.Appmain" parent="@style/Theme.AppCompat.Light">
+    <style name="Theme.UrlSetter" parent="@style/Theme.AppCompat.Light">
         <item name="actionBarItemBackground">@drawable/selectable_background_appmain</item>
-        <item name="popupMenuStyle">@style/PopupMenu.Appmain</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Appmain</item>
+        <item name="popupMenuStyle">@style/PopupMenu.UrlSetter</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.UrlSetter</item>
         <item name="actionBarTabStyle">@style/ActionBarTabStyle.Appmain</item>
-        <item name="actionDropDownStyle">@style/DropDownNav.Appmain</item>
-        <item name="actionBarStyle">@style/ActionBar.Solid.Appmain</item>
+        <item name="actionDropDownStyle">@style/DropDownNav.UrlSetter</item>
+        <item name="actionBarStyle">@style/ActionBar.Solid.UrlSetter</item>
         <item name="actionModeBackground">@drawable/cab_background_top_appmain</item>
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_appmain</item>
-        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Appmain</item>
+        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.UrlSetter</item>
 
 
     </style>
 
-    <style name="ActionBar.Solid.Appmain" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+    <style name="ActionBar.Solid.UrlSetter" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
         <item name="background">@drawable/ab_solid_appmain</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_appmain</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_appmain</item>
-        <item name="progressBarStyle">@style/ProgressBar.Appmain</item>
+        <item name="progressBarStyle">@style/ProgressBar.UrlSetter</item>
     </style>
 
-    <style name="ActionBar.Transparent.Appmain" parent="@style/Widget.AppCompat.Light.ActionBar">
+    <style name="ActionBar.Transparent.UrlSetter" parent="@style/Widget.AppCompat.Light.ActionBar">
         <item name="background">@drawable/ab_transparent_appmain</item>
-        <item name="progressBarStyle">@style/ProgressBar.Appmain</item>
+        <item name="progressBarStyle">@style/ProgressBar.UrlSetter</item>
     </style>
 
-    <style name="PopupMenu.Appmain" parent="@style/Widget.AppCompat.Light.PopupMenu">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_appmain</item>
+    <style name="PopupMenu.UrlSetter" parent="@style/Widget.AppCompat.Light.PopupMenu">
+    <item name="android:popupBackground">@drawable/menu_dropdown_panel_appmain</item>
     </style>
 
-    <style name="DropDownListView.Appmain" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_appmain</item>
+    <style name="DropDownListView.UrlSetter" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
+    <item name="android:listSelector">@drawable/selectable_background_appmain</item>
     </style>
 
     <style name="ActionBarTabStyle.Appmain" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_appmain</item>
     </style>
 
-    <style name="DropDownNav.Appmain" parent="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
-        <item name="android:background">@drawable/spinner_background_ab_appmain</item>
+    <style name="DropDownNav.UrlSetter" parent="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+    <item name="android:background">@drawable/spinner_background_ab_appmain</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_appmain</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_appmain</item>
     </style>
 
-    <style name="ProgressBar.Appmain" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_appmain</item>
+    <style name="ProgressBar.UrlSetter" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+    <item name="android:progressDrawable">@drawable/progress_horizontal_appmain</item>
     </style>
 
-    <style name="ActionButton.CloseMode.Appmain" parent="@style/Widget.AppCompat.Light.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_appmain</item>
+    <style name="ActionButton.CloseMode.UrlSetter" parent="@style/Widget.AppCompat.Light.ActionButton.CloseMode">
+    <item name="android:background">@drawable/btn_cab_done_appmain</item>
     </style>
 
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Appmain.Widget" parent="@style/Theme.AppCompat">
-        <item name="popupMenuStyle">@style/PopupMenu.Appmain</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Appmain</item>
+    <style name="Theme.UrlSetter.Widget" parent="@style/Theme.AppCompat">
+        <item name="popupMenuStyle">@style/PopupMenu.UrlSetter</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.UrlSetter</item>
     </style>
 
 </resources>

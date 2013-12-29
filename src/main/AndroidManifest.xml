@@ -14,13 +14,13 @@
         android:label="@string/app_name"
         android:icon="@drawable/ic_launcher"
         android:name=".android.UrlApplication"
+        android:theme="@style/Theme.UrlSetter"
         android:allowBackup="true">
 
         <activity
             android:name=".android.ui.MainActivity"
-            android:label="@string/service_url_examples"
-            android:theme="@style/Theme.Appmain">
-            <intent-filter>
+            android:label="@string/service_url_examples">
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
