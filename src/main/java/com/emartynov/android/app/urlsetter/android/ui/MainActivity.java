@@ -42,6 +42,8 @@ public class MainActivity extends InjectedActivity
 
         setContentView( R.layout.activity_main );
 
+        setTitle( R.string.service_url_examples );
+
         initList();
     }
 

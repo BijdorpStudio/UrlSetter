@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2013-2014 @BijdorpStudio
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <resources>
-    <string name="app_name">UrlSetter</string>
+    <string name="app_name">Link Setter</string>
     <string name="resolving_url">Looking for url %s</string>
     <string name="error_while_resolving_url">Sorry, error happened while resolving url</string>
     <string name="app_explanation">
-        The app resolves shortened URL (like t.co/LrwagumK7p) and opens result with corresponded application after
+        The app resolves shortened links (like t.co/LrwagumK7p) and opens result with corresponded application after
     </string>
     <string name="operation_takes_longer">Sorry, but url resolving takes longer than expected</string>
     <string name="resolved_url">Unshortened url is %s</string>
@@ -14,7 +30,7 @@
     <string name="title_activity_about">About</string>
     <string name="twitter_name">by @BijdorpStudio</string>
     <string name="credits_label">Credits</string>
-    <string name="app_using_libraries_text">UrlSetter uses following libraries:</string>
+    <string name="app_using_libraries_text">Link Setter uses following libraries:</string>
     <string name="app_source_code">Full source of application is available at github.com/emartynov/UrlSetter</string>
     <string name="okhttp_library_text">Square OkHttp\nsquare.github.io/okhttp/</string>
     <string name="dagger_library_text">Square Dagger\nsquare.github.io/dagger/</string>

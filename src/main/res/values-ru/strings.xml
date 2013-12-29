@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2013-2014 @BijdorpStudio
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <resources>
-    <string name="app_name">UrlSetter</string>
-    <string name="resolving_url">Работаем с сылкой %s</string>
-    <string name="error_while_resolving_url">Произошла ошибка пока искали конечный интернет адрес</string>
+    <string name="app_name">Link Setter</string>
+    <string name="resolving_url">Разворачиваем адрес %s</string>
+    <string name="error_while_resolving_url">Произошла ошибка пока искали укороченный интернет адрес</string>
     <string name="app_explanation">
-        Приложение разворачивает сокращенный интернет адрес (например t.co/LrwagumK7p) и запускает соответствующее приложение если возможно
+        Приложение разворачивает укороченный интернет адрес (например t.co/LrwagumK7p) и запускает соответствующее приложение
     </string>
     <string name="operation_takes_longer">Просим прощения за непредвиденную задержку, пробуем дальше</string>
     <string name="resolved_url">Найден интернет адрес %s</string>
@@ -13,6 +29,7 @@
     <string name="action_about">О программе</string>
     <string name="title_activity_about">О Программе</string>
     <string name="credits_label">Признательности</string>
-    <string name="app_using_libraries_text">UrlSetter использует следующие библиотеки:</string>
+    <string name="twitter_name">от @BijdorpStudio</string>
+    <string name="app_using_libraries_text">Link Setter использует следующие библиотеки:</string>
     <string name="app_source_code">Исходный код приложения доступен по адресу github.com/emartynov/UrlSetter</string>
 </resources>
