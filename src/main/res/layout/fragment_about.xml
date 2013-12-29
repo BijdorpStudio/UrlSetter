@@ -54,7 +54,6 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/twitter_name"
-                android:autoLink="all"
                 android:paddingLeft="@dimen/activity_horizontal_margin"/>
 
         </LinearLayout>
