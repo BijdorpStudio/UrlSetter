@@ -71,7 +71,7 @@ dependencies {
     // Crashlytics
     compile 'com.crashlytics.android:crashlytics:1.+'
     // MixPpanel
-    compile file('libs/MixpanelAPI.jar')
+    compile files('libs/MixpanelAPI.jar')
 
     // AS tests
     instrumentTestCompile 'junit:junit:4.10'
