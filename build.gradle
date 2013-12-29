@@ -64,8 +64,8 @@ dependencies {
     // Square
     compile 'com.squareup.okhttp:okhttp:1.2.1'
     compile 'com.squareup:otto:1.3.4'
-    compile 'com.squareup.dagger:dagger-compiler:1.1.0'
-    compile 'com.squareup.dagger:dagger:1.1.0'
+    compile 'com.squareup.dagger:dagger-compiler:1.2.0'
+    compile 'com.squareup.dagger:dagger:1.2.0'
     // Jake Wharton
     compile 'com.jakewharton:disklrucache:2.0.2'
     // Crashlytics
