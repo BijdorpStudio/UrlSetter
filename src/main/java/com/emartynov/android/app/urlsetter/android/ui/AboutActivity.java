@@ -1,5 +1,7 @@
 package com.emartynov.android.app.urlsetter.android.ui;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.widget.TextView;
@@ -26,10 +28,26 @@ public class AboutActivity extends InjectedActivity
 
         setContentView( R.layout.activity_about );
 
-        linkifyTwitter();
+        linkifyTwitterName();
+
+        updateApplicationVersion();
     }
 
-    private void linkifyTwitter ()
+    private void updateApplicationVersion ()
+    {
+        try
+        {
+            PackageInfo pInfo = getPackageManager().getPackageInfo( getPackageName(), 0 );
+            String versionText = String.format( "v%s", pInfo.versionName );
+            TextView versionView = (TextView) findViewById( R.id.version );
+            versionView.setText( versionText );
+        }
+        catch ( PackageManager.NameNotFoundException ignored )
+        {
+        }
+    }
+
+    private void linkifyTwitterName ()
     {
         TextView tweetView = (TextView) findViewById( R.id.twitter_name );
 
