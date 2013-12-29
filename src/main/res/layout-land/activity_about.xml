@@ -5,21 +5,24 @@
     tools:context=".ui.AboutActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/activity_vertical_margin">
-
-<fragment
-        class="com.emartynov.android.app.urlsetter.android.ui.fragment.PlaceholderFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:fragment_layout="@layout/fragment_about"
-        tools:layout="@layout/fragment_about"/>
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:weightSum="2.62">
 
     <fragment
         class="com.emartynov.android.app.urlsetter.android.ui.fragment.PlaceholderFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        app:fragment_layout="@layout/fragment_about"
+        tools:layout="@layout/fragment_about"
+        android:layout_weight="1"/>
+
+    <fragment
+        class="com.emartynov.android.app.urlsetter.android.ui.fragment.PlaceholderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:fragment_layout="@layout/fragment_credits"
-        tools:layout="@layout/fragment_credits"/>
+        tools:layout="@layout/fragment_credits"
+        android:layout_weight="1.62"/>
 
 </LinearLayout>
