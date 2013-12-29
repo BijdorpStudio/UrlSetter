@@ -50,7 +50,8 @@
         <activity
             android:name=".android.ui.UrlActivity"
             android:theme="@android:style/Theme.NoDisplay"
-            android:exported="false"/>
+            android:exported="false"
+            android:excludeFromRecents="true"/>
 
         <activity-alias
             android:enabled="true"
