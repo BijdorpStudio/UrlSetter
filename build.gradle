@@ -18,6 +18,8 @@
 
 
 
+
+
 buildscript {
     repositories {
         mavenCentral ()
@@ -108,4 +110,5 @@ dependencies {
     testCompile 'com.squareup:fest-android:1.0.+'
     testCompile 'org.mockito:mockito-all:1.9.5'
     testCompile 'org.easytesting:fest-assert-core:2.0M10'
+    testCompile 'com.squareup.dagger:dagger-compiler:1.2.0'
 }
