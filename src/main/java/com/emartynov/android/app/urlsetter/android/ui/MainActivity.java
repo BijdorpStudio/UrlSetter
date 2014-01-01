@@ -24,23 +24,15 @@ import android.widget.ListView;
 
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.android.ui.adapter.UrlExampleAdapter;
-import com.emartynov.android.app.urlsetter.service.Crashlytics;
-
-import javax.inject.Inject;
 
 public class MainActivity extends InjectedActivity
 {
-    @Inject
-    Crashlytics crashlytics;
-
     @Override
     public void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
 
         setTitle( R.string.service_url_examples );
-
-        crashlytics.start( this );
 
         setContentView( R.layout.activity_main );
 

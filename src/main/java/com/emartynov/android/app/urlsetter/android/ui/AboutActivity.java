@@ -23,24 +23,16 @@ import android.text.util.Linkify;
 import android.widget.TextView;
 
 import com.emartynov.android.app.urlsetter.R;
-import com.emartynov.android.app.urlsetter.service.Crashlytics;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.inject.Inject;
-
 public class AboutActivity extends InjectedActivity
 {
-    @Inject
-    Crashlytics crashlytics;
-
     @Override
     protected void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
-
-        crashlytics.start( this );
 
         setContentView( R.layout.activity_about );
 
@@ -76,8 +68,7 @@ public class AboutActivity extends InjectedActivity
             @Override
             public String transformUrl ( final Matcher match, String url )
             {
-                String group = match.group( 1 );
-                return group;
+                return match.group( 1 );
             }
         };
 

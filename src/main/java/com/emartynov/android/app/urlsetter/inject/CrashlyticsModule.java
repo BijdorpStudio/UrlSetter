@@ -14,28 +14,23 @@
  * limitations under the License.
  */
 
-package com.emartynov.android.app.urlsetter.android.ui;
+package com.emartynov.android.app.urlsetter.inject;
 
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-
-import com.emartynov.android.app.urlsetter.android.UrlApplication;
+import com.emartynov.android.app.urlsetter.android.ui.InjectedActivity;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 
-import javax.inject.Inject;
+import javax.inject.Singleton;
 
-public class InjectedActivity extends ActionBarActivity
+import dagger.Module;
+import dagger.Provides;
+
+@Module ( injects = InjectedActivity.class )
+public class CrashlyticsModule
 {
-    @Inject
-    Crashlytics crashlytics;
-
-    @Override
-    protected void onCreate ( Bundle savedInstanceState )
+    @Provides
+    @Singleton
+    public Crashlytics getCrashlytics ()
     {
-        super.onCreate( savedInstanceState );
-
-        ( (UrlApplication) getApplication() ).inject( this );
-
-        crashlytics.start( this );
+        return new Crashlytics();
     }
 }
