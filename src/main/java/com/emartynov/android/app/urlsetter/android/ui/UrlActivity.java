@@ -31,6 +31,7 @@ public class UrlActivity extends Activity
     @Inject
     Crashlytics crashlytics;
 
+    @Override
     public void onCreate ( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );

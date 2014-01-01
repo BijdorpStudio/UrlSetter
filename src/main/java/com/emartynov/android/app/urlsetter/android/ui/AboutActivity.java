@@ -73,6 +73,7 @@ public class AboutActivity extends InjectedActivity
         Linkify.TransformFilter transformFilter = new Linkify.TransformFilter()
         {
             //skip the first character to filter out '@'
+            @Override
             public String transformUrl ( final Matcher match, String url )
             {
                 String group = match.group( 1 );
