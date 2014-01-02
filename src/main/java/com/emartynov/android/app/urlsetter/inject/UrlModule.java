@@ -26,6 +26,7 @@ import com.emartynov.android.app.urlsetter.android.ui.AboutActivity;
 import com.emartynov.android.app.urlsetter.android.ui.MainActivity;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
+import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.jakewharton.disklrucache.DiskLruCache;
 import com.squareup.otto.Bus;
@@ -39,11 +40,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-@Module (
-        overrides = true,
-        includes = CrashlyticsModule.class,
-        injects = { UrlActivity.class, UrlService.class, UrlApplication.class, MainActivity.class,
-                AboutActivity.class } )
+@Module ( injects = { UrlActivity.class, UrlService.class, UrlApplication.class, MainActivity.class,
+        AboutActivity.class } )
 public class UrlModule
 {
     private String mixpanelToken;
@@ -91,5 +89,12 @@ public class UrlModule
         {
             return null;
         }
+    }
+
+    @Provides
+    @Singleton
+    public Crashlytics getCrashlytics ()
+    {
+        return new Crashlytics();
     }
 }
