@@ -28,7 +28,6 @@ import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
-import com.emartynov.android.app.urlsetter.model.event.ResolveFacebookUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
@@ -104,14 +103,18 @@ public class UrlService extends Service
 
     private void resolveUrl ( Uri uri )
     {
+        Uri targetUri = uri;
+
         if ( FACEBOOK_HOST.equals( uri.getHost() ) )
         {
-            getFromCacheOrResolve( new ResolveFacebookUrl( uri ) );
+            String hiddenUrl = uri.getQueryParameter( "u" );
+            if ( hiddenUrl != null )
+            {
+                targetUri = Uri.parse( hiddenUrl );
+            }
         }
-        else
-        {
-            getFromCacheOrResolve( new ResolveUrl( uri ) );
-        }
+
+        getFromCacheOrResolve( new ResolveUrl( targetUri ) );
     }
 
     private void getFromCacheOrResolve ( UrlEvent event )
@@ -159,9 +162,9 @@ public class UrlService extends Service
 
         // Create Hex String
         StringBuilder hexString = new StringBuilder();
-        for ( int i = 0; i < messageDigest.length; i++ )
+        for ( byte b : messageDigest )
         {
-            String h = Integer.toHexString( 0xFF & messageDigest[ i ] );
+            String h = Integer.toHexString( 0xFF & b );
             while ( h.length() < 2 )
             {
                 h = "0" + h;

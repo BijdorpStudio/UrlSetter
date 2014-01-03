@@ -20,7 +20,6 @@ import android.net.Uri;
 
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
-import com.emartynov.android.app.urlsetter.model.event.ResolveFacebookUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
@@ -53,17 +52,6 @@ public class UrlResolver
     public void resolveURL ( ResolveUrl event )
     {
         executor.execute( new ResolveUrlRunnable( event.getUri() ) );
-    }
-
-    @Subscribe
-    public void resolveFacebookURL ( ResolveFacebookUrl event )
-    {
-        Uri uri = event.getUri();
-        String hiddenUrl = uri.getQueryParameter( "u" );
-        if ( hiddenUrl != null )
-        {
-            executor.execute( new ResolveUrlRunnable( Uri.parse( hiddenUrl ) ) );
-        }
     }
 
     public boolean isIdle ()
