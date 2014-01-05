@@ -287,10 +287,6 @@ public class UrlService extends Service
 
         crashlytics.logException( event.getException() );
 
-        String errorString = getString( R.string.error_while_resolving_url, event.getException() );
-
-        showToastOnUI( errorString );
-
         launchUriWithoutUs( event.getLastResolvedUri() );
 
         logger.trackEvent( "Error", event.getLoggingParams() );
