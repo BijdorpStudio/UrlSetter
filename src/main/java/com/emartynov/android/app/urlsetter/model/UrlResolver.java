@@ -71,32 +71,27 @@ public class UrlResolver
         @Override
         public void run ()
         {
+            String currentUrl = uri.toString();
             try
             {
-                Uri resolvedUri = findRedirect( uri );
+                String nextUrl = currentUrl;
+
+                do
+                {
+                    currentUrl = nextUrl;
+                    nextUrl = processHeadUrl( currentUrl );
+                }
+                while ( nextUrl != null );
+
+                Uri resolvedUri = Uri.parse( currentUrl );
 
                 bus.post( new FoundUrl( uri, resolvedUri ) );
             }
             catch ( Exception e )
             {
-                bus.post( new DownloadingError( uri, e ) );
+                bus.post( new DownloadingError( uri, Uri.parse( currentUrl ), e ) );
             }
         }
-    }
-
-    private Uri findRedirect ( Uri sourceUri ) throws IOException
-    {
-        String currentUrl;
-        String nextUrl = sourceUri.toString();
-
-        do
-        {
-            currentUrl = nextUrl;
-            nextUrl = processHeadUrl( currentUrl );
-        }
-        while ( nextUrl != null );
-
-        return Uri.parse( currentUrl );
     }
 
     private String processHeadUrl ( String url ) throws IOException

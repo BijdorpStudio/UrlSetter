@@ -22,13 +22,20 @@ import java.util.Map;
 
 public class DownloadingError extends UrlEvent
 {
+    private final Uri lastResolvedUri;
     private Exception exception;
 
-    public DownloadingError ( Uri uri, Exception e )
+    public DownloadingError ( Uri uri, Uri lastResolvedUri, Exception e )
     {
         super( uri );
 
+        this.lastResolvedUri = lastResolvedUri;
         exception = e;
+    }
+
+    public Uri getLastResolvedUri ()
+    {
+        return lastResolvedUri;
     }
 
     public Exception getException ()

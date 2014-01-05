@@ -291,7 +291,7 @@ public class UrlService extends Service
 
         showToastOnUI( errorString );
 
-        launchUriWithoutUs( event.getUri() );
+        launchUriWithoutUs( event.getLastResolvedUri() );
 
         logger.trackEvent( "Error", event.getLoggingParams() );
 
