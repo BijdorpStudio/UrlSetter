@@ -18,9 +18,12 @@ package com.emartynov.android.app.urlsetter.android;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.text.format.DateUtils;
 import android.widget.Toast;
 
@@ -39,6 +42,8 @@ import com.squareup.otto.Subscribe;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -175,7 +180,7 @@ public class UrlService extends Service
         return hexString.toString();
     }
 
-    private void createLongOperationTimer ()
+    private synchronized void createLongOperationTimer ()
     {
         cancelTimer();
 
@@ -228,7 +233,7 @@ public class UrlService extends Service
     {
         cancelTimer();
 
-        showUri( event.getResolvedUri() );
+        launchResolvedUri( event.getResolvedUri() );
 
         logger.trackEvent( "Resolved", event.getLoggingParams() );
 
@@ -248,7 +253,7 @@ public class UrlService extends Service
         }
     }
 
-    private void showUri ( Uri uri )
+    private void launchResolvedUri ( Uri uri )
     {
         Intent intent = new Intent( Intent.ACTION_VIEW );
         intent.setData( uri );
@@ -267,7 +272,7 @@ public class UrlService extends Service
         }
     }
 
-    private void cancelTimer ()
+    private synchronized void cancelTimer ()
     {
         if ( timer != null )
         {
@@ -286,10 +291,50 @@ public class UrlService extends Service
 
         showToastOnUI( errorString );
 
-        showUri( event.getUri() );
+        launchUriWithoutUs( event.getUri() );
 
         logger.trackEvent( "Error", event.getLoggingParams() );
 
         checkToStop();
     }
+
+    private void launchUriWithoutUs ( Uri uri )
+    {
+        PackageManager packageManager = getPackageManager();
+
+        Intent intent = new Intent( Intent.ACTION_VIEW );
+        intent.setData( uri );
+
+        List<ResolveInfo> possibleIntents = packageManager.queryIntentActivities( intent, PackageManager.MATCH_DEFAULT_ONLY );
+        ArrayList<Intent> intents = new ArrayList<Intent>( possibleIntents.size() );
+
+        if ( possibleIntents.size() > 0 )
+        {
+            for ( ResolveInfo resolveInfo : possibleIntents )
+            {
+                if ( !resolveInfo.activityInfo.packageName.startsWith( getBaseContext().getPackageName() ) )
+                {
+                    Intent target = new Intent( intent );
+                    target.setData( uri );
+                    target.setPackage( resolveInfo.activityInfo.packageName );
+
+                    intents.add( target );
+                }
+            }
+            launchChooser( intents );
+        }
+    }
+
+    private void launchChooser ( final ArrayList<Intent> intents )
+    {
+        Intent firstIntent = intents.remove( 0 );
+        Parcelable[] parcelableIntents = intents.toArray( new Parcelable[ intents.size() ] );
+        String dialogCaption = getString( R.string.select_application_for, firstIntent.getData() );
+
+        Intent chooserIntent = Intent.createChooser( firstIntent, dialogCaption );
+        chooserIntent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+        chooserIntent.putExtra( Intent.EXTRA_INITIAL_INTENTS, parcelableIntents );
+        startActivity( chooserIntent );
+    }
+
 }

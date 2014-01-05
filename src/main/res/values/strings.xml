@@ -38,4 +38,5 @@
     <string name="crashlytics_library_text">Crashlytics\nwww.crashlytics.com</string>
     <string name="mixpanel_library_text">Mixpanel\nwww.mixpanel.com</string>
     <string name="disklrucache_library_text">Jake Wharton\'s DiskLruCache\ngithub.com/JakeWharton/DiskLruCache</string>
+    <string name="select_application_for">Select application for unresolved link</string>
 </resources>
