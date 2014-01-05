@@ -32,5 +32,5 @@
     <string name="twitter_name">от @BijdorpStudio</string>
     <string name="app_using_libraries_text">Link Setter использует следующие библиотеки:</string>
     <string name="app_source_code">Исходный код приложения доступен по адресу github.com/emartynov/UrlSetter</string>
-    <string name="select_application_for">Выберите приложения для неразвернутой ссылки</string>
+    <string name="select_application_for">Произошла ошибка пока разворачивали интернет адрес. Выберите приложение чтобы открыть</string>
 </resources>
