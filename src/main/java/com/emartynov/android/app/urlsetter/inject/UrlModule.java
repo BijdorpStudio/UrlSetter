@@ -25,11 +25,11 @@ import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.android.ui.AboutActivity;
 import com.emartynov.android.app.urlsetter.android.ui.MainActivity;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
+import com.emartynov.android.app.urlsetter.model.HttpClient;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.jakewharton.disklrucache.DiskLruCache;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
@@ -76,7 +76,7 @@ public class UrlModule
 
     @Provides
     @Singleton
-    public UrlResolver getURLResolver ( Bus bus, OkHttpClient httpClient, ThreadPoolExecutor executor )
+    public UrlResolver getURLResolver ( Bus bus, HttpClient httpClient, ThreadPoolExecutor executor )
     {
         return new UrlResolver( bus, httpClient, executor );
     }
@@ -102,9 +102,9 @@ public class UrlModule
     }
 
     @Provides
-    public OkHttpClient getHttpClient ()
+    public HttpClient getHttpClient ()
     {
-        return new OkHttpClient();
+        return new HttpClient();
     }
 
     @Provides

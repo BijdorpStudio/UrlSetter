@@ -21,7 +21,6 @@ import android.net.Uri;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -37,10 +36,10 @@ public class UrlResolver
     public static final String GET_METHOD = "GET";
 
     private final Bus bus;
-    private final OkHttpClient httpClient;
+    private final HttpClient httpClient;
     private final ThreadPoolExecutor executor;
 
-    public UrlResolver ( Bus bus, OkHttpClient httpClient, ThreadPoolExecutor executor )
+    public UrlResolver ( Bus bus, HttpClient httpClient, ThreadPoolExecutor executor )
     {
         this.bus = bus;
         this.httpClient = httpClient;
@@ -57,7 +56,7 @@ public class UrlResolver
 
     public boolean isIdle ()
     {
-        return executor.getTaskCount() - executor.getCompletedTaskCount() == 0;
+        return ( executor.getTaskCount() - executor.getCompletedTaskCount() ) == 0;
     }
 
     private class ResolveUrlRunnable implements Runnable
