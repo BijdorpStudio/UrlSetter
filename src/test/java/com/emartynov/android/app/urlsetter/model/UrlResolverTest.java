@@ -16,6 +16,9 @@
 
 package com.emartynov.android.app.urlsetter.model;
 
+import android.net.Uri;
+
+import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.squareup.otto.Bus;
 
 import org.junit.Before;
@@ -23,7 +26,9 @@ import org.junit.Test;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class UrlResolverTest
 {
@@ -39,9 +44,18 @@ public class UrlResolverTest
     }
 
     @Test
-    public void testok () throws Exception
+    public void registerToBus () throws Exception
     {
+        verify( bus ).register( target );
+    }
 
+    @Test
+    public void whenResolveAskedThenPutTaskInExecutor () throws Exception
+    {
+        ResolveUrl event = new ResolveUrl( mock( Uri.class ) );
 
+        target.resolveURL( event );
+
+        verify( executor ).execute( any( Runnable.class ) );
     }
 }
