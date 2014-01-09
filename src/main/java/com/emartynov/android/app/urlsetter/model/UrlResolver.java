@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class UrlResolver
@@ -38,12 +37,14 @@ public class UrlResolver
     public static final String GET_METHOD = "GET";
 
     private final Bus bus;
-    private final OkHttpClient httpClient = new OkHttpClient();
-    private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool( 2 );
+    private final OkHttpClient httpClient;
+    private final ThreadPoolExecutor executor;
 
-    public UrlResolver ( Bus bus )
+    public UrlResolver ( Bus bus, OkHttpClient httpClient, ThreadPoolExecutor executor )
     {
         this.bus = bus;
+        this.httpClient = httpClient;
+        this.executor = executor;
 
         bus.register( this );
     }

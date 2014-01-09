@@ -29,11 +29,14 @@ import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.jakewharton.disklrucache.DiskLruCache;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.inject.Singleton;
 
@@ -73,9 +76,9 @@ public class UrlModule
 
     @Provides
     @Singleton
-    public UrlResolver getURLResolver ( Bus bus )
+    public UrlResolver getURLResolver ( Bus bus, OkHttpClient httpClient, ThreadPoolExecutor executor )
     {
-        return new UrlResolver( bus );
+        return new UrlResolver( bus, httpClient, executor );
     }
 
     @Provides
@@ -96,5 +99,17 @@ public class UrlModule
     public Crashlytics getCrashlytics ()
     {
         return new Crashlytics();
+    }
+
+    @Provides
+    public OkHttpClient getHttpClient ()
+    {
+        return new OkHttpClient();
+    }
+
+    @Provides
+    public ThreadPoolExecutor getDefaultThreadPoolExecutor ()
+    {
+        return (ThreadPoolExecutor) Executors.newFixedThreadPool( 2 );
     }
 }
