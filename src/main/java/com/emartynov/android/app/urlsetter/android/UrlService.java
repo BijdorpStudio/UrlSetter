@@ -30,8 +30,8 @@ import android.widget.Toast;
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
-import com.emartynov.android.app.urlsetter.model.event.FoundUrl1;
-import com.emartynov.android.app.urlsetter.model.event.ResolveUrl1;
+import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
+import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
@@ -80,7 +80,7 @@ public class UrlService extends Service
     }
 
     @Subscribe
-    public void resolveUrl ( ResolveUrl1 event )
+    public void resolveUrl ( ResolveUrl event )
     {
         createLongOperationTimer();
 
@@ -119,7 +119,7 @@ public class UrlService extends Service
             }
         }
 
-        getFromCacheOrResolve( new ResolveUrl1( targetUri ) );
+        getFromCacheOrResolve( new ResolveUrl( targetUri ) );
     }
 
     private void getFromCacheOrResolve ( UrlEvent event )
@@ -136,7 +136,7 @@ public class UrlService extends Service
             else
             {
                 Uri resolvedUri = Uri.parse( snapshot.getString( 0 ) );
-                bus.post( new FoundUrl1( event.getUri(), resolvedUri ) );
+                bus.post( new FoundUrl( event.getUri(), resolvedUri ) );
             }
         }
         catch ( IOException e )
@@ -229,7 +229,7 @@ public class UrlService extends Service
     }
 
     @Subscribe
-    public void launchURL ( FoundUrl1 event )
+    public void launchURL ( FoundUrl event )
     {
         cancelTimer();
 
@@ -240,7 +240,7 @@ public class UrlService extends Service
         cacheUri( event );
     }
 
-    private void cacheUri ( FoundUrl1 event )
+    private void cacheUri ( FoundUrl event )
     {
         try
         {

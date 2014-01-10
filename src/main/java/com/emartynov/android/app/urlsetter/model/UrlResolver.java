@@ -19,8 +19,8 @@ package com.emartynov.android.app.urlsetter.model;
 import android.net.Uri;
 
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
-import com.emartynov.android.app.urlsetter.model.event.FoundUrl1;
-import com.emartynov.android.app.urlsetter.model.event.ResolveUrl1;
+import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
+import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -49,7 +49,7 @@ public class UrlResolver
     }
 
     @Subscribe
-    public void resolveURL ( ResolveUrl1 event )
+    public void resolveURL ( ResolveUrl event )
     {
         executor.execute( new ResolveUrlRunnable( event.getUri() ) );
     }
@@ -85,7 +85,7 @@ public class UrlResolver
 
                 Uri resolvedUri = Uri.parse( currentUrl );
 
-                bus.post( new FoundUrl1( uri, resolvedUri ) );
+                bus.post( new FoundUrl( uri, resolvedUri ) );
             }
             catch ( Exception e )
             {
