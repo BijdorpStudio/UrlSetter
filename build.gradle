@@ -16,6 +16,8 @@
 
 
 
+
+
 buildscript {
     repositories {
         mavenCentral ()
@@ -55,18 +57,18 @@ android {
     }
 
     signingConfigs {
+        debug {
+            project.ext.loadSign = false
+        }
         release {
-            Properties p = new Properties ()
-            p.load ( new FileInputStream ( rootProject.file ( 'keys/sign.properties' ) ) )
-
-            storeFile file ( p.file )
-            storePassword p.password
-            keyAlias p.alias
-            keyPassword p.keyPassword
+            project.ext.loadSign = true
         }
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             signingConfig signingConfigs.release
         }
@@ -107,4 +109,15 @@ dependencies {
     testCompile 'org.mockito:mockito-all:1.9.5'
     testCompile 'org.easytesting:fest-assert-core:2.0M10'
     testCompile 'com.squareup.dagger:dagger-compiler:1.2.0'
+}
+
+// Load signing keys only for release
+if ( project.ext.loadSign ) {
+    Properties p = new Properties ()
+    p.load ( new FileInputStream ( rootProject.file ( 'keys/sign.properties' ) ) )
+
+    android.signingConfigs.release.storeFile file ( p.file )
+    android.signingConfigs.release.storePassword p.password
+    android.signingConfigs.release.keyAlias p.alias
+    android.signingConfigs.release.keyPassword p.keyPassword
 }
