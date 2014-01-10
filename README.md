@@ -1,5 +1,4 @@
-UrlSetter
-=========
+#UrlSetter  [![Build Status](https://travis-ci.org/emartynov/UrlSetter.png?branch=master)](https://travis-ci.org/emartynov/UrlSetter)
 
 One Sunday idea.
 
