@@ -18,7 +18,7 @@ package com.emartynov.android.app.urlsetter.model;
 
 import android.net.Uri;
 
-import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
+import com.emartynov.android.app.urlsetter.model.event.ResolveUrl1;
 import com.squareup.otto.Bus;
 
 import org.junit.Before;
@@ -52,7 +52,7 @@ public class UrlResolverTest
     @Test
     public void whenResolveAskedThenPutTaskInExecutor () throws Exception
     {
-        ResolveUrl event = new ResolveUrl( mock( Uri.class ) );
+        ResolveUrl1 event = new ResolveUrl1( mock( Uri.class ) );
 
         target.resolveURL( event );
 
