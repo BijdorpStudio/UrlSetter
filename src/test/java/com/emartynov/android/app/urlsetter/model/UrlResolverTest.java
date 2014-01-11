@@ -26,9 +26,11 @@ import org.junit.Test;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class UrlResolverTest
 {
@@ -57,5 +59,25 @@ public class UrlResolverTest
         target.resolveURL( event );
 
         verify( executor ).execute( any( Runnable.class ) );
+    }
+
+    @Test
+    public void whenTasksInQueueThenNonIdle () throws Exception
+    {
+        long completedCount = 3L;
+        when( executor.getCompletedTaskCount() ).thenReturn( completedCount );
+        when( executor.getTaskCount() ).thenReturn( completedCount + 1 );
+
+        assertThat( target.isIdle() ).isFalse();
+    }
+
+    @Test
+    public void whenAllTaskCompletedeThenNIdle () throws Exception
+    {
+        long completedCount = 3L;
+        when( executor.getCompletedTaskCount() ).thenReturn( completedCount );
+        when( executor.getTaskCount() ).thenReturn( completedCount );
+
+        assertThat( target.isIdle() ).isTrue();
     }
 }
