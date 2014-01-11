@@ -24,14 +24,11 @@ before_install:
   - ls -la $ANDROID_HOME/build-tools/19.0.1
   # Install required components.
   # For a full list, run `android list sdk -a --extended`
-  # Note that sysimg-18 downloads the ARM, x86 and MIPS images (we should optimize this).
-  # Other relevant API's
   - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
   - echo yes | android update sdk --filter android-19 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter android-16 --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
 install:
   - true
 script:
-  - TERM=dumb ./gradlew test assembleDebug
+  - ./gradlew test assembleDebug
