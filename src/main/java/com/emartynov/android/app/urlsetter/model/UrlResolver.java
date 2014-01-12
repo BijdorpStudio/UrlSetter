@@ -21,12 +21,12 @@ import android.net.Uri;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
+import com.emartynov.android.app.urlsetter.model.exception.BadResponseException;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -97,17 +97,17 @@ public class UrlResolver
         }
     }
 
-    private String processHeadUrl ( String url ) throws IOException
+    private String processHeadUrl ( String url ) throws IOException, BadResponseException
     {
         return processUrl( url, HEAD_METHOD );
     }
 
-    private String processGetUrl ( String url ) throws IOException
+    private String processGetUrl ( String url ) throws IOException, BadResponseException
     {
         return processUrl( url, GET_METHOD );
     }
 
-    private String processUrl ( String url, String method ) throws IOException
+    private String processUrl ( String url, String method ) throws IOException, BadResponseException
     {
         HttpURLConnection connection = null;
 
@@ -134,7 +134,7 @@ public class UrlResolver
             }
             else
             {
-                throw new ProtocolException( "Bad response: " + responseCode + "; with url: " + url );
+                throw new BadResponseException( responseCode, url );
             }
         }
         finally

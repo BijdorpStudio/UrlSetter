@@ -18,8 +18,10 @@ package com.emartynov.android.app.urlsetter.model;
 
 import android.net.Uri;
 
+import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
+import com.emartynov.android.app.urlsetter.model.exception.BadResponseException;
 import com.squareup.otto.Bus;
 
 import org.junit.Before;
@@ -182,5 +184,36 @@ public class UrlResolverTest
         runExecutor();
 
         checkUrlFound( endUrl );
+    }
+
+    @Test
+    public void wrongResponseThenProtocolExceptionEventFired () throws Exception
+    {
+        when( connection.getResponseCode() ).thenReturn( HttpURLConnection.HTTP_NOT_FOUND );
+
+        resolveUrl( "http://google.com" );
+
+        runExecutor();
+
+        verifyErrorEventWithException( BadResponseException.class );
+    }
+
+    private void verifyErrorEventWithException ( Class<? extends Exception> exceptionType )
+    {
+        ArgumentCaptor<DownloadingError> captor = ArgumentCaptor.forClass( DownloadingError.class );
+        verify( bus ).post( captor.capture() );
+        assertThat( captor.getValue().getException() ).isInstanceOf( exceptionType );
+    }
+
+    @Test
+    public void whenIOExceptionThenEventFired () throws Exception
+    {
+        when( connection.getResponseCode() ).thenThrow( IOException.class );
+
+        resolveUrl( "http://google.com" );
+
+        runExecutor();
+
+        verifyErrorEventWithException( IOException.class );
     }
 }
