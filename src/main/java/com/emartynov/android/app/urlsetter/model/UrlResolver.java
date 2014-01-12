@@ -35,6 +35,9 @@ public class UrlResolver
     public static final String HEAD_METHOD = "HEAD";
     public static final String GET_METHOD = "GET";
 
+    public static final String LOCATION_HEADER = "Location";
+    public static final int HTTP_TEMP_REDIRECT = 307;
+
     private final Bus bus;
     private final HttpClient httpClient;
     private final ThreadPoolExecutor executor;
@@ -123,7 +126,7 @@ public class UrlResolver
             }
             else if ( isRedirection( responseCode ) )
             {
-                return connection.getHeaderField( "Location" ).replace( " ", "%20" );
+                return connection.getHeaderField( LOCATION_HEADER ).replace( " ", "%20" );
             }
             else if ( HEAD_METHOD.equals( method ) && responseCode == HttpURLConnection.HTTP_BAD_METHOD ) //method is not supported
             {
@@ -147,8 +150,7 @@ public class UrlResolver
     {
         return responseCode == HttpURLConnection.HTTP_MOVED_PERM
                 || responseCode == HttpURLConnection.HTTP_MOVED_TEMP
-                || responseCode == HttpURLConnection.HTTP_MULT_CHOICE
                 || responseCode == HttpURLConnection.HTTP_SEE_OTHER
-                || responseCode == 307;
+                || responseCode == HTTP_TEMP_REDIRECT;
     }
 }
