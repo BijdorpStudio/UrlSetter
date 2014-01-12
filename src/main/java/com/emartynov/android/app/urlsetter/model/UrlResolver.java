@@ -74,26 +74,43 @@ public class UrlResolver
         @Override
         public void run ()
         {
-            String currentUrl = uri.toString();
             try
             {
-                String nextUrl = currentUrl;
-
-                do
-                {
-                    currentUrl = nextUrl;
-                    nextUrl = processHeadUrl( currentUrl );
-                }
-                while ( nextUrl != null );
-
-                Uri resolvedUri = Uri.parse( currentUrl );
+                Uri resolvedUri = resolveUrl( uri.toString() );
 
                 bus.post( new FoundUrl( uri, resolvedUri ) );
             }
             catch ( Exception e )
             {
-                bus.post( new DownloadingError( uri, Uri.parse( currentUrl ), e ) );
+                bus.post( new DownloadingError( uri, uri, e ) );
             }
+        }
+    }
+
+    private Uri resolveUrl ( String startUrl ) throws IOException, BadResponseException
+    {
+        String currentUrl = startUrl;
+        String nextUrl = currentUrl;
+
+        do
+        {
+            currentUrl = nextUrl;
+            nextUrl = findNextUrl( currentUrl );
+        }
+        while ( nextUrl != null );
+
+        return Uri.parse( currentUrl );
+    }
+
+    private String findNextUrl ( String url ) throws IOException, BadResponseException
+    {
+        try
+        {
+            return processHeadUrl( url );
+        }
+        catch ( BadResponseException e )
+        {
+            return processGetUrl( url );
         }
     }
 
@@ -127,10 +144,6 @@ public class UrlResolver
             else if ( isRedirection( responseCode ) )
             {
                 return connection.getHeaderField( LOCATION_HEADER ).replace( " ", "%20" );
-            }
-            else if ( HEAD_METHOD.equals( method ) && responseCode == HttpURLConnection.HTTP_BAD_METHOD ) //method is not supported
-            {
-                return processGetUrl( url );
             }
             else
             {

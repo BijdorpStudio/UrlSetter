@@ -28,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
@@ -37,6 +38,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -215,5 +218,29 @@ public class UrlResolverTest
         runExecutor();
 
         verifyErrorEventWithException( IOException.class );
+    }
+
+    @Test
+    public void runHeadRequestFirst () throws Exception
+    {
+        resolveUrl( "http://google.com" );
+
+        runExecutor();
+
+        verify( connection, atLeastOnce() ).setRequestMethod( UrlResolver.HEAD_METHOD );
+    }
+
+    @Test
+    public void whenBadResponseWithHeadThenShouldTryWithGet () throws Exception
+    {
+        when( connection.getResponseCode() ).thenReturn( HttpURLConnection.HTTP_NOT_FOUND );
+
+        resolveUrl( "http://google.com" );
+
+        runExecutor();
+
+        InOrder inOrder = inOrder( connection );
+        inOrder.verify( connection, atLeastOnce() ).setRequestMethod( UrlResolver.HEAD_METHOD );
+        inOrder.verify( connection, atLeastOnce() ).setRequestMethod( UrlResolver.GET_METHOD );
     }
 }
