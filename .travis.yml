@@ -31,4 +31,4 @@ before_install:
 install:
   - true
 script:
-  - ./gradlew test assembleDebug
+  - TERM=dumb ./gradlew test assembleDebug
