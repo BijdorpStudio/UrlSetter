@@ -16,6 +16,8 @@
 
 
 
+
+
 buildscript {
     repositories {
         mavenCentral ()
@@ -50,8 +52,8 @@ android {
         minSdkVersion 9
         targetSdkVersion 16
 
-        versionCode 5
-        versionName "1.0.0.7"
+        versionCode 6
+        versionName "1.0.0.8"
     }
 
 // Load signing keys only for release
