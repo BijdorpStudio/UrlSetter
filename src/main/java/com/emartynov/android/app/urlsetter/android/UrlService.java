@@ -28,6 +28,7 @@ import android.text.format.DateUtils;
 import android.widget.Toast;
 
 import com.emartynov.android.app.urlsetter.R;
+import com.emartynov.android.app.urlsetter.model.DiskCache;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
@@ -61,7 +62,7 @@ public class UrlService extends Service
     @Inject
     Mixpanel logger;
     @Inject
-    DiskLruCache cache;
+    DiskCache cache;
     @Inject
     Crashlytics crashlytics;
 
@@ -77,14 +78,6 @@ public class UrlService extends Service
 
         bus.register( this );
         logger.init( this );
-    }
-
-    @Subscribe
-    public void resolveUrl ( ResolveUrl event )
-    {
-        createLongOperationTimer();
-
-        showToastOnUI( getString( R.string.resolving_url, event.getUri() ) );
     }
 
     @Override
@@ -178,6 +171,14 @@ public class UrlService extends Service
         }
 
         return hexString.toString();
+    }
+
+    @Subscribe
+    public void resolveUrl ( ResolveUrl event )
+    {
+        createLongOperationTimer();
+
+        showToastOnUI( getString( R.string.resolving_url, event.getUri() ) );
     }
 
     private synchronized void createLongOperationTimer ()

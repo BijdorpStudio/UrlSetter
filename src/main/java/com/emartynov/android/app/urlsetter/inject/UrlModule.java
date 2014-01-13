@@ -25,11 +25,11 @@ import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.android.ui.AboutActivity;
 import com.emartynov.android.app.urlsetter.android.ui.MainActivity;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
+import com.emartynov.android.app.urlsetter.model.DiskCache;
 import com.emartynov.android.app.urlsetter.model.HttpClient;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
-import com.jakewharton.disklrucache.DiskLruCache;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
@@ -43,8 +43,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-@Module ( injects = { UrlActivity.class, UrlService.class, UrlApplication.class, MainActivity.class,
-        AboutActivity.class } )
+@Module (injects = { UrlActivity.class, UrlService.class, UrlApplication.class, MainActivity.class,
+        AboutActivity.class })
 public class UrlModule
 {
     private String mixpanelToken;
@@ -82,11 +82,11 @@ public class UrlModule
     }
 
     @Provides
-    public DiskLruCache getCache ()
+    public DiskCache getCache ()
     {
         try
         {
-            return DiskLruCache.open( cacheDir, appVersion, 1, 100 * 1024 );
+            return new DiskCache( cacheDir, appVersion );
         }
         catch ( IOException e )
         {
