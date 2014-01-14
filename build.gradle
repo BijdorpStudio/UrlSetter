@@ -15,11 +15,9 @@
  */
 
 
-
-
-
 buildscript {
     repositories {
+        mavenLocal ();
         mavenCentral ()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'http://download.crashlytics.com/maven' }
@@ -39,6 +37,7 @@ apply plugin: 'android-test'
 apply plugin: 'android-apt'
 
 repositories {
+    mavenLocal ();
     mavenCentral ()
     maven { url 'http://download.crashlytics.com/maven' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
