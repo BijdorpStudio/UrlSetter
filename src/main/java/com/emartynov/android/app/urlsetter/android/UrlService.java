@@ -40,7 +40,9 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -110,7 +112,7 @@ public class UrlService extends Service
     {
         Uri targetUri = uri;
 
-        if ( FACEBOOK_HOST.equals( uri.getHost() ) )
+        if ( isFacebook( uri ) )
         {
             String hiddenUrl = uri.getQueryParameter( "u" );
             if ( hiddenUrl != null )
@@ -120,6 +122,11 @@ public class UrlService extends Service
         }
 
         getFromCacheOrResolve( new ResolveUrl( targetUri ) );
+    }
+
+    private boolean isFacebook ( Uri uri )
+    {
+        return FACEBOOK_HOST.equals( uri.getHost() );
     }
 
     private void getFromCacheOrResolve ( UrlEvent event )
@@ -141,6 +148,15 @@ public class UrlService extends Service
         createLongOperationTimer();
 
         showToastOnUI( getString( R.string.resolving_url, event.getUri() ) );
+
+        trackStart( isFacebook( event.getUri() ) );
+    }
+
+    private void trackStart ( boolean fromFacebook )
+    {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put( "facebook", String.valueOf( fromFacebook ) );
+        logger.trackEvent( "Started", params );
     }
 
     private synchronized void createLongOperationTimer ()
