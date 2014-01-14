@@ -21,11 +21,11 @@ import com.jakewharton.disklrucache.DiskLruCache;
 import java.io.File;
 import java.io.IOException;
 
-public class DiskCache
+public class UrlDiskLruCache
 {
     private DiskLruCache lruCache;
 
-    public DiskCache ( File directory, int appVersion ) throws IOException
+    public UrlDiskLruCache ( File directory, int appVersion ) throws IOException
     {
         lruCache = DiskLruCache.open( directory, appVersion, 1, 100 * 1024 );
     }

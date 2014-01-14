@@ -28,7 +28,7 @@ import android.text.format.DateUtils;
 import android.widget.Toast;
 
 import com.emartynov.android.app.urlsetter.R;
-import com.emartynov.android.app.urlsetter.model.DiskCache;
+import com.emartynov.android.app.urlsetter.model.UrlDiskLruCache;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
@@ -62,7 +62,7 @@ public class UrlService extends Service
     @Inject
     Mixpanel logger;
     @Inject
-    DiskCache cache;
+    UrlDiskLruCache cache;
     @Inject
     Crashlytics crashlytics;
 

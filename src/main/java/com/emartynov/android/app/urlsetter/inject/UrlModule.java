@@ -25,8 +25,8 @@ import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.android.ui.AboutActivity;
 import com.emartynov.android.app.urlsetter.android.ui.MainActivity;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
-import com.emartynov.android.app.urlsetter.model.DiskCache;
 import com.emartynov.android.app.urlsetter.model.HttpClient;
+import com.emartynov.android.app.urlsetter.model.UrlDiskLruCache;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
@@ -82,11 +82,11 @@ public class UrlModule
     }
 
     @Provides
-    public DiskCache getCache ()
+    public UrlDiskLruCache getCache ()
     {
         try
         {
-            return new DiskCache( cacheDir, appVersion );
+            return new UrlDiskLruCache( cacheDir, appVersion );
         }
         catch ( IOException e )
         {

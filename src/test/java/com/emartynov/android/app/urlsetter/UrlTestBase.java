@@ -18,7 +18,7 @@ package com.emartynov.android.app.urlsetter;
 
 import com.emartynov.android.app.urlsetter.android.TestUrlApplication;
 import com.emartynov.android.app.urlsetter.android.TestUrlModule;
-import com.emartynov.android.app.urlsetter.model.DiskCache;
+import com.emartynov.android.app.urlsetter.model.UrlDiskLruCache;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
@@ -47,7 +47,7 @@ public class UrlTestBase
         return getTestModule().getLogger();
     }
 
-    public DiskCache getCache ()
+    public UrlDiskLruCache getCache ()
     {
         return getTestModule().getCache();
     }

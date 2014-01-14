@@ -18,8 +18,8 @@ package com.emartynov.android.app.urlsetter.android;
 
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
-import com.emartynov.android.app.urlsetter.model.DiskCache;
 import com.emartynov.android.app.urlsetter.model.HttpClient;
+import com.emartynov.android.app.urlsetter.model.UrlDiskLruCache;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
@@ -40,7 +40,7 @@ public class TestUrlModule
     private Crashlytics crashlytics = mock( Crashlytics.class );
     private Bus bus = mock( Bus.class );
     private Mixpanel logger = mock( Mixpanel.class );
-    private DiskCache cache = mock( DiskCache.class );
+    private UrlDiskLruCache cache = mock( UrlDiskLruCache.class );
     private UrlResolver resolver = mock( UrlResolver.class );
 
     @Provides
@@ -65,7 +65,7 @@ public class TestUrlModule
     }
 
     @Provides
-    public DiskCache getCache ()
+    public UrlDiskLruCache getCache ()
     {
         return cache;
     }
