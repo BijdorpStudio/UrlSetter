@@ -36,13 +36,10 @@ import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
-import com.jakewharton.disklrucache.DiskLruCache;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -117,18 +114,15 @@ public class UrlService extends Service
 
     private void getFromCacheOrResolve ( UrlEvent event )
     {
-        String key = getUriKey( event.getUri() );
-
         try
         {
-            DiskLruCache.Snapshot snapshot = cache.get( key );
-            if ( snapshot == null )
+            Uri resolvedUri = cache.get( event.getUri() );
+            if ( resolvedUri == null )
             {
                 bus.post( event );
             }
             else
             {
-                Uri resolvedUri = Uri.parse( snapshot.getString( 0 ) );
                 bus.post( new FoundUrl( event.getUri(), resolvedUri ) );
             }
         }
@@ -136,41 +130,6 @@ public class UrlService extends Service
         {
             bus.post( event );
         }
-    }
-
-    private String getUriKey ( Uri uri )
-    {
-        String key;
-        try
-        {
-            key = getMD5( uri );
-        }
-        catch ( NoSuchAlgorithmException e )
-        {
-            key = String.valueOf( Math.abs( uri.hashCode() ) );
-        }
-        return key.length() > 64 ? key.substring( 0, 64 ) : key;
-    }
-
-    private String getMD5 ( Uri uri ) throws NoSuchAlgorithmException
-    {
-        MessageDigest digest = MessageDigest.getInstance( "MD5" );
-        digest.update( uri.toString().getBytes() );
-        byte messageDigest[] = digest.digest();
-
-        // Create Hex String
-        StringBuilder hexString = new StringBuilder();
-        for ( byte b : messageDigest )
-        {
-            String h = Integer.toHexString( 0xFF & b );
-            while ( h.length() < 2 )
-            {
-                h = "0" + h;
-            }
-            hexString.append( h );
-        }
-
-        return hexString.toString();
     }
 
     @Subscribe
@@ -238,20 +197,7 @@ public class UrlService extends Service
 
         logger.trackEvent( "Resolved", event.getLoggingParams() );
 
-        cacheUri( event );
-    }
-
-    private void cacheUri ( FoundUrl event )
-    {
-        try
-        {
-            DiskLruCache.Editor editor = cache.edit( getUriKey( event.getUri() ) );
-            editor.set( 0, event.getResolvedUri().toString() );
-            editor.commit();
-        }
-        catch ( IOException ignored )
-        {
-        }
+        cache.save( event.getUri(), event.getResolvedUri() );
     }
 
     private void launchResolvedUri ( Uri uri )

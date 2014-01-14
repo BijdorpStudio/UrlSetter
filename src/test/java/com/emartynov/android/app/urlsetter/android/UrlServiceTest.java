@@ -30,7 +30,6 @@ import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -119,6 +118,6 @@ public class UrlServiceTest extends UrlTestBase
 
         service.onStartCommand( intent, 0, 0 );
 
-        verify( getCache() ).get( anyString() );//TODO: uriString
+        verify( getCache() ).get( Uri.parse( uriString ) );
     }
 }

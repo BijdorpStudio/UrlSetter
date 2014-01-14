@@ -16,10 +16,14 @@
 
 package com.emartynov.android.app.urlsetter.model;
 
+import android.net.Uri;
+
 import com.jakewharton.disklrucache.DiskLruCache;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class UrlDiskLruCache
 {
@@ -30,13 +34,60 @@ public class UrlDiskLruCache
         lruCache = DiskLruCache.open( directory, appVersion, 1, 100 * 1024 );
     }
 
-    public DiskLruCache.Snapshot get ( String key ) throws IOException
+    public Uri get ( Uri keyUri ) throws IOException
     {
-        return lruCache.get( key );
+        String key = getUriKey( keyUri );
+
+        DiskLruCache.Snapshot snapshot = lruCache.get( key );
+
+        return snapshot != null ? Uri.parse( snapshot.getString( 0 ) ) : null;
     }
 
-    public DiskLruCache.Editor edit ( String key ) throws IOException
+    private String getUriKey ( Uri uri )
     {
-        return lruCache.edit( key );
+        String key;
+        try
+        {
+            key = getMD5( uri );
+        }
+        catch ( NoSuchAlgorithmException e )
+        {
+            key = String.valueOf( Math.abs( uri.hashCode() ) );
+        }
+        return key.length() > 64 ? key.substring( 0, 64 ) : key;
+    }
+
+    private String getMD5 ( Uri uri ) throws NoSuchAlgorithmException
+    {
+        MessageDigest digest = MessageDigest.getInstance( "MD5" );
+        digest.update( uri.toString().getBytes() );
+        byte messageDigest[] = digest.digest();
+
+        // Create Hex String
+        StringBuilder hexString = new StringBuilder();
+        for ( byte b : messageDigest )
+        {
+            String h = Integer.toHexString( 0xFF & b );
+            while ( h.length() < 2 )
+            {
+                h = "0" + h;
+            }
+            hexString.append( h );
+        }
+
+        return hexString.toString();
+    }
+
+    public void save ( Uri keyUri, Uri valueUri )
+    {
+        try
+        {
+            DiskLruCache.Editor editor = lruCache.edit( getUriKey( keyUri ) );
+            editor.set( 0, valueUri.toString() );
+            editor.commit();
+        }
+        catch ( IOException ignored )
+        {
+        }
     }
 }
