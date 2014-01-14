@@ -19,9 +19,13 @@ package com.emartynov.android.app.urlsetter.android;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
 import com.emartynov.android.app.urlsetter.model.DiskCache;
+import com.emartynov.android.app.urlsetter.model.HttpClient;
+import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
+
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.inject.Singleton;
 
@@ -37,6 +41,7 @@ public class TestUrlModule
     private Bus bus = mock( Bus.class );
     private Mixpanel logger = mock( Mixpanel.class );
     private DiskCache cache = mock( DiskCache.class );
+    private UrlResolver resolver = mock( UrlResolver.class );
 
     @Provides
     @Singleton
@@ -64,5 +69,13 @@ public class TestUrlModule
     {
         return cache;
     }
+
+    @Provides
+    @Singleton
+    public UrlResolver getURLResolver ( Bus bus, HttpClient httpClient, ThreadPoolExecutor executor )
+    {
+        return resolver;
+    }
+
 
 }

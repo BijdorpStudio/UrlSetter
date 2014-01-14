@@ -18,19 +18,37 @@ package com.emartynov.android.app.urlsetter;
 
 import com.emartynov.android.app.urlsetter.android.TestUrlApplication;
 import com.emartynov.android.app.urlsetter.android.TestUrlModule;
+import com.emartynov.android.app.urlsetter.model.DiskCache;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
+import com.emartynov.android.app.urlsetter.service.Mixpanel;
+import com.squareup.otto.Bus;
 
 import org.robolectric.Robolectric;
 
 public class UrlTestBase
 {
+    private TestUrlModule getTestModule ()
+    {
+        return ( (TestUrlApplication) Robolectric.application ).getTestModule();
+    }
+
     public Crashlytics getCrashlytics ()
     {
         return getTestModule().getCrashlytics();
     }
 
-    private TestUrlModule getTestModule ()
+    public Bus getBus ()
     {
-        return ( (TestUrlApplication) Robolectric.application ).getTestModule();
+        return getTestModule().getBus();
+    }
+
+    public Mixpanel getMixpanel ()
+    {
+        return getTestModule().getLogger();
+    }
+
+    public DiskCache getCache ()
+    {
+        return getTestModule().getCache();
     }
 }

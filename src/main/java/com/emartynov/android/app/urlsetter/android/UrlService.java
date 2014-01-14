@@ -78,6 +78,8 @@ public class UrlService extends Service
 
         bus.register( this );
         logger.init( this );
+
+        handler = new Handler();
     }
 
     @Override
@@ -89,8 +91,6 @@ public class UrlService extends Service
     @Override
     public int onStartCommand ( Intent intent, int flags, int startId )
     {
-        handler = new Handler();
-
         if ( intent != null )
         {
             resolveUrl( intent.getData() );
