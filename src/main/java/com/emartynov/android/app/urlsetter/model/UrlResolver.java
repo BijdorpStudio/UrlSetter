@@ -28,7 +28,6 @@ import com.squareup.otto.Subscribe;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class UrlResolver
 {
@@ -40,13 +39,11 @@ public class UrlResolver
 
     private final Bus bus;
     private final HttpClient httpClient;
-    private final ThreadPoolExecutor executor;
 
-    public UrlResolver ( Bus bus, HttpClient httpClient, ThreadPoolExecutor executor )
+    public UrlResolver ( Bus bus, HttpClient httpClient )
     {
         this.bus = bus;
         this.httpClient = httpClient;
-        this.executor = executor;
 
         bus.register( this );
     }
@@ -54,36 +51,17 @@ public class UrlResolver
     @Subscribe
     public void resolveURL ( ResolveUrl event )
     {
-        executor.execute( new ResolveUrlRunnable( event.getUri() ) );
-    }
+        Uri uri = event.getUri();
 
-    public boolean isIdle ()
-    {
-        return ( executor.getTaskCount() - executor.getCompletedTaskCount() ) == 0;
-    }
-
-    private class ResolveUrlRunnable implements Runnable
-    {
-        private final Uri uri;
-
-        public ResolveUrlRunnable ( Uri uri )
+        try
         {
-            this.uri = uri;
+            Uri resolvedUri = resolveUrl( uri.toString() );
+
+            bus.post( new FoundUrl( uri, resolvedUri ) );
         }
-
-        @Override
-        public void run ()
+        catch ( Exception e )
         {
-            try
-            {
-                Uri resolvedUri = resolveUrl( uri.toString() );
-
-                bus.post( new FoundUrl( uri, resolvedUri ) );
-            }
-            catch ( Exception e )
-            {
-                bus.post( new DownloadingError( uri, uri, e ) );
-            }
+            bus.post( new DownloadingError( uri, uri, e ) );
         }
     }
 

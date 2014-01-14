@@ -30,7 +30,7 @@ import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.reset;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
@@ -64,11 +64,21 @@ public class UrlServiceTest extends UrlTestBase
     @Test
     public void nullIntentIsIgnored () throws Exception
     {
-        reset( getBus(), getMixpanel() );
-
         service.onStartCommand( null, 0, 0 );
 
-        verifyNoMoreInteractions( getBus(), getMixpanel() );
+        verifyNoMoreInteractions( getExecutor() );
+    }
+
+    @Test
+    public void whenResolveAskedThenPutTaskInExecutor () throws Exception
+    {
+        String uriString = "http://google.com";
+
+        Intent intent = createIntentWithUri( uriString );
+
+        service.onStartCommand( intent, 0, 0 );
+
+        verify( getExecutor() ).execute( any( Runnable.class ) );
     }
 
     @Test
@@ -92,6 +102,8 @@ public class UrlServiceTest extends UrlTestBase
 
     private void checkEventToResolveGenerated ( String uriString )
     {
+        runExecutor();
+
         ArgumentCaptor<ResolveUrl> captor = ArgumentCaptor.forClass( ResolveUrl.class );
         verify( getBus() ).post( captor.capture() );
         assertThat( captor.getValue().getUri().toString() ).isEqualTo( uriString );
@@ -118,6 +130,7 @@ public class UrlServiceTest extends UrlTestBase
 
         service.onStartCommand( intent, 0, 0 );
 
+        runExecutor();
         verify( getCache() ).get( Uri.parse( uriString ) );
     }
 }

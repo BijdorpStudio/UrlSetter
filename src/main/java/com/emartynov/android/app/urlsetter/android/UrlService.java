@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.inject.Inject;
 
@@ -62,6 +63,9 @@ public class UrlService extends Service
     UrlDiskLruCache cache;
     @Inject
     Crashlytics crashlytics;
+    @Inject
+    ThreadPoolExecutor executor;
+
 
     private Timer timer;
     private Handler handler;
@@ -86,11 +90,18 @@ public class UrlService extends Service
     }
 
     @Override
-    public int onStartCommand ( Intent intent, int flags, int startId )
+    public int onStartCommand ( final Intent intent, int flags, int startId )
     {
         if ( intent != null )
         {
-            resolveUrl( intent.getData() );
+            executor.execute( new Runnable()
+            {
+                @Override
+                public void run ()
+                {
+                    resolveUrl( intent.getData() );
+                }
+            } );
         }
 
         return START_NOT_STICKY;
@@ -213,10 +224,15 @@ public class UrlService extends Service
 
     private void checkToStop ()
     {
-        if ( urlResolver.isIdle() )
+        if ( isIdle() )
         {
             stopSelf();
         }
+    }
+
+    private boolean isIdle ()
+    {
+        return ( executor.getTaskCount() - executor.getCompletedTaskCount() ) == 0;
     }
 
     private synchronized void cancelTimer ()

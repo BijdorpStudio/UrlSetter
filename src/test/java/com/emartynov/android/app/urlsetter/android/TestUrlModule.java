@@ -42,6 +42,7 @@ public class TestUrlModule
     private Mixpanel logger = mock( Mixpanel.class );
     private UrlDiskLruCache cache = mock( UrlDiskLruCache.class );
     private UrlResolver resolver = mock( UrlResolver.class );
+    private ThreadPoolExecutor executor = mock( ThreadPoolExecutor.class );
 
     @Provides
     @Singleton
@@ -68,6 +69,12 @@ public class TestUrlModule
     public UrlDiskLruCache getCache ()
     {
         return cache;
+    }
+
+    @Provides
+    public ThreadPoolExecutor getExecutor ()
+    {
+        return executor;
     }
 
     @Provides

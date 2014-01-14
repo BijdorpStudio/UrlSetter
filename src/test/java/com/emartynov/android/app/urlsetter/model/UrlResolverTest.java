@@ -34,7 +34,6 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -51,7 +50,6 @@ public class UrlResolverTest
 
     private Bus bus = mock( Bus.class );
     private HttpClient client = mock( HttpClient.class );
-    private ThreadPoolExecutor executor = mock( ThreadPoolExecutor.class );
     private HttpURLConnection connection = mock( HttpURLConnection.class );
 
     @Before
@@ -59,7 +57,7 @@ public class UrlResolverTest
     {
         when( client.open( any( URL.class ) ) ).thenReturn( connection );
 
-        target = new UrlResolver( bus, client, executor );
+        target = new UrlResolver( bus, client );
     }
 
     @Test
@@ -69,44 +67,12 @@ public class UrlResolverTest
     }
 
     @Test
-    public void whenResolveAskedThenPutTaskInExecutor () throws Exception
-    {
-        ResolveUrl event = new ResolveUrl( mock( Uri.class ) );
-
-        target.resolveURL( event );
-
-        verify( executor ).execute( any( Runnable.class ) );
-    }
-
-    @Test
-    public void whenTasksInQueueThenNonIdle () throws Exception
-    {
-        long completedCount = 3L;
-        when( executor.getCompletedTaskCount() ).thenReturn( completedCount );
-        when( executor.getTaskCount() ).thenReturn( completedCount + 1 );
-
-        assertThat( target.isIdle() ).isFalse();
-    }
-
-    @Test
-    public void whenAllTaskCompletedThenIdle () throws Exception
-    {
-        long completedCount = 3L;
-        when( executor.getCompletedTaskCount() ).thenReturn( completedCount );
-        when( executor.getTaskCount() ).thenReturn( completedCount );
-
-        assertThat( target.isIdle() ).isTrue();
-    }
-
-    @Test
     public void resolveMovePermanent () throws Exception
     {
         String endUrl = "http://test.com";
         redirectTo( endUrl, HttpURLConnection.HTTP_MOVED_PERM );
 
         resolveUrl( "http://google.com" );
-
-        runExecutor();
 
         checkUrlFound( endUrl );
     }
@@ -130,13 +96,6 @@ public class UrlResolverTest
         assertThat( eventCaptor.getValue().getResolvedUri().toString() ).isEqualTo( endUrl );
     }
 
-    private void runExecutor ()
-    {
-        ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass( Runnable.class );
-        verify( executor ).execute( captor.capture() );
-        captor.getValue().run();
-    }
-
     @Test
     public void nonShortenedUrlReturnsSame () throws Exception
     {
@@ -144,8 +103,6 @@ public class UrlResolverTest
         when( connection.getResponseCode() ).thenReturn( HttpURLConnection.HTTP_OK );
 
         resolveUrl( endUrl );
-
-        runExecutor();
 
         checkUrlFound( endUrl );
     }
@@ -158,8 +115,6 @@ public class UrlResolverTest
 
         resolveUrl( "http://google.com" );
 
-        runExecutor();
-
         checkUrlFound( endUrl );
     }
 
@@ -170,8 +125,6 @@ public class UrlResolverTest
         redirectTo( endUrl, HttpURLConnection.HTTP_SEE_OTHER );
 
         resolveUrl( "http://google.com" );
-
-        runExecutor();
 
         checkUrlFound( endUrl );
     }
@@ -184,8 +137,6 @@ public class UrlResolverTest
 
         resolveUrl( "http://google.com" );
 
-        runExecutor();
-
         checkUrlFound( endUrl );
     }
 
@@ -195,8 +146,6 @@ public class UrlResolverTest
         when( connection.getResponseCode() ).thenReturn( HttpURLConnection.HTTP_NOT_FOUND );
 
         resolveUrl( "http://google.com" );
-
-        runExecutor();
 
         verifyErrorEventWithException( BadResponseException.class );
     }
@@ -215,8 +164,6 @@ public class UrlResolverTest
 
         resolveUrl( "http://google.com" );
 
-        runExecutor();
-
         verifyErrorEventWithException( IOException.class );
     }
 
@@ -224,8 +171,6 @@ public class UrlResolverTest
     public void runHeadRequestFirst () throws Exception
     {
         resolveUrl( "http://google.com" );
-
-        runExecutor();
 
         verify( connection, atLeastOnce() ).setRequestMethod( UrlResolver.HEAD_METHOD );
     }
@@ -236,8 +181,6 @@ public class UrlResolverTest
         when( connection.getResponseCode() ).thenReturn( HttpURLConnection.HTTP_NOT_FOUND );
 
         resolveUrl( "http://google.com" );
-
-        runExecutor();
 
         InOrder inOrder = inOrder( connection );
         inOrder.verify( connection, atLeastOnce() ).setRequestMethod( UrlResolver.HEAD_METHOD );

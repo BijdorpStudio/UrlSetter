@@ -78,7 +78,7 @@ public class UrlModule
     @Singleton
     public UrlResolver getURLResolver ( Bus bus, HttpClient httpClient, ThreadPoolExecutor executor )
     {
-        return new UrlResolver( bus, httpClient, executor );
+        return new UrlResolver( bus, httpClient );
     }
 
     @Provides

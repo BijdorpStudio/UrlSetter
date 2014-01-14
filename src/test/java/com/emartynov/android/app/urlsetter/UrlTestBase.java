@@ -23,7 +23,12 @@ import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
 
+import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
+
+import java.util.concurrent.ThreadPoolExecutor;
+
+import static org.mockito.Mockito.verify;
 
 public class UrlTestBase
 {
@@ -51,4 +56,17 @@ public class UrlTestBase
     {
         return getTestModule().getCache();
     }
+
+    public ThreadPoolExecutor getExecutor ()
+    {
+        return getTestModule().getExecutor();
+    }
+
+    public void runExecutor ()
+    {
+        ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass( Runnable.class );
+        verify( getExecutor() ).execute( captor.capture() );
+        captor.getValue().run();
+    }
+
 }
