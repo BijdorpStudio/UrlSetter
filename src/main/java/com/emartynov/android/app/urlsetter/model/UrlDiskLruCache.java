@@ -18,6 +18,7 @@ package com.emartynov.android.app.urlsetter.model;
 
 import android.net.Uri;
 
+import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.jakewharton.disklrucache.DiskLruCache;
 
 import java.io.File;
@@ -27,20 +28,57 @@ import java.security.NoSuchAlgorithmException;
 
 public class UrlDiskLruCache
 {
+    private final File directory;
+    private final int appVersion;
+    private Crashlytics crashlytics;
+
     private DiskLruCache lruCache;
 
-    public UrlDiskLruCache ( File directory, int appVersion ) throws IOException
+    public UrlDiskLruCache ( File directory, int appVersion, Crashlytics crashlytics )
     {
-        lruCache = DiskLruCache.open( directory, appVersion, 1, 100 * 1024 );
+        this.directory = directory;
+        this.appVersion = appVersion;
+        this.crashlytics = crashlytics;
     }
 
-    public Uri get ( Uri keyUri ) throws IOException
+    public synchronized Uri get ( Uri keyUri )
     {
-        String key = getUriKey( keyUri );
+        return checkIfCacheInitialized() ? getCachedUriFromLruDiskCache( keyUri ) : null;
+    }
 
-        DiskLruCache.Snapshot snapshot = lruCache.get( key );
+    private Uri getCachedUriFromLruDiskCache ( Uri keyUri )
+    {
+        try
+        {
+            String key = getUriKey( keyUri );
 
-        return snapshot != null ? Uri.parse( snapshot.getString( 0 ) ) : null;
+            DiskLruCache.Snapshot snapshot = lruCache.get( key );
+
+            return snapshot != null ? Uri.parse( snapshot.getString( 0 ) ) : null;
+        }
+        catch ( IOException e )
+        {
+            crashlytics.logException( e );
+            return null;
+        }
+    }
+
+    private boolean checkIfCacheInitialized ()
+    {
+        if ( lruCache == null )
+        {
+            try
+            {
+                lruCache = DiskLruCache.open( directory, appVersion, 1, 100 * 1024 );
+            }
+            catch ( IOException e )
+            {
+                crashlytics.logException( e );
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private String getUriKey ( Uri uri )
@@ -78,7 +116,15 @@ public class UrlDiskLruCache
         return hexString.toString();
     }
 
-    public void save ( Uri keyUri, Uri valueUri )
+    public synchronized void save ( Uri keyUri, Uri valueUri )
+    {
+        if ( checkIfCacheInitialized() )
+        {
+            saveToDiskLruCache( keyUri, valueUri );
+        }
+    }
+
+    private void saveToDiskLruCache ( Uri keyUri, Uri valueUri )
     {
         try
         {
@@ -86,8 +132,9 @@ public class UrlDiskLruCache
             editor.set( 0, valueUri.toString() );
             editor.commit();
         }
-        catch ( IOException ignored )
+        catch ( IOException e )
         {
+            crashlytics.logException( e );
         }
     }
 }

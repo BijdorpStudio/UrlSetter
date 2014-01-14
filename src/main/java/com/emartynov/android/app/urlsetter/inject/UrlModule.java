@@ -34,7 +34,6 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -82,16 +81,9 @@ public class UrlModule
     }
 
     @Provides
-    public UrlDiskLruCache getCache ()
+    public UrlDiskLruCache getCache ( Crashlytics crashlytics )
     {
-        try
-        {
-            return new UrlDiskLruCache( cacheDir, appVersion );
-        }
-        catch ( IOException e )
-        {
-            return null;
-        }
+        return new UrlDiskLruCache( cacheDir, appVersion, crashlytics );
     }
 
     @Provides

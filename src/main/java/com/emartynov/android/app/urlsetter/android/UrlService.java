@@ -39,7 +39,6 @@ import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -125,21 +124,14 @@ public class UrlService extends Service
 
     private void getFromCacheOrResolve ( UrlEvent event )
     {
-        try
-        {
-            Uri resolvedUri = cache.get( event.getUri() );
-            if ( resolvedUri == null )
-            {
-                bus.post( event );
-            }
-            else
-            {
-                bus.post( new FoundUrl( event.getUri(), resolvedUri ) );
-            }
-        }
-        catch ( IOException e )
+        Uri resolvedUri = cache.get( event.getUri() );
+        if ( resolvedUri == null )
         {
             bus.post( event );
+        }
+        else
+        {
+            bus.post( new FoundUrl( event.getUri(), resolvedUri ) );
         }
     }
 
