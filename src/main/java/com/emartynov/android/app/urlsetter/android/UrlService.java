@@ -51,7 +51,7 @@ import javax.inject.Inject;
 
 public class UrlService extends Service
 {
-    public static final long TIMEOUT_IN_SECONDS = 5 * DateUtils.SECOND_IN_MILLIS;
+    public static final long TIMEOUT_IN_SECONDS = 10 * DateUtils.SECOND_IN_MILLIS;
     private static final String FACEBOOK_HOST = "m.facebook.com";
 
     @Inject
