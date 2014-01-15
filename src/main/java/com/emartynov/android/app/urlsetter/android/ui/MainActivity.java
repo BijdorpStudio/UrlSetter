@@ -17,6 +17,7 @@
 package com.emartynov.android.app.urlsetter.android.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -71,6 +72,14 @@ public class MainActivity extends InjectedActivity
         if ( item.getItemId() == R.id.action_about )
         {
             startActivity( new Intent( this, AboutActivity.class ) );
+            return true;
+        }
+        else if ( item.getItemId() == R.id.action_feedback )
+        {
+            Intent emailIntent = new Intent( Intent.ACTION_SENDTO,
+                    Uri.fromParts( "mailto", "bijdorpstudio@gmail.com", null ) );
+            emailIntent.putExtra( Intent.EXTRA_SUBJECT, getString( R.string.feedback_subject ) );
+            startActivity( Intent.createChooser( emailIntent, getString( R.string.action_feedback ) ) );
             return true;
         }
         else

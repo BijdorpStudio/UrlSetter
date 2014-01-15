@@ -40,4 +40,6 @@
     <string name="mixpanel_library_text">Mixpanel\nwww.mixpanel.com</string>
     <string name="disklrucache_library_text">Jake Wharton\'s DiskLruCache\ngithub.com/JakeWharton/DiskLruCache</string>
     <string name="select_application_for">Error happened while resolving link. Please select application to open</string>
+    <string name="action_feedback">Give us feedback</string>
+    <string name="feedback_subject">Link Setter feedback</string>
 </resources>
