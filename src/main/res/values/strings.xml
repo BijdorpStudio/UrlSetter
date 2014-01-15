@@ -44,4 +44,5 @@
     <string name="feedback_subject">Link Setter feedback</string>
     <string name="unshort_url">Unshorten link</string>
     <string name="start">Start</string>
+    <string name="not_a_link_error_text">You passed text that is not a link:\n%s</string>
 </resources>

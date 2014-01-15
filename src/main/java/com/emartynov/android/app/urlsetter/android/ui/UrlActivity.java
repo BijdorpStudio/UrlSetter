@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.android.UrlApplication;
 import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
@@ -98,7 +99,7 @@ public class UrlActivity extends Activity
 
     private void showPassedBadUrlError ( String sharedText )
     {
-        Toast toast = Toast.makeText( this, "You passed text that is not a link:\n" + sharedText, Toast.LENGTH_LONG );
+        Toast toast = Toast.makeText( this, getString( R.string.not_a_link_error_text, sharedText ), Toast.LENGTH_LONG );
         toast.show();
     }
 

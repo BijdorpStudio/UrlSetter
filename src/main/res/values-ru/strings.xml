@@ -29,7 +29,7 @@
     <string name="action_settings">Настройки</string>
     <string name="action_about">О программе</string>
     <string name="title_activity_about">О Программе</string>
-    <string name="credits_label">Признательности</string>
+    <string name="credits_label">Отдельное спасибо</string>
     <string name="twitter_name">от @BijdorpStudio</string>
     <string name="app_using_libraries_text">Link Setter использует следующие библиотеки:</string>
     <string name="app_source_code">Исходный код приложения доступен по адресу github.com/emartynov/UrlSetter</string>
@@ -37,5 +37,6 @@
     <string name="action_feedback">Написать разработчику</string>
     <string name="feedback_subject">Отзыв о Link Setter</string>
     <string name="unshort_url">Развернуть ссылку</string>
-    <string name="start">Start</string>
+    <string name="start">Начать</string>
+    <string name="not_a_link_error_text">Вы попросили развернуть текст не являющийся ссылкой:\n%s</string>
 </resources>
