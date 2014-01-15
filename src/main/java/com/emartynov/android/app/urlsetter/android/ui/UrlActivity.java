@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.emartynov.android.app.urlsetter.android.UrlApplication;
 import com.emartynov.android.app.urlsetter.android.UrlService;
@@ -88,9 +89,17 @@ public class UrlActivity extends Activity
         catch ( MalformedURLException e )
         {
             mixpanel.trackEvent( Mixpanel.PASSED_BAD_URL_EVENT );
+
+            showPassedBadUrlError( sharedText );
         }
 
         return serviceIntent;
+    }
+
+    private void showPassedBadUrlError ( String sharedText )
+    {
+        Toast toast = Toast.makeText( this, "You passed text that is not a link:\n" + sharedText, Toast.LENGTH_LONG );
+        toast.show();
     }
 
     private String getLinkFromSharedIntent ()
