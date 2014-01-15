@@ -87,7 +87,7 @@ public class UrlActivity extends Activity
         }
         catch ( MalformedURLException e )
         {
-            mixpanel.trackEvent( "passed non-url" );
+            mixpanel.trackEvent( Mixpanel.PASSED_BAD_URL_EVENT );
         }
 
         return serviceIntent;
@@ -105,7 +105,7 @@ public class UrlActivity extends Activity
         Map<String, String> params = new HashMap<String, String>();
         params.put( "host", url.getHost() );
 
-        mixpanel.trackEvent( "passed url", params );
+        mixpanel.trackEvent( Mixpanel.PASSED_URL_EVENT, params );
     }
 
     @Override

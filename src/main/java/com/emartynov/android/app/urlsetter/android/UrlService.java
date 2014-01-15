@@ -156,7 +156,8 @@ public class UrlService extends Service
     {
         Map<String, String> params = new HashMap<String, String>();
         params.put( "facebook", String.valueOf( fromFacebook ) );
-        logger.trackEvent( "Started", params );
+
+        logger.trackEvent( Mixpanel.RESOLVING_STARTED_EVENT, params );
     }
 
     private synchronized void createLongOperationTimer ()
@@ -214,7 +215,7 @@ public class UrlService extends Service
 
         launchResolvedUri( event.getResolvedUri() );
 
-        logger.trackEvent( "Resolved", event.getLoggingParams() );
+        logger.trackEvent( Mixpanel.RESOLVED_URL_EVENT, event.getLoggingParams() );
 
         cache.save( event.getUri(), event.getResolvedUri() );
     }
@@ -260,7 +261,7 @@ public class UrlService extends Service
 
         launchUriWithoutUs( event.getLastResolvedUri() );
 
-        logger.trackEvent( "Error", event.getLoggingParams() );
+        logger.trackEvent( Mixpanel.RESOLVING_ERROR_EVENT, event.getLoggingParams() );
 
         checkToStop();
     }

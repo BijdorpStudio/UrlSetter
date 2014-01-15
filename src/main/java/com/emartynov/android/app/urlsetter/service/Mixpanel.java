@@ -26,6 +26,12 @@ import java.util.Map;
 
 public class Mixpanel
 {
+    public static final String PASSED_BAD_URL_EVENT = "Passed bad url";
+    public static final String PASSED_URL_EVENT = "Passed url";
+    public static final String RESOLVING_ERROR_EVENT = "Error";
+    public static final String RESOLVED_URL_EVENT = "Resolved";
+    public static final String RESOLVING_STARTED_EVENT = "Started";
+
     private final String token;
     private MixpanelAPI logger;
 
