@@ -18,11 +18,18 @@ package com.emartynov.android.app.urlsetter.android.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.emartynov.android.app.urlsetter.android.UrlApplication;
 import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
+import com.emartynov.android.app.urlsetter.service.Mixpanel;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -30,6 +37,8 @@ public class UrlActivity extends Activity
 {
     @Inject
     Crashlytics crashlytics;
+    @Inject
+    Mixpanel mixpanel;
 
     @Override
     public void onCreate ( Bundle savedInstanceState )
@@ -39,11 +48,71 @@ public class UrlActivity extends Activity
         ( (UrlApplication) getApplication() ).inject( this );
 
         crashlytics.start( this );
+        mixpanel.init( this );
 
-        Intent service = new Intent( getIntent() );
-        service.setClass( this, UrlService.class );
-        startService( service );
+        Intent serviceIntent;
+        if ( getIntent().getAction().equals( Intent.ACTION_SEND ) )
+        {
+            serviceIntent = getServiceIntentForSharedUrl();
+        }
+        else
+        {
+            serviceIntent = getIntent();
+        }
+
+        if ( serviceIntent != null )
+        {
+            Intent service = new Intent( serviceIntent );
+            service.setClass( this, UrlService.class );
+            startService( service );
+        }
 
         finish();
+    }
+
+    private Intent getServiceIntentForSharedUrl ()
+    {
+        Intent serviceIntent = null;
+
+        String sharedText = getLinkFromSharedIntent();
+
+        try
+        {
+            URL url = new URL( sharedText );
+
+            serviceIntent = new Intent();
+            serviceIntent.setData( Uri.parse( sharedText ) );
+
+            logPassedUrl( url );
+        }
+        catch ( MalformedURLException e )
+        {
+            mixpanel.trackEvent( "passed non-url" );
+        }
+
+        return serviceIntent;
+    }
+
+    private String getLinkFromSharedIntent ()
+    {
+        String sharedText = getIntent().getStringExtra( Intent.EXTRA_TEXT );
+
+        return sharedText.startsWith( "http" ) ? sharedText : "http://" + sharedText;
+    }
+
+    private void logPassedUrl ( URL url )
+    {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put( "host", url.getHost() );
+
+        mixpanel.trackEvent( "passed url", params );
+    }
+
+    @Override
+    protected void onDestroy ()
+    {
+        super.onDestroy();
+
+        mixpanel.flush();
     }
 }
