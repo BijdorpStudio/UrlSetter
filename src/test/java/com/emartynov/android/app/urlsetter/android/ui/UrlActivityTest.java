@@ -16,6 +16,8 @@
 
 package com.emartynov.android.app.urlsetter.android.ui;
 
+import android.content.Intent;
+
 import com.emartynov.android.app.urlsetter.UrlTestBase;
 import com.emartynov.android.app.urlsetter.android.UrlService;
 
@@ -38,7 +40,7 @@ public class UrlActivityTest extends UrlTestBase
     @Before
     public void setUp () throws Exception
     {
-        activity = buildActivity( UrlActivity.class ).create().get();
+        activity = buildActivity( UrlActivity.class ).withIntent( new Intent() ).create().get();
     }
 
     @Test

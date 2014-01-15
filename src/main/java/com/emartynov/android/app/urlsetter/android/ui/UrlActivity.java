@@ -51,7 +51,7 @@ public class UrlActivity extends Activity
         mixpanel.init( this );
 
         Intent serviceIntent;
-        if ( getIntent().getAction().equals( Intent.ACTION_SEND ) )
+        if ( Intent.ACTION_SEND.equals( getIntent().getAction() ) )
         {
             serviceIntent = getServiceIntentForSharedUrl();
         }
@@ -97,7 +97,7 @@ public class UrlActivity extends Activity
     {
         String sharedText = getIntent().getStringExtra( Intent.EXTRA_TEXT );
 
-        return sharedText.startsWith( "http" ) ? sharedText : "http://" + sharedText;
+        return sharedText != null && sharedText.startsWith( "http" ) ? sharedText : "http://" + sharedText;
     }
 
     private void logPassedUrl ( URL url )
