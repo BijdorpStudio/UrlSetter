@@ -21,7 +21,6 @@ import android.net.Uri;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
-import com.emartynov.android.app.urlsetter.model.exception.BadResponseException;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -65,7 +64,7 @@ public class UrlResolver
         }
     }
 
-    private Uri resolveUrl ( String startUrl ) throws IOException, BadResponseException
+    private Uri resolveUrl ( String startUrl ) throws IOException
     {
         String currentUrl = startUrl;
         String nextUrl = currentUrl;
@@ -80,29 +79,17 @@ public class UrlResolver
         return Uri.parse( currentUrl );
     }
 
-    private String findNextUrl ( String url ) throws IOException, BadResponseException
+    private String findNextUrl ( String url ) throws IOException
     {
-        try
-        {
-            return processHeadUrl( url );
-        }
-        catch ( BadResponseException e )
-        {
-            return processGetUrl( url );
-        }
+        return processHeadUrl( url );
     }
 
-    private String processHeadUrl ( String url ) throws IOException, BadResponseException
+    private String processHeadUrl ( String url ) throws IOException
     {
         return processUrl( url, HEAD_METHOD );
     }
 
-    private String processGetUrl ( String url ) throws IOException, BadResponseException
-    {
-        return processUrl( url, GET_METHOD );
-    }
-
-    private String processUrl ( String url, String method ) throws IOException, BadResponseException
+    private String processUrl ( String url, String method ) throws IOException
     {
         HttpURLConnection connection = null;
 
@@ -115,17 +102,14 @@ public class UrlResolver
             connection.setConnectTimeout( 30000 );
 
             int responseCode = connection.getResponseCode();
-            if ( responseCode == HttpURLConnection.HTTP_OK )
-            {
-                return null;
-            }
-            else if ( isRedirection( responseCode ) )
+
+            if ( isRedirection( responseCode ) )
             {
                 return connection.getHeaderField( LOCATION_HEADER ).replace( " ", "%20" );
             }
             else
             {
-                throw new BadResponseException( responseCode, url );
+                return null;
             }
         }
         finally

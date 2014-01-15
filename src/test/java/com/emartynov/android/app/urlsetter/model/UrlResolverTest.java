@@ -21,14 +21,12 @@ import android.net.Uri;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
-import com.emartynov.android.app.urlsetter.model.exception.BadResponseException;
 import com.squareup.otto.Bus;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InOrder;
 import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
@@ -38,7 +36,6 @@ import java.net.URL;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -140,16 +137,6 @@ public class UrlResolverTest
         checkUrlFound( endUrl );
     }
 
-    @Test
-    public void wrongResponseThenProtocolExceptionEventFired () throws Exception
-    {
-        when( connection.getResponseCode() ).thenReturn( HttpURLConnection.HTTP_NOT_FOUND );
-
-        resolveUrl( "http://google.com" );
-
-        verifyErrorEventWithException( BadResponseException.class );
-    }
-
     private void verifyErrorEventWithException ( Class<? extends Exception> exceptionType )
     {
         ArgumentCaptor<DownloadingError> captor = ArgumentCaptor.forClass( DownloadingError.class );
@@ -173,17 +160,5 @@ public class UrlResolverTest
         resolveUrl( "http://google.com" );
 
         verify( connection, atLeastOnce() ).setRequestMethod( UrlResolver.HEAD_METHOD );
-    }
-
-    @Test
-    public void whenBadResponseWithHeadThenShouldTryWithGet () throws Exception
-    {
-        when( connection.getResponseCode() ).thenReturn( HttpURLConnection.HTTP_NOT_FOUND );
-
-        resolveUrl( "http://google.com" );
-
-        InOrder inOrder = inOrder( connection );
-        inOrder.verify( connection, atLeastOnce() ).setRequestMethod( UrlResolver.HEAD_METHOD );
-        inOrder.verify( connection, atLeastOnce() ).setRequestMethod( UrlResolver.GET_METHOD );
     }
 }
