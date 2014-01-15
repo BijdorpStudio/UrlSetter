@@ -40,15 +40,18 @@ public class MainActivity extends InjectedActivity
 
         setContentView( R.layout.activity_main );
 
-        List<Fragment> fragments = getFragments();
+        List<UrlListFragment> fragments = getFragments();
         FragmentPageAdapter pageAdapter = new FragmentPageAdapter( getSupportFragmentManager(), fragments );
         ViewPager pager = (ViewPager) findViewById( R.id.viewpager );
         pager.setAdapter( pageAdapter );
     }
 
-    private List<Fragment> getFragments ()
+    private List<UrlListFragment> getFragments ()
     {
-        return Arrays.asList( new Fragment[] { new UrlListFragment(), new UrlListFragment() } );
+        return Arrays.asList(
+                new UrlListFragment( getString( R.string.services_title ), R.array.services, R.array.service_urls ),
+                new UrlListFragment( getString( R.string.applications_title ), R.array.applications, R.array.app_urls )
+        );
     }
 
     @Override
@@ -74,9 +77,9 @@ public class MainActivity extends InjectedActivity
 
     private class FragmentPageAdapter extends FragmentPagerAdapter
     {
-        private final List<Fragment> fragments;
+        private final List<UrlListFragment> fragments;
 
-        public FragmentPageAdapter ( FragmentManager fragmentManager, List<Fragment> fragments )
+        public FragmentPageAdapter ( FragmentManager fragmentManager, List<UrlListFragment> fragments )
         {
             super( fragmentManager );
 
@@ -93,6 +96,12 @@ public class MainActivity extends InjectedActivity
         public Fragment getItem ( int position )
         {
             return fragments.get( position );
+        }
+
+        @Override
+        public CharSequence getPageTitle ( int position )
+        {
+            return fragments.get( position ).getTitle();
         }
     }
 }

@@ -29,18 +29,61 @@ import com.emartynov.android.app.urlsetter.android.ui.adapter.UrlExampleAdapter;
 public class UrlListFragment extends ListFragment
 {
 
+    public static final String KEYS = "KEYS";
+    public static final String VALUES = "VALUES";
+    private static final String TITLE = "TITLE";
+
+    private int keyIds;
+    private int valuesIds;
+
+    private String title;
+
+    @SuppressWarnings ( "UnusedDeclaration" )
+    public UrlListFragment ()
+    {
+    }
+
+    public UrlListFragment ( String title, int keyIds, int valuesIds )
+    {
+        this.title = title;
+        this.keyIds = keyIds;
+        this.valuesIds = valuesIds;
+    }
+
     @Override
     public View onCreateView ( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
     {
+        if ( savedInstanceState != null )
+        {
+            title = savedInstanceState.getString( TITLE );
+            keyIds = savedInstanceState.getInt( KEYS );
+            valuesIds = savedInstanceState.getInt( VALUES );
+        }
+
         View view = inflater.inflate( R.layout.list_fragment, container, false );
 
         ListView list = (ListView) view.findViewById( android.R.id.list );
 
-        String[] services = getResources().getStringArray( R.array.services );
-        String[] urls = getResources().getStringArray( R.array.service_urls );
+        String[] services = getResources().getStringArray( keyIds );
+        String[] urls = getResources().getStringArray( valuesIds );
 
         list.setAdapter( new UrlExampleAdapter( services, urls, inflater ) );
 
         return view;
+    }
+
+    public CharSequence getTitle ()
+    {
+        return title;
+    }
+
+    @Override
+    public void onSaveInstanceState ( Bundle outState )
+    {
+        super.onSaveInstanceState( outState );
+
+        outState.putInt( KEYS, keyIds );
+        outState.putInt( VALUES, valuesIds );
+        outState.putString( TITLE, title );
     }
 }

@@ -24,7 +24,8 @@
     </string>
     <string name="operation_takes_longer">Просим прощения за непредвиденную задержку, пробуем дальше</string>
     <string name="resolved_url">Найден интернет адрес %s</string>
-    <string name="service_url_examples">Сервисы</string>
+    <string name="services_title">Серивсы коротких ссылок</string>
+    <string name="applications_title">Примеры приложений</string>
     <string name="action_settings">Настройки</string>
     <string name="action_about">О программе</string>
     <string name="title_activity_about">О Программе</string>
