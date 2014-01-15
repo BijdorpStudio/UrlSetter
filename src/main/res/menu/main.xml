@@ -24,6 +24,10 @@
     <!--android:showAsAction="never"/>-->
 
     <item
+        android:id="@+id/action_resolve_link"
+        android:title="@string/unshort_url"
+        android:showAsAction="never"/>
+    <item
         android:id="@+id/action_feedback"
         android:title="@string/action_feedback"
         android:showAsAction="never"/>

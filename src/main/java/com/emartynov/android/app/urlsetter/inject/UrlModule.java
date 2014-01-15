@@ -25,6 +25,7 @@ import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.android.ui.AboutActivity;
 import com.emartynov.android.app.urlsetter.android.ui.MainActivity;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
+import com.emartynov.android.app.urlsetter.android.ui.fragment.EnterShortenedUrlFragment;
 import com.emartynov.android.app.urlsetter.model.HttpClient;
 import com.emartynov.android.app.urlsetter.model.UrlDiskLruCache;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
@@ -43,7 +44,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module (injects = { UrlActivity.class, UrlService.class, UrlApplication.class, MainActivity.class,
-        AboutActivity.class })
+        AboutActivity.class, EnterShortenedUrlFragment.class })
 public class UrlModule
 {
     private String mixpanelToken;

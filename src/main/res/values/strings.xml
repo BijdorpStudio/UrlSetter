@@ -42,5 +42,6 @@
     <string name="select_application_for">Error happened while resolving link. Please select application to open</string>
     <string name="action_feedback">Give us feedback</string>
     <string name="feedback_subject">Link Setter feedback</string>
-    <string name="unshort_url">Resolve short url</string>
+    <string name="unshort_url">Unshorten link</string>
+    <string name="start">Start</string>
 </resources>

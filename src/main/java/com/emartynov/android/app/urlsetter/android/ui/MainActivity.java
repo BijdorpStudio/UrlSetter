@@ -27,13 +27,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.emartynov.android.app.urlsetter.R;
+import com.emartynov.android.app.urlsetter.android.ui.fragment.EnterShortenedUrlFragment;
 import com.emartynov.android.app.urlsetter.android.ui.fragment.UrlListFragment;
+import com.emartynov.android.app.urlsetter.model.event.UserInputValue;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainActivity extends InjectedActivity
 {
+    @Inject
+    Bus bus;
+
     @Override
     public void onCreate ( Bundle savedInstanceState )
     {
@@ -82,10 +91,44 @@ public class MainActivity extends InjectedActivity
             startActivity( Intent.createChooser( emailIntent, getString( R.string.action_feedback ) ) );
             return true;
         }
+        else if ( item.getItemId() == R.id.action_resolve_link )
+        {
+            FragmentManager fm = getSupportFragmentManager();
+            EnterShortenedUrlFragment userInputDialog = new EnterShortenedUrlFragment();
+            userInputDialog.show( fm, null );
+
+            return true;
+        }
         else
         {
             return super.onOptionsItemSelected( item );
         }
+    }
+
+    @Override
+    protected void onResume ()
+    {
+        super.onResume();
+
+        bus.register( this );
+    }
+
+    @Override
+    protected void onPause ()
+    {
+        bus.unregister( this );
+
+        super.onPause();
+    }
+
+    @Subscribe
+    public void onUserInput ( UserInputValue event )
+    {
+        Intent intent = new Intent( Intent.ACTION_SEND );
+        intent.putExtra( Intent.EXTRA_TEXT, event.getUserInput() );
+        intent.setClass( this, UrlActivity.class );
+
+        startActivity( intent );
     }
 
     private class FragmentPageAdapter extends FragmentPagerAdapter
