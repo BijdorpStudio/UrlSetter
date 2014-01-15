@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <array name="services">
+    <array name="applications">
         <item>Twitter</item>
         <item>Google Play Store</item>
         <item>Google Maps</item>
@@ -27,14 +27,9 @@
         <item>Linkedin</item>
         <item>GitHub</item>
         <item>Habrahabr</item>
-        <item>Bit.ly</item>
-        <item>Facebook</item>
-        <item>Goo.gl</item>
-        <item>Buff.ly</item>
-        <item>Linkd.in</item>
     </array>
-    <array name="urls">
-        <item>t.co/LrwagumK7p</item>
+    <array name="app_urls">
+        <item>twitter.com/BijdorpStudio</item>
         <item>play.google.com/store/apps/details?id=com.google.android.apps.maps</item>
         <item>maps.google.com/maps?saddr=brighton&amp;daddr=timbuktu</item>
         <item>youtu.be/8E_ZpHRzXvg</item>
@@ -44,12 +39,5 @@
         <item>linkedin.com/in/eugenmartynov</item>
         <item>github.com/emartynov/UrlSetter</item>
         <item>habrahabr.ru/company/piter/blog/206914/</item>
-        <item>bit.ly/1hvIZp3</item>
-        <item>
-            m.facebook.com/l.php?u=http%3A%2F%2Fmashable.com%2F2014%2F01%2F12%2Fstages-of-snapchat-comic
-        </item>
-        <item>goo.gl/1y05hc</item>
-        <item>buff.ly/1dZlzpG</item>
-        <item>linkd.in/196Yq4M</item>
     </array>
 </resources>

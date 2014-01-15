@@ -18,12 +18,18 @@ package com.emartynov.android.app.urlsetter.android.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 import com.emartynov.android.app.urlsetter.R;
-import com.emartynov.android.app.urlsetter.android.ui.adapter.UrlExampleAdapter;
+import com.emartynov.android.app.urlsetter.android.ui.fragment.UrlListFragment;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends InjectedActivity
 {
@@ -32,21 +38,17 @@ public class MainActivity extends InjectedActivity
     {
         super.onCreate( savedInstanceState );
 
-        setTitle( R.string.service_url_examples );
-
         setContentView( R.layout.activity_main );
 
-        initList();
+        List<Fragment> fragments = getFragments();
+        FragmentPageAdapter pageAdapter = new FragmentPageAdapter( getSupportFragmentManager(), fragments );
+        ViewPager pager = (ViewPager) findViewById( R.id.viewpager );
+        pager.setAdapter( pageAdapter );
     }
 
-    private void initList ()
+    private List<Fragment> getFragments ()
     {
-        ListView view = (ListView) findViewById( android.R.id.list );
-
-        String[] services = getResources().getStringArray( R.array.services );
-        String[] urls = getResources().getStringArray( R.array.urls );
-
-        view.setAdapter( new UrlExampleAdapter( services, urls, getLayoutInflater() ) );
+        return Arrays.asList( new Fragment[] { new UrlListFragment(), new UrlListFragment() } );
     }
 
     @Override
@@ -67,6 +69,30 @@ public class MainActivity extends InjectedActivity
         else
         {
             return super.onOptionsItemSelected( item );
+        }
+    }
+
+    private class FragmentPageAdapter extends FragmentPagerAdapter
+    {
+        private final List<Fragment> fragments;
+
+        public FragmentPageAdapter ( FragmentManager fragmentManager, List<Fragment> fragments )
+        {
+            super( fragmentManager );
+
+            this.fragments = fragments;
+        }
+
+        @Override
+        public int getCount ()
+        {
+            return fragments.size();
+        }
+
+        @Override
+        public Fragment getItem ( int position )
+        {
+            return fragments.get( position );
         }
     }
 }
