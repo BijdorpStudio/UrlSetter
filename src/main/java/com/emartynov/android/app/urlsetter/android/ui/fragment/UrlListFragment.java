@@ -16,8 +16,11 @@
 
 package com.emartynov.android.app.urlsetter.android.ui.fragment;
 
+import android.app.Activity;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +51,26 @@ public class UrlListFragment extends ListFragment
         this.title = title;
         this.keyIds = keyIds;
         this.valuesIds = valuesIds;
+    }
+
+    @Override
+    public void onInflate ( Activity activity, AttributeSet attrs, Bundle savedInstanceState )
+    {
+        super.onInflate( activity, attrs, savedInstanceState );
+
+        TypedArray a = activity.obtainStyledAttributes( attrs,
+                R.styleable.PlaceholderFragment );
+        int keys = a.getResourceId( R.styleable.PlaceholderFragment_list_fragment_keys, -1 );
+        if ( keys != -1 )
+        {
+            keyIds = keys;
+        }
+        int values = a.getResourceId( R.styleable.PlaceholderFragment_list_fragment_values, -1 );
+        if ( values != -1 )
+        {
+            valuesIds = values;
+        }
+        a.recycle();
     }
 
     @Override

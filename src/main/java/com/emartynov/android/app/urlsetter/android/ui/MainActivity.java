@@ -40,10 +40,14 @@ public class MainActivity extends InjectedActivity
 
         setContentView( R.layout.activity_main );
 
-        List<UrlListFragment> fragments = getFragments();
-        FragmentPageAdapter pageAdapter = new FragmentPageAdapter( getSupportFragmentManager(), fragments );
         ViewPager pager = (ViewPager) findViewById( R.id.viewpager );
-        pager.setAdapter( pageAdapter );
+
+        if ( pager != null )
+        {
+            List<UrlListFragment> fragments = getFragments();
+            FragmentPageAdapter pageAdapter = new FragmentPageAdapter( getSupportFragmentManager(), fragments );
+            pager.setAdapter( pageAdapter );
+        }
     }
 
     private List<UrlListFragment> getFragments ()
