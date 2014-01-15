@@ -67,21 +67,20 @@ public class UrlService extends Service
     @Inject
     ThreadPoolExecutor executor;
 
-
     private Timer timer;
     private Handler handler;
 
     @Override
     public void onCreate ()
     {
+        handler = new Handler();
+
         ( (UrlApplication) getApplication() ).inject( this );
 
         crashlytics.start( this );
 
         bus.register( this );
         logger.init( this );
-
-        handler = new Handler();
     }
 
     @Override
@@ -110,6 +109,8 @@ public class UrlService extends Service
 
     private void resolveUrl ( Uri uri )
     {
+        showToastOnUI( getString( R.string.resolving_url, uri ) );
+
         Uri targetUri = uri;
 
         if ( isFacebook( uri ) )
@@ -146,8 +147,6 @@ public class UrlService extends Service
     public void resolveUrl ( ResolveUrl event )
     {
         createLongOperationTimer();
-
-        showToastOnUI( getString( R.string.resolving_url, event.getUri() ) );
 
         trackStart( isFacebook( event.getUri() ) );
     }
