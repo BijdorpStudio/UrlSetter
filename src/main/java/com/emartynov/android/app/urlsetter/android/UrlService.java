@@ -51,7 +51,8 @@ import javax.inject.Inject;
 
 public class UrlService extends Service
 {
-    public static final long TIMEOUT_IN_SECONDS = 10 * DateUtils.SECOND_IN_MILLIS;
+    public static final long APPOLOGIZE_TIMEOUT = 10 * DateUtils.SECOND_IN_MILLIS;
+    public static final long STOP_TIMEOUT = 5 * DateUtils.MINUTE_IN_MILLIS;
     private static final String FACEBOOK_HOST = "m.facebook.com";
 
     @Inject
@@ -171,7 +172,7 @@ public class UrlService extends Service
             {
                 showToastOnUI( getString( R.string.operation_takes_longer ) );
             }
-        }, TIMEOUT_IN_SECONDS );
+        }, APPOLOGIZE_TIMEOUT );
     }
 
     private void showToastOnUI ( final String toastText )
@@ -234,7 +235,17 @@ public class UrlService extends Service
     {
         if ( isIdle() )
         {
-            stopSelf();
+            timer.schedule( new TimerTask()
+            {
+                @Override
+                public void run ()
+                {
+                    if ( isIdle() )
+                    {
+                        stopSelf();
+                    }
+                }
+            }, STOP_TIMEOUT );
         }
     }
 
