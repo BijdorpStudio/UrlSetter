@@ -233,8 +233,10 @@ public class UrlService extends Service
 
     private void checkToStop ()
     {
-        if ( isIdle() )
+        if ( isOnlyOne() )
         {
+            cancelTimer();
+            timer = new Timer();
             timer.schedule( new TimerTask()
             {
                 @Override
@@ -249,9 +251,19 @@ public class UrlService extends Service
         }
     }
 
+    private boolean isOnlyOne ()
+    {
+        return checkNumberOfTasks( 1 );
+    }
+
     private boolean isIdle ()
     {
-        return ( executor.getTaskCount() - executor.getCompletedTaskCount() ) == 0;
+        return checkNumberOfTasks( 0 );
+    }
+
+    private boolean checkNumberOfTasks ( int numberOfTasks )
+    {
+        return ( executor.getTaskCount() - executor.getCompletedTaskCount() ) == numberOfTasks;
     }
 
     private synchronized void cancelTimer ()
