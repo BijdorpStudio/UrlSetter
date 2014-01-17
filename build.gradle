@@ -15,10 +15,6 @@
  */
 
 
-
-
-
-
 buildscript {
     repositories {
         mavenCentral ()
