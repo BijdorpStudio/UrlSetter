@@ -2,6 +2,8 @@
 
 One Sunday idea. Android app to solve redirect with annoying browser opening.
 
+Follow us on twitter @BijdorpStudio
+
 Whole idea in one video:
 
 www.youtube.com/watch?v=U72BdKh8y0I
