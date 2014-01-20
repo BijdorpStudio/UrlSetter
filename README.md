@@ -4,14 +4,14 @@ One Sunday idea. Android app to solve redirect with annoying browser opening.
 
 Whole idea in one video:
 
-[![Promo video](http://www.youtube.com/watch?v=U72BdKh8y0I)](http://www.youtube.com/watch?v=U72BdKh8y0I)
+www.youtube.com/watch?v=U72BdKh8y0I
 
 Application is published now:
 
-[![Google Play](https://play.google.com/apps/testing/com.emartynov.android.app.urlsetter)](https://play.google.com/apps/testing/com.emartynov.android.app.urlsetter)
+[![Google Play](https://lh5.ggpht.com/rCRkO-LKQ4yfl7jQqg6GWxR2Nze45T3tbRIKVZIipbuWrTEaYG-a6-3gDEUgeC_uz5s=w300-rw)](https://play.google.com/apps/testing/com.emartynov.android.app.urlsetter)
 
 Unfortunately there are already such apps:
 
-[![Unshorten](https://play.google.com/store/apps/details?id=com.teaandtoys.unshorten)](https://play.google.com/store/apps/details?id=com.teaandtoys.unshorten)
+[![Unshorten](https://lh5.ggpht.com/4jZ5iHC9W4x3haqmtCjwfBFaGVztWGOZzPUzRNoWieNbt2rxazgJNciaWXlu_JD-qs8P=w300-rw)](https://play.google.com/store/apps/details?id=com.teaandtoys.unshorten)
 
-[![Short Resolver](https://play.google.com/store/apps/details?id=com.julianjm.shorturlresolver)](https://play.google.com/store/apps/details?id=com.julianjm.shorturlresolver)
+[![Short Resolver](https://lh4.ggpht.com/b4vCPdyk5VHvyUKTHf7W9nP2Nm5HmBkhNjl2CI6jMs0R3avACdFzYWm_1Mulz2mVMXwR=w300-rw)](https://play.google.com/store/apps/details?id=com.julianjm.shorturlresolver)
