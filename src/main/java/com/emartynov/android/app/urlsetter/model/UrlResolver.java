@@ -74,7 +74,7 @@ public class UrlResolver
             currentUrl = nextUrl;
             nextUrl = findNextUrl( currentUrl );
         }
-        while ( nextUrl != null );
+        while ( nextUrl != null && nextUrl.contains( "http" ) );
 
         return Uri.parse( currentUrl );
     }
