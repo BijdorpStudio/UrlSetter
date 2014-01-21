@@ -137,4 +137,9 @@ public class UrlDiskLruCache
             crashlytics.logException( e );
         }
     }
+
+    public synchronized boolean isLoaded ()
+    {
+        return lruCache != null;
+    }
 }

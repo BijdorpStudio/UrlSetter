@@ -110,7 +110,11 @@ public class UrlService extends Service
 
     private void resolveUrl ( Uri uri )
     {
-        showToastOnUI( getString( R.string.resolving_url, uri ) );
+        boolean showMessageBefore = !cache.isLoaded();
+        if ( showMessageBefore )
+        {
+            showToastOnUI( getString( R.string.resolving_url, uri ) );
+        }
 
         Uri targetUri = uri;
 
@@ -123,7 +127,7 @@ public class UrlService extends Service
             }
         }
 
-        getFromCacheOrResolve( new ResolveUrl( targetUri ) );
+        getFromCacheOrResolve( new ResolveUrl( targetUri ), showMessageBefore );
     }
 
     private boolean isFacebook ( Uri uri )
@@ -131,11 +135,15 @@ public class UrlService extends Service
         return FACEBOOK_HOST.equals( uri.getHost() );
     }
 
-    private void getFromCacheOrResolve ( UrlEvent event )
+    private void getFromCacheOrResolve ( UrlEvent event, boolean messageShown )
     {
         Uri resolvedUri = cache.get( event.getUri() );
         if ( resolvedUri == null )
         {
+            if ( !messageShown )
+            {
+                showToastOnUI( getString( R.string.resolving_url, event.getUri() ) );
+            }
             bus.post( event );
         }
         else
