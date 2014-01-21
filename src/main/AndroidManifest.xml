@@ -229,6 +229,8 @@
         </activity-alias>
 
         <activity-alias
+            android:enabled="true"
+            android:exported="true"
             android:name=".ProcessExtendedLinkActivity"
             android:targetActivity=".android.ui.UrlActivity">
             <intent-filter
