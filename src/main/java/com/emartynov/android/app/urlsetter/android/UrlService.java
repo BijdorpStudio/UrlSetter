@@ -150,14 +150,14 @@ public class UrlService extends Service
         {
             bus.post( new FoundUrl( event.getUri(), resolvedUri ) );
         }
+
+        trackStart( isFacebook( event.getUri() ) );
     }
 
     @Subscribe
     public void resolveUrl ( ResolveUrl event )
     {
         createLongOperationTimer();
-
-        trackStart( isFacebook( event.getUri() ) );
     }
 
     private void trackStart ( boolean fromFacebook )
