@@ -16,7 +16,6 @@
 
 
 
-
 buildscript {
     repositories {
         mavenCentral ()
@@ -25,7 +24,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.3'
+        classpath 'com.android.tools.build:gradle:0.8.+'
         classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
         classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
@@ -78,6 +77,10 @@ android {
 
     sourceSets {
         instrumentTest.setRoot ( 'src/test' )
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
