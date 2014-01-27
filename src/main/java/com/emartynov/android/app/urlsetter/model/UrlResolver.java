@@ -21,8 +21,7 @@ import android.net.Uri;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
+import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -36,19 +35,14 @@ public class UrlResolver
     public static final String LOCATION_HEADER = "Location";
     public static final int HTTP_TEMP_REDIRECT = 307;
 
-    private final Bus bus;
     private final HttpClient httpClient;
 
-    public UrlResolver ( Bus bus, HttpClient httpClient )
+    public UrlResolver ( HttpClient httpClient )
     {
-        this.bus = bus;
         this.httpClient = httpClient;
-
-        bus.register( this );
     }
 
-    @Subscribe
-    public void resolveURL ( ResolveUrl event )
+    public UrlEvent resolveURL ( ResolveUrl event )
     {
         Uri uri = event.getUri();
 
@@ -56,11 +50,11 @@ public class UrlResolver
         {
             Uri resolvedUri = resolveUrl( uri.toString() );
 
-            bus.post( new FoundUrl( uri, resolvedUri ) );
+            return new FoundUrl( uri, resolvedUri );
         }
         catch ( Exception e )
         {
-            bus.post( new DownloadingError( uri, uri, e ) );
+            return new DownloadingError( uri, uri, e );
         }
     }
 

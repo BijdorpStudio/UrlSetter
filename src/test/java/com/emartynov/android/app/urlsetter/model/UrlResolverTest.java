@@ -21,12 +21,11 @@ import android.net.Uri;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
-import com.squareup.otto.Bus;
+import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
@@ -45,7 +44,6 @@ public class UrlResolverTest
 {
     private UrlResolver target;
 
-    private Bus bus = mock( Bus.class );
     private HttpClient client = mock( HttpClient.class );
     private HttpURLConnection connection = mock( HttpURLConnection.class );
 
@@ -54,13 +52,7 @@ public class UrlResolverTest
     {
         when( client.open( any( URL.class ) ) ).thenReturn( connection );
 
-        target = new UrlResolver( bus, client );
-    }
-
-    @Test
-    public void registerToBus () throws Exception
-    {
-        verify( bus ).register( target );
+        target = new UrlResolver( client );
     }
 
     @Test
@@ -69,9 +61,9 @@ public class UrlResolverTest
         String endUrl = "http://test.com";
         redirectTo( endUrl, HttpURLConnection.HTTP_MOVED_PERM );
 
-        resolveUrl( "http://google.com" );
+        FoundUrl result = (FoundUrl) resolveUrl( "http://google.com" );
 
-        checkUrlFound( endUrl );
+        checkUrlFound( result, endUrl );
     }
 
     private void redirectTo ( String endUrl, int moveResponseCode ) throws IOException
@@ -80,17 +72,15 @@ public class UrlResolverTest
         when( connection.getHeaderField( UrlResolver.LOCATION_HEADER ) ).thenReturn( endUrl );
     }
 
-    private void resolveUrl ( String uriString )
+    private UrlEvent resolveUrl ( String uriString )
     {
         ResolveUrl event = new ResolveUrl( Uri.parse( uriString ) );
-        target.resolveURL( event );
+        return target.resolveURL( event );
     }
 
-    private void checkUrlFound ( String endUrl )
+    private void checkUrlFound ( FoundUrl result, String endUrl )
     {
-        ArgumentCaptor<FoundUrl> eventCaptor = ArgumentCaptor.forClass( FoundUrl.class );
-        verify( bus ).post( eventCaptor.capture() );
-        assertThat( eventCaptor.getValue().getResolvedUri().toString() ).isEqualTo( endUrl );
+        assertThat( result.getResolvedUri().toString() ).isEqualTo( endUrl );
     }
 
     @Test
@@ -99,9 +89,9 @@ public class UrlResolverTest
         String endUrl = "http://test.com";
         when( connection.getResponseCode() ).thenReturn( HttpURLConnection.HTTP_OK );
 
-        resolveUrl( endUrl );
+        FoundUrl result = (FoundUrl) resolveUrl( endUrl );
 
-        checkUrlFound( endUrl );
+        checkUrlFound( result, endUrl );
     }
 
     @Test
@@ -110,9 +100,9 @@ public class UrlResolverTest
         String endUrl = "http://test.com";
         redirectTo( endUrl, HttpURLConnection.HTTP_MOVED_TEMP );
 
-        resolveUrl( "http://google.com" );
+        FoundUrl result = (FoundUrl) resolveUrl( "http://google.com" );
 
-        checkUrlFound( endUrl );
+        checkUrlFound( result, endUrl );
     }
 
     @Test
@@ -121,9 +111,9 @@ public class UrlResolverTest
         String endUrl = "http://test.com";
         redirectTo( endUrl, HttpURLConnection.HTTP_SEE_OTHER );
 
-        resolveUrl( "http://google.com" );
+        FoundUrl result = (FoundUrl) resolveUrl( "http://google.com" );
 
-        checkUrlFound( endUrl );
+        checkUrlFound( result, endUrl );
     }
 
     @Test
@@ -132,16 +122,14 @@ public class UrlResolverTest
         String endUrl = "http://test.com";
         redirectTo( endUrl, UrlResolver.HTTP_TEMP_REDIRECT );
 
-        resolveUrl( "http://google.com" );
+        FoundUrl result = (FoundUrl) resolveUrl( "http://google.com" );
 
-        checkUrlFound( endUrl );
+        checkUrlFound( result, endUrl );
     }
 
-    private void verifyErrorEventWithException ( Class<? extends Exception> exceptionType )
+    private void verifyErrorEventWithException ( DownloadingError result, Class<? extends Exception> exceptionType )
     {
-        ArgumentCaptor<DownloadingError> captor = ArgumentCaptor.forClass( DownloadingError.class );
-        verify( bus ).post( captor.capture() );
-        assertThat( captor.getValue().getException() ).isInstanceOf( exceptionType );
+        assertThat( result.getException() ).isInstanceOf( exceptionType );
     }
 
     @Test
@@ -149,9 +137,9 @@ public class UrlResolverTest
     {
         when( connection.getResponseCode() ).thenThrow( IOException.class );
 
-        resolveUrl( "http://google.com" );
+        DownloadingError result = (DownloadingError) resolveUrl( "http://google.com" );
 
-        verifyErrorEventWithException( IOException.class );
+        verifyErrorEventWithException( result, IOException.class );
     }
 
     @Test

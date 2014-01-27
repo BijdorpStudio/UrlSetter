@@ -34,7 +34,7 @@ import dagger.Provides;
 
 import static org.mockito.Mockito.mock;
 
-@Module (overrides = true, includes = UrlModule.class, injects = { UrlActivity.class, TestUrlApplication.class })
+@Module (overrides = true, includes = UrlModule.class, injects = { UrlActivity.class, TestUrlApplication.class, UrlService.class })
 public class TestUrlModule
 {
     private Crashlytics crashlytics = mock( Crashlytics.class );
@@ -43,6 +43,7 @@ public class TestUrlModule
     private UrlDiskLruCache cache = mock( UrlDiskLruCache.class );
     private UrlResolver resolver = mock( UrlResolver.class );
     private ThreadPoolExecutor executor = mock( ThreadPoolExecutor.class );
+    private HttpClient httpClient = mock( HttpClient.class );
 
     @Provides
     @Singleton
@@ -79,10 +80,15 @@ public class TestUrlModule
 
     @Provides
     @Singleton
-    public UrlResolver getURLResolver ( Bus bus, HttpClient httpClient, ThreadPoolExecutor executor )
+    public UrlResolver getURLResolver ( HttpClient httpClient )
     {
         return resolver;
     }
 
-
+    @Provides
+    @Singleton
+    public HttpClient getHttpClient ()
+    {
+        return httpClient;
+    }
 }

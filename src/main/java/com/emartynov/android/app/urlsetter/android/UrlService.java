@@ -36,8 +36,6 @@ import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,8 +55,6 @@ public class UrlService extends Service
 
     @Inject
     UrlResolver urlResolver;
-    @Inject
-    Bus bus;
     @Inject
     Mixpanel logger;
     @Inject
@@ -80,7 +76,6 @@ public class UrlService extends Service
 
         crashlytics.start( this );
 
-        bus.register( this );
         logger.init( this );
     }
 
@@ -135,7 +130,7 @@ public class UrlService extends Service
         return FACEBOOK_HOST.equals( uri.getHost() );
     }
 
-    private void getFromCacheOrResolve ( UrlEvent event, boolean messageShown )
+    private void getFromCacheOrResolve ( ResolveUrl event, boolean messageShown )
     {
         Uri resolvedUri = cache.get( event.getUri() );
         if ( resolvedUri == null )
@@ -144,20 +139,31 @@ public class UrlService extends Service
             {
                 showToastOnUI( getString( R.string.resolving_url, event.getUri() ) );
             }
-            bus.post( event );
+
+            resolveUrl( event );
         }
         else
         {
-            bus.post( new FoundUrl( event.getUri(), resolvedUri ) );
+            launchURL( new FoundUrl( event.getUri(), resolvedUri ) );
         }
 
         trackStart( isFacebook( event.getUri() ) );
     }
 
-    @Subscribe
     public void resolveUrl ( ResolveUrl event )
     {
         createLongOperationTimer();
+
+        UrlEvent result = urlResolver.resolveURL( event );
+
+        if ( result instanceof DownloadingError )
+        {
+            downloadError( (DownloadingError) result );
+        }
+        else if ( result instanceof FoundUrl )
+        {
+            launchURL( (FoundUrl) result );
+        }
     }
 
     private void trackStart ( boolean fromFacebook )
@@ -211,12 +217,9 @@ public class UrlService extends Service
     {
         super.onDestroy();
 
-        bus.unregister( this );
-
         logger.flush();
     }
 
-    @Subscribe
     public void launchURL ( FoundUrl event )
     {
         cancelTimer();
@@ -282,7 +285,6 @@ public class UrlService extends Service
         }
     }
 
-    @Subscribe
     public void downloadError ( final DownloadingError event )
     {
         cancelTimer();

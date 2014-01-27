@@ -34,7 +34,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@RunWith ( RobolectricTestRunner.class )
+@RunWith (RobolectricTestRunner.class)
 public class UrlServiceTest extends UrlTestBase
 {
     private UrlService service = new UrlService();
@@ -49,7 +49,6 @@ public class UrlServiceTest extends UrlTestBase
     public void startsServicesAfterCreate () throws Exception
     {
         verify( getCrashlytics() ).start( service );
-        verify( getBus() ).register( service );
         verify( getMixpanel() ).init( service );
     }
 
@@ -105,7 +104,7 @@ public class UrlServiceTest extends UrlTestBase
         runExecutor();
 
         ArgumentCaptor<ResolveUrl> captor = ArgumentCaptor.forClass( ResolveUrl.class );
-        verify( getBus() ).post( captor.capture() );
+        verify( getResolver() ).resolveURL( captor.capture() );
         assertThat( captor.getValue().getUri().toString() ).isEqualTo( uriString );
     }
 

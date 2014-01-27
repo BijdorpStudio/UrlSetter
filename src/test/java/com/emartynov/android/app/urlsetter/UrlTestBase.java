@@ -19,6 +19,7 @@ package com.emartynov.android.app.urlsetter;
 import com.emartynov.android.app.urlsetter.android.TestUrlApplication;
 import com.emartynov.android.app.urlsetter.android.TestUrlModule;
 import com.emartynov.android.app.urlsetter.model.UrlDiskLruCache;
+import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
@@ -60,6 +61,11 @@ public class UrlTestBase
     public ThreadPoolExecutor getExecutor ()
     {
         return getTestModule().getExecutor();
+    }
+
+    public UrlResolver getResolver ()
+    {
+        return getTestModule().getURLResolver( getTestModule().getHttpClient() );
     }
 
     public void runExecutor ()
