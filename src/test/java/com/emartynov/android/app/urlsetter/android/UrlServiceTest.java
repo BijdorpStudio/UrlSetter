@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.emartynov.android.app.urlsetter.UrlTestBase;
+import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 
 import org.junit.Before;
@@ -33,6 +34,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith (RobolectricTestRunner.class)
 public class UrlServiceTest extends UrlTestBase
@@ -131,5 +133,19 @@ public class UrlServiceTest extends UrlTestBase
 
         runExecutor();
         verify( getCache() ).get( Uri.parse( uriString ) );
+    }
+
+    @Test
+    public void whenResolverReturnsSameUriThenError () throws Exception
+    {
+        String uriString = "http://t.co/djsdhjshd";
+
+        Uri uri = Uri.parse( uriString );
+        when( getResolver().resolveURL( any( ResolveUrl.class ) ) ).thenReturn( new FoundUrl( uri, uri ) );
+        when( getIntentHelper().isFilterUri( service, uri ) ).thenReturn( true );
+
+        service.resolveUrl( new ResolveUrl( uri ) );
+
+        verify( getCrashlytics() ).logException( any( RuntimeException.class ) );
     }
 }

@@ -16,6 +16,7 @@
 
 package com.emartynov.android.app.urlsetter.android;
 
+import com.emartynov.android.app.urlsetter.android.packagemanager.IntentHelper;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
 import com.emartynov.android.app.urlsetter.model.HttpClient;
@@ -44,6 +45,7 @@ public class TestUrlModule
     private UrlResolver resolver = mock( UrlResolver.class );
     private ThreadPoolExecutor executor = mock( ThreadPoolExecutor.class );
     private HttpClient httpClient = mock( HttpClient.class );
+    private IntentHelper intentHelper = mock( IntentHelper.class );
 
     @Provides
     @Singleton
@@ -90,5 +92,11 @@ public class TestUrlModule
     public HttpClient getHttpClient ()
     {
         return httpClient;
+    }
+
+    @Provides
+    public IntentHelper getIntentHelper ()
+    {
+        return intentHelper;
     }
 }

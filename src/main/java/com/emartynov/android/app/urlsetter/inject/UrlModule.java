@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 
 import com.emartynov.android.app.urlsetter.android.UrlApplication;
 import com.emartynov.android.app.urlsetter.android.UrlService;
+import com.emartynov.android.app.urlsetter.android.packagemanager.IntentHelper;
 import com.emartynov.android.app.urlsetter.android.ui.AboutActivity;
 import com.emartynov.android.app.urlsetter.android.ui.MainActivity;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
@@ -105,5 +106,11 @@ public class UrlModule
     public ThreadPoolExecutor getDefaultThreadPoolExecutor ()
     {
         return (ThreadPoolExecutor) Executors.newFixedThreadPool( 2 );
+    }
+
+    @Provides
+    public IntentHelper getIntentHelper ()
+    {
+        return new IntentHelper();
     }
 }

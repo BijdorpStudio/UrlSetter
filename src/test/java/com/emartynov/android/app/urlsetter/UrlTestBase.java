@@ -18,6 +18,7 @@ package com.emartynov.android.app.urlsetter;
 
 import com.emartynov.android.app.urlsetter.android.TestUrlApplication;
 import com.emartynov.android.app.urlsetter.android.TestUrlModule;
+import com.emartynov.android.app.urlsetter.android.packagemanager.IntentHelper;
 import com.emartynov.android.app.urlsetter.model.UrlDiskLruCache;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
@@ -73,6 +74,11 @@ public class UrlTestBase
         ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass( Runnable.class );
         verify( getExecutor() ).execute( captor.capture() );
         captor.getValue().run();
+    }
+
+    public IntentHelper getIntentHelper ()
+    {
+        return getTestModule().getIntentHelper();
     }
 
 }

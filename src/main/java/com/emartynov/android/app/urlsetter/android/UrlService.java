@@ -18,16 +18,14 @@ package com.emartynov.android.app.urlsetter.android;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Parcelable;
 import android.text.format.DateUtils;
 import android.widget.Toast;
 
 import com.emartynov.android.app.urlsetter.R;
+import com.emartynov.android.app.urlsetter.android.packagemanager.IntentHelper;
 import com.emartynov.android.app.urlsetter.model.UrlDiskLruCache;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
@@ -37,9 +35,7 @@ import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,7 +45,7 @@ import javax.inject.Inject;
 
 public class UrlService extends Service
 {
-    public static final long APPOLOGIZE_TIMEOUT = 10 * DateUtils.SECOND_IN_MILLIS;
+    public static final long APOLOGIZE_TIMEOUT = 10 * DateUtils.SECOND_IN_MILLIS;
     public static final long STOP_TIMEOUT = 5 * DateUtils.MINUTE_IN_MILLIS;
     private static final String FACEBOOK_HOST = "m.facebook.com";
 
@@ -63,6 +59,8 @@ public class UrlService extends Service
     Crashlytics crashlytics;
     @Inject
     ThreadPoolExecutor executor;
+    @Inject
+    IntentHelper intentHelper;
 
     private Timer timer;
     private Handler handler;
@@ -186,7 +184,7 @@ public class UrlService extends Service
             {
                 showToastOnUI( getString( R.string.operation_takes_longer ) );
             }
-        }, APPOLOGIZE_TIMEOUT );
+        }, APOLOGIZE_TIMEOUT );
     }
 
     private void showToastOnUI ( final String toastText )
@@ -224,6 +222,29 @@ public class UrlService extends Service
     {
         cancelTimer();
 
+        if ( checkInfiniteLoop( event ) )
+        {
+            reportUnresolvedUrlError( event );
+        }
+        else
+        {
+            launchAndCacheResolvedUri( event );
+        }
+    }
+
+    private boolean checkInfiniteLoop ( FoundUrl event )
+    {
+        return event.getResolvedUri().equals( event.getUri() ) && intentHelper.isFilterUri( this, event.getUri() );
+    }
+
+    private void reportUnresolvedUrlError ( FoundUrl event )
+    {
+        RuntimeException dummyException = new RuntimeException( "Resolver returned same URL" );
+        downloadError( new DownloadingError( event.getUri(), event.getUri(), dummyException ) );
+    }
+
+    private void launchAndCacheResolvedUri ( FoundUrl event )
+    {
         launchResolvedUri( event.getResolvedUri() );
 
         logger.trackEvent( Mixpanel.RESOLVED_URL_EVENT, event.getLoggingParams() );
@@ -233,11 +254,7 @@ public class UrlService extends Service
 
     private void launchResolvedUri ( Uri uri )
     {
-        Intent intent = new Intent( Intent.ACTION_VIEW );
-        intent.setData( uri );
-        intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-
-        startActivity( intent );
+        intentHelper.launchUri( this, uri );
 
         checkToStop();
     }
@@ -291,50 +308,10 @@ public class UrlService extends Service
 
         crashlytics.logException( event.getException() );
 
-        launchUriWithoutUs( event.getLastResolvedUri() );
+        intentHelper.launchUriWithoutUs( this, event.getLastResolvedUri() );
 
         logger.trackEvent( Mixpanel.RESOLVING_ERROR_EVENT, event.getLoggingParams() );
 
         checkToStop();
     }
-
-    private void launchUriWithoutUs ( Uri uri )
-    {
-        PackageManager packageManager = getPackageManager();
-
-        Intent intent = new Intent( Intent.ACTION_VIEW );
-        intent.setData( uri );
-
-        List<ResolveInfo> possibleIntents = packageManager.queryIntentActivities( intent, PackageManager.MATCH_DEFAULT_ONLY );
-        ArrayList<Intent> intents = new ArrayList<Intent>( possibleIntents.size() );
-
-        if ( possibleIntents.size() > 0 )
-        {
-            for ( ResolveInfo resolveInfo : possibleIntents )
-            {
-                if ( !resolveInfo.activityInfo.packageName.startsWith( getBaseContext().getPackageName() ) )
-                {
-                    Intent target = new Intent( intent );
-                    target.setData( uri );
-                    target.setPackage( resolveInfo.activityInfo.packageName );
-
-                    intents.add( target );
-                }
-            }
-            launchChooser( intents );
-        }
-    }
-
-    private void launchChooser ( final ArrayList<Intent> intents )
-    {
-        Intent firstIntent = intents.remove( 0 );
-        Parcelable[] parcelableIntents = intents.toArray( new Parcelable[ intents.size() ] );
-        String dialogCaption = getString( R.string.select_application_for, firstIntent.getData() );
-
-        Intent chooserIntent = Intent.createChooser( firstIntent, dialogCaption );
-        chooserIntent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-        chooserIntent.putExtra( Intent.EXTRA_INITIAL_INTENTS, parcelableIntents );
-        startActivity( chooserIntent );
-    }
-
 }
