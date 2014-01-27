@@ -30,7 +30,7 @@ public class UrlApplication extends Application
     private ObjectGraph objectGraph;
 
     @Inject
-    Crashlytics crashlitycs;
+    Crashlytics crashlytics;
 
     @Override
     public void onCreate ()
@@ -42,7 +42,7 @@ public class UrlApplication extends Application
         objectGraph = ObjectGraph.create( urlModule );
         objectGraph.inject( this );
 
-        crashlitycs.start( this );
+        crashlytics.start( this );
     }
 
     protected Object getUrlModule ()
