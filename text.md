@@ -27,12 +27,13 @@ Link Setter uses next libraries:
 * Square Otto http://square.github.io/otto
 * Crashlytics http://www.crashlytics.com
 * Mixpanel http://www.mixpanel.com
-* Jake Wharton\'s DiskLruCache http://github.com/JakeWharton/DiskLruCache
+* Jake Wharton's DiskLruCache http://github.com/JakeWharton/DiskLruCache
 
 ### Authors and Contributors
 Eugen Martynov (@emartynov)
+
 My wife, all my android and non-android friends who took part in beta testing and feedback
 
 ### Support or Contact
-Twitter: @BijdorpStudio, @jack_martynov
+Twitter: [@BijdorpStudio](https://twitter.com/BijdorpStudio), [@jack_martynov](https://twitter.com/jack_martynov)
 
