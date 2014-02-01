@@ -16,10 +16,10 @@
   -->
 
 <resources>
-    <dimen name="title">24sp</dimen>
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="medium_text">18sp</dimen>
-    <dimen name="large_text">24sp</dimen>
-    <dimen name="small_text">16sp</dimen>
+  <dimen name="title">24sp</dimen>
+  <dimen name="activity_horizontal_margin">16dp</dimen>
+  <dimen name="activity_vertical_margin">16dp</dimen>
+  <dimen name="medium_text">18sp</dimen>
+  <dimen name="large_text">24sp</dimen>
+  <dimen name="small_text">16sp</dimen>
 </resources>

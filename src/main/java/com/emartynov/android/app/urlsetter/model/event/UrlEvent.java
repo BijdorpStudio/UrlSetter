@@ -25,19 +25,19 @@ public class UrlEvent
 {
     private final Uri uri;
 
-    UrlEvent ( Uri uri )
+    UrlEvent( Uri uri )
     {
         this.uri = uri;
     }
 
-    public Map<String, String> getLoggingParams ()
+    public Map<String, String> getLoggingParams()
     {
         Map<String, String> params = new HashMap<String, String>();
         params.put( "Host", uri.getHost() );
         return params;
     }
 
-    public Uri getUri ()
+    public Uri getUri()
     {
         return uri;
     }

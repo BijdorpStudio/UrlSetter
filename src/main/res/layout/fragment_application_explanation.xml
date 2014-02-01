@@ -23,12 +23,12 @@
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:orientation="vertical">
 
-    <TextView
-        style="@style/used_libraries_text"
-        android:text="@string/app_explanation"/>
+  <TextView
+      style="@style/used_libraries_text"
+      android:text="@string/app_explanation"/>
 
-    <TextView
-        style="@style/used_libraries_text"
-        android:text="@string/app_source_code"/>
+  <TextView
+      style="@style/used_libraries_text"
+      android:text="@string/app_source_code"/>
 
 </LinearLayout>

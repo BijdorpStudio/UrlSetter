@@ -19,7 +19,6 @@ package com.emartynov.android.app.urlsetter.inject;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-
 import com.emartynov.android.app.urlsetter.android.UrlApplication;
 import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.android.packagemanager.IntentHelper;
@@ -34,27 +33,29 @@ import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
+import dagger.Module;
+import dagger.Provides;
 
+import javax.inject.Singleton;
 import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
-
-@Module (injects = { UrlActivity.class, UrlService.class, UrlApplication.class, MainActivity.class,
-        AboutActivity.class, EnterShortenedUrlFragment.class })
+@Module( injects = { UrlActivity.class, UrlService.class, UrlApplication.class, MainActivity.class, AboutActivity.class,
+    EnterShortenedUrlFragment.class } )
 public class UrlModule
 {
     private String mixpanelToken;
+
     private File cacheDir;
+
     private int appVersion;
 
-    public void init ( Context context ) throws PackageManager.NameNotFoundException
+    public void init( Context context )
+        throws PackageManager.NameNotFoundException
     {
-        ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo( context.getPackageName(), PackageManager.GET_META_DATA );
+        ApplicationInfo appInfo =
+            context.getPackageManager().getApplicationInfo( context.getPackageName(), PackageManager.GET_META_DATA );
         mixpanelToken = appInfo.metaData.getString( "com.mixpanel.ApiToken" );
 
         appVersion = context.getPackageManager().getPackageInfo( context.getPackageName(), 0 ).versionCode;
@@ -63,53 +64,53 @@ public class UrlModule
 
     @Provides
     @Singleton
-    public Bus getBus ()
+    public Bus getBus()
     {
         return new Bus( ThreadEnforcer.ANY );
     }
 
     @Provides
     @Singleton
-    public Mixpanel getLogger ()
+    public Mixpanel getLogger()
     {
         return new Mixpanel( mixpanelToken );
     }
 
     @Provides
     @Singleton
-    public UrlResolver getURLResolver ( HttpClient httpClient )
+    public UrlResolver getURLResolver( HttpClient httpClient )
     {
         return new UrlResolver( httpClient );
     }
 
     @Provides
-    public UrlDiskLruCache getCache ( Crashlytics crashlytics )
+    public UrlDiskLruCache getCache( Crashlytics crashlytics )
     {
         return new UrlDiskLruCache( cacheDir, appVersion, crashlytics );
     }
 
     @Provides
     @Singleton
-    public Crashlytics getCrashlytics ()
+    public Crashlytics getCrashlytics()
     {
         return new Crashlytics();
     }
 
     @Provides
     @Singleton
-    public HttpClient getHttpClient ()
+    public HttpClient getHttpClient()
     {
         return new HttpClient();
     }
 
     @Provides
-    public ThreadPoolExecutor getDefaultThreadPoolExecutor ()
+    public ThreadPoolExecutor getDefaultThreadPoolExecutor()
     {
         return (ThreadPoolExecutor) Executors.newFixedThreadPool( 2 );
     }
 
     @Provides
-    public IntentHelper getIntentHelper ()
+    public IntentHelper getIntentHelper()
     {
         return new IntentHelper();
     }

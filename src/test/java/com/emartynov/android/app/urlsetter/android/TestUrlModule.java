@@ -25,77 +25,83 @@ import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
-
-import java.util.concurrent.ThreadPoolExecutor;
-
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
+import javax.inject.Singleton;
+import java.util.concurrent.ThreadPoolExecutor;
+
 import static org.mockito.Mockito.mock;
 
-@Module (overrides = true, includes = UrlModule.class, injects = { UrlActivity.class, TestUrlApplication.class, UrlService.class })
+@Module(overrides = true, includes = UrlModule.class,
+        injects = { UrlActivity.class, TestUrlApplication.class, UrlService.class })
 public class TestUrlModule
 {
     private Crashlytics crashlytics = mock( Crashlytics.class );
+
     private Bus bus = mock( Bus.class );
+
     private Mixpanel logger = mock( Mixpanel.class );
+
     private UrlDiskLruCache cache = mock( UrlDiskLruCache.class );
+
     private UrlResolver resolver = mock( UrlResolver.class );
+
     private ThreadPoolExecutor executor = mock( ThreadPoolExecutor.class );
+
     private HttpClient httpClient = mock( HttpClient.class );
+
     private IntentHelper intentHelper = mock( IntentHelper.class );
 
     @Provides
     @Singleton
-    public Crashlytics getCrashlytics ()
+    public Crashlytics getCrashlytics()
     {
         return crashlytics;
     }
 
     @Provides
     @Singleton
-    public Bus getBus ()
+    public Bus getBus()
     {
         return bus;
     }
 
     @Provides
     @Singleton
-    public Mixpanel getLogger ()
+    public Mixpanel getLogger()
     {
         return logger;
     }
 
     @Provides
-    public UrlDiskLruCache getCache ()
+    public UrlDiskLruCache getCache()
     {
         return cache;
     }
 
     @Provides
-    public ThreadPoolExecutor getExecutor ()
+    public ThreadPoolExecutor getExecutor()
     {
         return executor;
     }
 
     @Provides
     @Singleton
-    public UrlResolver getURLResolver ( HttpClient httpClient )
+    public UrlResolver getURLResolver( HttpClient httpClient )
     {
         return resolver;
     }
 
     @Provides
     @Singleton
-    public HttpClient getHttpClient ()
+    public HttpClient getHttpClient()
     {
         return httpClient;
     }
 
     @Provides
-    public IntentHelper getIntentHelper ()
+    public IntentHelper getIntentHelper()
     {
         return intentHelper;
     }

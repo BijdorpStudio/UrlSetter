@@ -25,28 +25,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.android.ui.adapter.UrlExampleAdapter;
 
-public class UrlListFragment extends ListFragment
+public class UrlListFragment
+    extends ListFragment
 {
 
     public static final String KEYS = "KEYS";
+
     public static final String VALUES = "VALUES";
+
     private static final String TITLE = "TITLE";
 
     private int keyIds;
+
     private int valuesIds;
 
     private String title;
 
-    @SuppressWarnings ( "UnusedDeclaration" )
-    public UrlListFragment ()
+    @SuppressWarnings("UnusedDeclaration")
+    public UrlListFragment()
     {
     }
 
-    public UrlListFragment ( String title, int keyIds, int valuesIds )
+    public UrlListFragment( String title, int keyIds, int valuesIds )
     {
         this.title = title;
         this.keyIds = keyIds;
@@ -54,12 +57,11 @@ public class UrlListFragment extends ListFragment
     }
 
     @Override
-    public void onInflate ( Activity activity, AttributeSet attrs, Bundle savedInstanceState )
+    public void onInflate( Activity activity, AttributeSet attrs, Bundle savedInstanceState )
     {
         super.onInflate( activity, attrs, savedInstanceState );
 
-        TypedArray a = activity.obtainStyledAttributes( attrs,
-                R.styleable.PlaceholderFragment );
+        TypedArray a = activity.obtainStyledAttributes( attrs, R.styleable.PlaceholderFragment );
         int keys = a.getResourceId( R.styleable.PlaceholderFragment_list_fragment_keys, -1 );
         if ( keys != -1 )
         {
@@ -74,7 +76,7 @@ public class UrlListFragment extends ListFragment
     }
 
     @Override
-    public View onCreateView ( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
+    public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
     {
         if ( savedInstanceState != null )
         {
@@ -95,13 +97,13 @@ public class UrlListFragment extends ListFragment
         return view;
     }
 
-    public CharSequence getTitle ()
+    public CharSequence getTitle()
     {
         return title;
     }
 
     @Override
-    public void onSaveInstanceState ( Bundle outState )
+    public void onSaveInstanceState( Bundle outState )
     {
         super.onSaveInstanceState( outState );
 

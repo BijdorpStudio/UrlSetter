@@ -22,7 +22,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Parcelable;
-
 import com.emartynov.android.app.urlsetter.R;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ import java.util.List;
 
 public class IntentHelper
 {
-    public void launchUri ( Context context, Uri uri )
+    public void launchUri( Context context, Uri uri )
     {
         Intent intent = new Intent( Intent.ACTION_VIEW );
         intent.setData( uri );
@@ -39,7 +38,7 @@ public class IntentHelper
         context.startActivity( intent );
     }
 
-    public boolean isFilterUri ( Context context, Uri uri )
+    public boolean isFilterUri( Context context, Uri uri )
     {
         Intent intent = new Intent( Intent.ACTION_VIEW );
         intent.setData( uri );
@@ -58,14 +57,15 @@ public class IntentHelper
         return false;
     }
 
-    public void launchUriWithoutUs ( Context context, Uri uri )
+    public void launchUriWithoutUs( Context context, Uri uri )
     {
         PackageManager packageManager = context.getPackageManager();
 
         Intent intent = new Intent( Intent.ACTION_VIEW );
         intent.setData( uri );
 
-        List<ResolveInfo> possibleIntents = packageManager.queryIntentActivities( intent, PackageManager.MATCH_DEFAULT_ONLY );
+        List<ResolveInfo> possibleIntents =
+            packageManager.queryIntentActivities( intent, PackageManager.MATCH_DEFAULT_ONLY );
         ArrayList<Intent> intents = new ArrayList<Intent>( possibleIntents.size() );
 
         if ( possibleIntents.size() > 0 )
@@ -86,10 +86,10 @@ public class IntentHelper
     }
 
 
-    private void launchChooser ( Context context, final ArrayList<Intent> intents )
+    private void launchChooser( Context context, final ArrayList<Intent> intents )
     {
         Intent firstIntent = intents.remove( 0 );
-        Parcelable[] parcelableIntents = intents.toArray( new Parcelable[ intents.size() ] );
+        Parcelable[] parcelableIntents = intents.toArray( new Parcelable[intents.size()] );
         String dialogCaption = context.getString( R.string.select_application_for, firstIntent.getData() );
 
         Intent chooserIntent = Intent.createChooser( firstIntent, dialogCaption );

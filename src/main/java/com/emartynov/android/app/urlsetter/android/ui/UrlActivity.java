@@ -21,29 +21,29 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.android.UrlApplication;
 import com.emartynov.android.app.urlsetter.android.UrlService;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 
+import javax.inject.Inject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
-
-public class UrlActivity extends Activity
+public class UrlActivity
+    extends Activity
 {
     @Inject
     Crashlytics crashlytics;
+
     @Inject
     Mixpanel mixpanel;
 
     @Override
-    public void onCreate ( Bundle savedInstanceState )
+    public void onCreate( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
 
@@ -72,7 +72,7 @@ public class UrlActivity extends Activity
         finish();
     }
 
-    private Intent getServiceIntentForSharedUrl ()
+    private Intent getServiceIntentForSharedUrl()
     {
         Intent serviceIntent = null;
 
@@ -97,20 +97,21 @@ public class UrlActivity extends Activity
         return serviceIntent;
     }
 
-    private void showPassedBadUrlError ( String sharedText )
+    private void showPassedBadUrlError( String sharedText )
     {
-        Toast toast = Toast.makeText( this, getString( R.string.not_a_link_error_text, sharedText ), Toast.LENGTH_LONG );
+        Toast toast =
+            Toast.makeText( this, getString( R.string.not_a_link_error_text, sharedText ), Toast.LENGTH_LONG );
         toast.show();
     }
 
-    private String getLinkFromSharedIntent ()
+    private String getLinkFromSharedIntent()
     {
         String sharedText = getIntent().getStringExtra( Intent.EXTRA_TEXT );
 
         return sharedText != null && sharedText.startsWith( "http" ) ? sharedText : "http://" + sharedText;
     }
 
-    private void logPassedUrl ( URL url )
+    private void logPassedUrl( URL url )
     {
         Map<String, String> params = new HashMap<String, String>();
         params.put( "host", url.getHost() );
@@ -119,7 +120,7 @@ public class UrlActivity extends Activity
     }
 
     @Override
-    protected void onDestroy ()
+    protected void onDestroy()
     {
         super.onDestroy();
 

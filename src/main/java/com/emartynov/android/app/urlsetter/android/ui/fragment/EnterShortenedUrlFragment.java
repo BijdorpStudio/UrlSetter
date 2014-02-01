@@ -28,7 +28,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.android.UrlApplication;
 import com.emartynov.android.app.urlsetter.model.event.UserInputValue;
@@ -36,7 +35,9 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
-public class EnterShortenedUrlFragment extends DialogFragment implements TextView.OnEditorActionListener, View.OnClickListener
+public class EnterShortenedUrlFragment
+    extends DialogFragment
+    implements TextView.OnEditorActionListener, View.OnClickListener
 {
     @Inject
     Bus bus;
@@ -44,7 +45,7 @@ public class EnterShortenedUrlFragment extends DialogFragment implements TextVie
     private EditText linkEdit;
 
     @Override
-    public void onAttach ( Activity activity )
+    public void onAttach( Activity activity )
     {
         super.onAttach( activity );
 
@@ -52,8 +53,7 @@ public class EnterShortenedUrlFragment extends DialogFragment implements TextVie
     }
 
     @Override
-    public View onCreateView ( LayoutInflater inflater, ViewGroup container,
-                               Bundle savedInstanceState )
+    public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
     {
         View view = inflater.inflate( R.layout.link_enter_dialog, container );
         linkEdit = (EditText) view.findViewById( R.id.link_input );
@@ -70,7 +70,7 @@ public class EnterShortenedUrlFragment extends DialogFragment implements TextVie
     }
 
     @Override
-    public boolean onEditorAction ( TextView view, int actionId, KeyEvent event )
+    public boolean onEditorAction( TextView view, int actionId, KeyEvent event )
     {
         if ( EditorInfo.IME_ACTION_DONE == actionId )
         {
@@ -81,7 +81,7 @@ public class EnterShortenedUrlFragment extends DialogFragment implements TextVie
     }
 
     @Override
-    public void onClick ( View v )
+    public void onClick( View v )
     {
         // Return input text to activity
         bus.post( new UserInputValue( linkEdit.getText().toString() ) );

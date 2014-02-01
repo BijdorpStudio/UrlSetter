@@ -25,23 +25,23 @@
               android:minHeight="30dp"
               android:padding="8dp">
 
-<TextView
-        android:id="@+id/service_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.25"
-        android:gravity="right"
-        android:paddingRight="12dp"
-        android:textSize="@dimen/medium_text"
-        tools:text="Service"/>
+  <TextView
+      android:id="@+id/service_text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="1.25"
+      android:gravity="right"
+      android:paddingRight="12dp"
+      android:textSize="@dimen/medium_text"
+      tools:text="Service"/>
 
-    <TextView
-        android:id="@+id/url_example"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.75"
-        android:autoLink="web"
-        android:textSize="@dimen/medium_text"
-        tools:text="google.com"/>
+  <TextView
+      android:id="@+id/url_example"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.75"
+      android:autoLink="web"
+      android:textSize="@dimen/medium_text"
+      tools:text="google.com"/>
 
 </LinearLayout>

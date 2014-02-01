@@ -25,7 +25,7 @@ public class HttpClient
 {
     private final OkHttpClient client = new OkHttpClient();
 
-    public HttpURLConnection open ( URL url )
+    public HttpURLConnection open( URL url )
     {
         return client.open( url );
     }

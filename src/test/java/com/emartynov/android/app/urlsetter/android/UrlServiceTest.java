@@ -19,11 +19,9 @@ package com.emartynov.android.app.urlsetter.android;
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
-
 import com.emartynov.android.app.urlsetter.UrlTestBase;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,30 +30,32 @@ import org.robolectric.RobolectricTestRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@RunWith (RobolectricTestRunner.class)
-public class UrlServiceTest extends UrlTestBase
+@RunWith(RobolectricTestRunner.class)
+public class UrlServiceTest
+    extends UrlTestBase
 {
     private UrlService service = new UrlService();
 
     @Before
-    public void setUp () throws Exception
+    public void setUp()
+        throws Exception
     {
         service.onCreate();
     }
 
     @Test
-    public void startsServicesAfterCreate () throws Exception
+    public void startsServicesAfterCreate()
+        throws Exception
     {
         verify( getCrashlytics() ).start( service );
         verify( getMixpanel() ).init( service );
     }
 
     @Test
-    public void intentProceedNonSticky () throws Exception
+    public void intentProceedNonSticky()
+        throws Exception
     {
         int type = service.onStartCommand( null, 0, 0 );
 
@@ -63,7 +63,8 @@ public class UrlServiceTest extends UrlTestBase
     }
 
     @Test
-    public void nullIntentIsIgnored () throws Exception
+    public void nullIntentIsIgnored()
+        throws Exception
     {
         service.onStartCommand( null, 0, 0 );
 
@@ -71,7 +72,8 @@ public class UrlServiceTest extends UrlTestBase
     }
 
     @Test
-    public void whenResolveAskedThenPutTaskInExecutor () throws Exception
+    public void whenResolveAskedThenPutTaskInExecutor()
+        throws Exception
     {
         String uriString = "http://google.com";
 
@@ -83,7 +85,8 @@ public class UrlServiceTest extends UrlTestBase
     }
 
     @Test
-    public void askToResolveShortenedUrl () throws Exception
+    public void askToResolveShortenedUrl()
+        throws Exception
     {
         String uriString = "http://google.com";
 
@@ -94,14 +97,14 @@ public class UrlServiceTest extends UrlTestBase
         checkEventToResolveGenerated( uriString );
     }
 
-    private Intent createIntentWithUri ( String uriString )
+    private Intent createIntentWithUri( String uriString )
     {
         Intent intent = new Intent();
         intent.setData( Uri.parse( uriString ) );
         return intent;
     }
 
-    private void checkEventToResolveGenerated ( String uriString )
+    private void checkEventToResolveGenerated( String uriString )
     {
         runExecutor();
 
@@ -111,9 +114,11 @@ public class UrlServiceTest extends UrlTestBase
     }
 
     @Test
-    public void askToResolveFacebookUrl () throws Exception
+    public void askToResolveFacebookUrl()
+        throws Exception
     {
-        String uriString = "http://m.facebook.com/l.php?u=http%3A%2F%2Fmashable.com%2F2014%2F01%2F12%2Fstages-of-snapchat-comic";
+        String uriString =
+            "http://m.facebook.com/l.php?u=http%3A%2F%2Fmashable.com%2F2014%2F01%2F12%2Fstages-of-snapchat-comic";
 
         Intent intent = createIntentWithUri( uriString );
 
@@ -123,7 +128,8 @@ public class UrlServiceTest extends UrlTestBase
     }
 
     @Test
-    public void checkCacheFirst () throws Exception
+    public void checkCacheFirst()
+        throws Exception
     {
         String uriString = "http://google.com";
 
@@ -136,7 +142,8 @@ public class UrlServiceTest extends UrlTestBase
     }
 
     @Test
-    public void whenResolverReturnsSameUriThenError () throws Exception
+    public void whenResolverReturnsSameUriThenError()
+        throws Exception
     {
         String uriString = "http://t.co/djsdhjshd";
 

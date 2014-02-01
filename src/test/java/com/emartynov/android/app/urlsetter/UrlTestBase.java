@@ -24,7 +24,6 @@ import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import com.squareup.otto.Bus;
-
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 
@@ -34,49 +33,49 @@ import static org.mockito.Mockito.verify;
 
 public class UrlTestBase
 {
-    private TestUrlModule getTestModule ()
+    private TestUrlModule getTestModule()
     {
         return ( (TestUrlApplication) Robolectric.application ).getTestModule();
     }
 
-    public Crashlytics getCrashlytics ()
+    public Crashlytics getCrashlytics()
     {
         return getTestModule().getCrashlytics();
     }
 
-    public Bus getBus ()
+    public Bus getBus()
     {
         return getTestModule().getBus();
     }
 
-    public Mixpanel getMixpanel ()
+    public Mixpanel getMixpanel()
     {
         return getTestModule().getLogger();
     }
 
-    public UrlDiskLruCache getCache ()
+    public UrlDiskLruCache getCache()
     {
         return getTestModule().getCache();
     }
 
-    public ThreadPoolExecutor getExecutor ()
+    public ThreadPoolExecutor getExecutor()
     {
         return getTestModule().getExecutor();
     }
 
-    public UrlResolver getResolver ()
+    public UrlResolver getResolver()
     {
         return getTestModule().getURLResolver( getTestModule().getHttpClient() );
     }
 
-    public void runExecutor ()
+    public void runExecutor()
     {
         ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass( Runnable.class );
         verify( getExecutor() ).execute( captor.capture() );
         captor.getValue().run();
     }
 
-    public IntentHelper getIntentHelper ()
+    public IntentHelper getIntentHelper()
     {
         return getTestModule().getIntentHelper();
     }

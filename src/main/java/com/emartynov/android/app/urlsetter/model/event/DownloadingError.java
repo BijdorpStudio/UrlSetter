@@ -20,12 +20,14 @@ import android.net.Uri;
 
 import java.util.Map;
 
-public class DownloadingError extends UrlEvent
+public class DownloadingError
+    extends UrlEvent
 {
     private final Uri lastResolvedUri;
+
     private Exception exception;
 
-    public DownloadingError ( Uri uri, Uri lastResolvedUri, Exception e )
+    public DownloadingError( Uri uri, Uri lastResolvedUri, Exception e )
     {
         super( uri );
 
@@ -33,18 +35,18 @@ public class DownloadingError extends UrlEvent
         exception = e;
     }
 
-    public Uri getLastResolvedUri ()
+    public Uri getLastResolvedUri()
     {
         return lastResolvedUri;
     }
 
-    public Exception getException ()
+    public Exception getException()
     {
         return exception;
     }
 
     @Override
-    public Map<String, String> getLoggingParams ()
+    public Map<String, String> getLoggingParams()
     {
         Map<String, String> loggingParams = super.getLoggingParams();
 
@@ -54,7 +56,7 @@ public class DownloadingError extends UrlEvent
         return loggingParams;
     }
 
-    private String getMessage ()
+    private String getMessage()
     {
         String localizedMessage = exception.getLocalizedMessage();
         return localizedMessage == null ? "No Message" : localizedMessage;

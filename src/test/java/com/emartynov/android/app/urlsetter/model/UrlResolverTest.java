@@ -17,12 +17,10 @@
 package com.emartynov.android.app.urlsetter.model;
 
 import android.net.Uri;
-
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,21 +32,20 @@ import java.net.URL;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@RunWith ( RobolectricTestRunner.class )
+@RunWith(RobolectricTestRunner.class)
 public class UrlResolverTest
 {
     private UrlResolver target;
 
     private HttpClient client = mock( HttpClient.class );
+
     private HttpURLConnection connection = mock( HttpURLConnection.class );
 
     @Before
-    public void setUp () throws Exception
+    public void setUp()
+        throws Exception
     {
         when( client.open( any( URL.class ) ) ).thenReturn( connection );
 
@@ -56,7 +53,8 @@ public class UrlResolverTest
     }
 
     @Test
-    public void resolveMovePermanent () throws Exception
+    public void resolveMovePermanent()
+        throws Exception
     {
         String endUrl = "http://test.com";
         redirectTo( endUrl, HttpURLConnection.HTTP_MOVED_PERM );
@@ -66,25 +64,27 @@ public class UrlResolverTest
         checkUrlFound( result, endUrl );
     }
 
-    private void redirectTo ( String endUrl, int moveResponseCode ) throws IOException
+    private void redirectTo( String endUrl, int moveResponseCode )
+        throws IOException
     {
         when( connection.getResponseCode() ).thenReturn( moveResponseCode, HttpURLConnection.HTTP_OK );
         when( connection.getHeaderField( UrlResolver.LOCATION_HEADER ) ).thenReturn( endUrl );
     }
 
-    private UrlEvent resolveUrl ( String uriString )
+    private UrlEvent resolveUrl( String uriString )
     {
         ResolveUrl event = new ResolveUrl( Uri.parse( uriString ) );
         return target.resolveURL( event );
     }
 
-    private void checkUrlFound ( FoundUrl result, String endUrl )
+    private void checkUrlFound( FoundUrl result, String endUrl )
     {
         assertThat( result.getResolvedUri().toString() ).isEqualTo( endUrl );
     }
 
     @Test
-    public void nonShortenedUrlReturnsSame () throws Exception
+    public void nonShortenedUrlReturnsSame()
+        throws Exception
     {
         String endUrl = "http://test.com";
         when( connection.getResponseCode() ).thenReturn( HttpURLConnection.HTTP_OK );
@@ -95,7 +95,8 @@ public class UrlResolverTest
     }
 
     @Test
-    public void resolveMovedTemporary () throws Exception
+    public void resolveMovedTemporary()
+        throws Exception
     {
         String endUrl = "http://test.com";
         redirectTo( endUrl, HttpURLConnection.HTTP_MOVED_TEMP );
@@ -106,7 +107,8 @@ public class UrlResolverTest
     }
 
     @Test
-    public void resolveSeeOther () throws Exception
+    public void resolveSeeOther()
+        throws Exception
     {
         String endUrl = "http://test.com";
         redirectTo( endUrl, HttpURLConnection.HTTP_SEE_OTHER );
@@ -117,7 +119,8 @@ public class UrlResolverTest
     }
 
     @Test
-    public void resolveTemporaryRedirect () throws Exception
+    public void resolveTemporaryRedirect()
+        throws Exception
     {
         String endUrl = "http://test.com";
         redirectTo( endUrl, UrlResolver.HTTP_TEMP_REDIRECT );
@@ -127,13 +130,14 @@ public class UrlResolverTest
         checkUrlFound( result, endUrl );
     }
 
-    private void verifyErrorEventWithException ( DownloadingError result, Class<? extends Exception> exceptionType )
+    private void verifyErrorEventWithException( DownloadingError result, Class<? extends Exception> exceptionType )
     {
         assertThat( result.getException() ).isInstanceOf( exceptionType );
     }
 
     @Test
-    public void whenIOExceptionThenEventFired () throws Exception
+    public void whenIOExceptionThenEventFired()
+        throws Exception
     {
         when( connection.getResponseCode() ).thenThrow( IOException.class );
 
@@ -143,7 +147,8 @@ public class UrlResolverTest
     }
 
     @Test
-    public void runHeadRequestFirst () throws Exception
+    public void runHeadRequestFirst()
+        throws Exception
     {
         resolveUrl( "http://google.com" );
 

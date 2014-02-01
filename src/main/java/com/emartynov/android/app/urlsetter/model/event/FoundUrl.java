@@ -18,18 +18,19 @@ package com.emartynov.android.app.urlsetter.model.event;
 
 import android.net.Uri;
 
-public class FoundUrl extends UrlEvent
+public class FoundUrl
+    extends UrlEvent
 {
     private final Uri resolvedUri;
 
-    public FoundUrl ( Uri originUri, Uri resolvedUri )
+    public FoundUrl( Uri originUri, Uri resolvedUri )
     {
         super( originUri );
 
         this.resolvedUri = resolvedUri;
     }
 
-    public Uri getResolvedUri ()
+    public Uri getResolvedUri()
     {
         return resolvedUri;
     }

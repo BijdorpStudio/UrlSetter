@@ -17,7 +17,6 @@
 package com.emartynov.android.app.urlsetter.model;
 
 import android.net.Uri;
-
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
@@ -30,19 +29,21 @@ import java.net.URL;
 public class UrlResolver
 {
     public static final String HEAD_METHOD = "HEAD";
+
     public static final String GET_METHOD = "GET";
 
     public static final String LOCATION_HEADER = "Location";
+
     public static final int HTTP_TEMP_REDIRECT = 307;
 
     private final HttpClient httpClient;
 
-    public UrlResolver ( HttpClient httpClient )
+    public UrlResolver( HttpClient httpClient )
     {
         this.httpClient = httpClient;
     }
 
-    public UrlEvent resolveURL ( ResolveUrl event )
+    public UrlEvent resolveURL( ResolveUrl event )
     {
         Uri uri = event.getUri();
 
@@ -58,7 +59,8 @@ public class UrlResolver
         }
     }
 
-    private Uri resolveUrl ( String startUrl ) throws IOException
+    private Uri resolveUrl( String startUrl )
+        throws IOException
     {
         String currentUrl = startUrl;
         String nextUrl = currentUrl;
@@ -73,17 +75,20 @@ public class UrlResolver
         return Uri.parse( currentUrl );
     }
 
-    private String findNextUrl ( String url ) throws IOException
+    private String findNextUrl( String url )
+        throws IOException
     {
         return processHeadUrl( url );
     }
 
-    private String processHeadUrl ( String url ) throws IOException
+    private String processHeadUrl( String url )
+        throws IOException
     {
         return processUrl( url, HEAD_METHOD );
     }
 
-    private String processUrl ( String url, String method ) throws IOException
+    private String processUrl( String url, String method )
+        throws IOException
     {
         HttpURLConnection connection = null;
 
@@ -115,11 +120,9 @@ public class UrlResolver
         }
     }
 
-    private boolean isRedirection ( int responseCode )
+    private boolean isRedirection( int responseCode )
     {
-        return responseCode == HttpURLConnection.HTTP_MOVED_PERM
-                || responseCode == HttpURLConnection.HTTP_MOVED_TEMP
-                || responseCode == HttpURLConnection.HTTP_SEE_OTHER
-                || responseCode == HTTP_TEMP_REDIRECT;
+        return responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP
+            || responseCode == HttpURLConnection.HTTP_SEE_OTHER || responseCode == HTTP_TEMP_REDIRECT;
     }
 }

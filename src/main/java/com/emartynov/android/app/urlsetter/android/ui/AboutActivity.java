@@ -21,16 +21,16 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.widget.TextView;
-
 import com.emartynov.android.app.urlsetter.R;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AboutActivity extends InjectedActivity
+public class AboutActivity
+    extends InjectedActivity
 {
     @Override
-    protected void onCreate ( Bundle savedInstanceState )
+    protected void onCreate( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
 
@@ -41,7 +41,7 @@ public class AboutActivity extends InjectedActivity
         updateApplicationVersion();
     }
 
-    private void updateApplicationVersion ()
+    private void updateApplicationVersion()
     {
         try
         {
@@ -55,7 +55,7 @@ public class AboutActivity extends InjectedActivity
         }
     }
 
-    private void linkifyTwitterName ()
+    private void linkifyTwitterName()
     {
         TextView tweetView = (TextView) findViewById( R.id.twitter_name );
 
@@ -66,7 +66,7 @@ public class AboutActivity extends InjectedActivity
         {
             //skip the first character to filter out '@'
             @Override
-            public String transformUrl ( final Matcher match, String url )
+            public String transformUrl( final Matcher match, String url )
             {
                 return match.group( 1 );
             }

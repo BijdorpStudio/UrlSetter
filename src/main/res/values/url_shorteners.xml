@@ -16,22 +16,22 @@
   -->
 
 <resources>
-    <array name="services">
-        <item>Twitter</item>
-        <item>Bit.ly</item>
-        <item>Facebook</item>
-        <item>Goo.gl</item>
-        <item>Buff.ly</item>
-        <item>Linkd.in</item>
-    </array>
-    <array name="service_urls">
-        <item>t.co/LrwagumK7p</item>
-        <item>bit.ly/1hvIZp3</item>
-        <item>
-            m.facebook.com/l.php?u=http%3A%2F%2Fmashable.com%2F2014%2F01%2F12%2Fstages-of-snapchat-comic
-        </item>
-        <item>goo.gl/1y05hc</item>
-        <item>buff.ly/1dZlzpG</item>
-        <item>linkd.in/196Yq4M</item>
-    </array>
+  <array name="services">
+    <item>Twitter</item>
+    <item>Bit.ly</item>
+    <item>Facebook</item>
+    <item>Goo.gl</item>
+    <item>Buff.ly</item>
+    <item>Linkd.in</item>
+  </array>
+  <array name="service_urls">
+    <item>t.co/LrwagumK7p</item>
+    <item>bit.ly/1hvIZp3</item>
+    <item>
+      m.facebook.com/l.php?u=http%3A%2F%2Fmashable.com%2F2014%2F01%2F12%2Fstages-of-snapchat-comic
+    </item>
+    <item>goo.gl/1y05hc</item>
+    <item>buff.ly/1dZlzpG</item>
+    <item>linkd.in/196Yq4M</item>
+  </array>
 </resources>

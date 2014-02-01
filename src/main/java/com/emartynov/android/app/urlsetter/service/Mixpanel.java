@@ -17,9 +17,7 @@
 package com.emartynov.android.app.urlsetter.service;
 
 import android.content.Context;
-
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -27,36 +25,41 @@ import java.util.Map;
 public class Mixpanel
 {
     public static final String PASSED_BAD_URL_EVENT = "Passed bad url";
+
     public static final String PASSED_URL_EVENT = "Passed url";
+
     public static final String RESOLVING_ERROR_EVENT = "Error";
+
     public static final String RESOLVED_URL_EVENT = "Resolved";
+
     public static final String RESOLVING_STARTED_EVENT = "Started";
 
     private final String token;
+
     private MixpanelAPI logger;
 
-    public Mixpanel ( String apiToken )
+    public Mixpanel( String apiToken )
     {
         this.token = apiToken;
     }
 
-    public void init ( Context context )
+    public void init( Context context )
     {
         logger = MixpanelAPI.getInstance( context, token );
     }
 
-    public void flush ()
+    public void flush()
     {
         logger.flush();
     }
 
-    public void trackEvent ( String name, Map<String, String> parameters )
+    public void trackEvent( String name, Map<String, String> parameters )
     {
         JSONObject properties = new JSONObject( parameters );
         logger.track( name, properties );
     }
 
-    public void trackEvent ( String name )
+    public void trackEvent( String name )
     {
         logger.track( name, null );
     }

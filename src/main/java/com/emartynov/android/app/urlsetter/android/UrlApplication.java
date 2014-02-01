@@ -17,15 +17,14 @@
 package com.emartynov.android.app.urlsetter.android;
 
 import android.app.Application;
-
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
+import dagger.ObjectGraph;
 
 import javax.inject.Inject;
 
-import dagger.ObjectGraph;
-
-public class UrlApplication extends Application
+public class UrlApplication
+    extends Application
 {
     private ObjectGraph objectGraph;
 
@@ -33,7 +32,7 @@ public class UrlApplication extends Application
     Crashlytics crashlytics;
 
     @Override
-    public void onCreate ()
+    public void onCreate()
     {
         super.onCreate();
 
@@ -45,7 +44,7 @@ public class UrlApplication extends Application
         crashlytics.start( this );
     }
 
-    protected Object getUrlModule ()
+    protected Object getUrlModule()
     {
         UrlModule urlModule = new UrlModule();
         try
@@ -59,7 +58,7 @@ public class UrlApplication extends Application
         return urlModule;
     }
 
-    public void inject ( Object objectToInject )
+    public void inject( Object objectToInject )
     {
         objectGraph.inject( objectToInject );
     }

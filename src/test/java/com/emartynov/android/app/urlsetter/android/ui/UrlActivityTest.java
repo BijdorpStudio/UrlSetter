@@ -17,10 +17,8 @@
 package com.emartynov.android.app.urlsetter.android.ui;
 
 import android.content.Intent;
-
 import com.emartynov.android.app.urlsetter.UrlTestBase;
 import com.emartynov.android.app.urlsetter.android.UrlService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,31 +30,36 @@ import static org.mockito.Mockito.verify;
 import static org.robolectric.Robolectric.buildActivity;
 import static org.robolectric.Robolectric.shadowOf;
 
-@RunWith (RobolectricTestRunner.class)
-public class UrlActivityTest extends UrlTestBase
+@RunWith(RobolectricTestRunner.class)
+public class UrlActivityTest
+    extends UrlTestBase
 {
     private UrlActivity activity;
 
     @Before
-    public void setUp () throws Exception
+    public void setUp()
+        throws Exception
     {
         activity = buildActivity( UrlActivity.class ).withIntent( new Intent() ).create().get();
     }
 
     @Test
-    public void finishesAfterStart () throws Exception
+    public void finishesAfterStart()
+        throws Exception
     {
         assertThat( activity.isFinishing() ).isTrue();
     }
 
     @Test
-    public void startsCrashlytics () throws Exception
+    public void startsCrashlytics()
+        throws Exception
     {
         verify( getCrashlytics() ).start( activity );
     }
 
     @Test
-    public void startsService () throws Exception
+    public void startsService()
+        throws Exception
     {
         ShadowIntent startedService = shadowOf( shadowOf( activity ).getNextStartedService() );
 

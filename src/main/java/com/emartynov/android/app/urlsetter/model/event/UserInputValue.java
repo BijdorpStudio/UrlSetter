@@ -20,12 +20,12 @@ public class UserInputValue
 {
     private String userInput;
 
-    public UserInputValue ( String userInput )
+    public UserInputValue( String userInput )
     {
         this.userInput = userInput;
     }
 
-    public String getUserInput ()
+    public String getUserInput()
     {
         return userInput;
     }

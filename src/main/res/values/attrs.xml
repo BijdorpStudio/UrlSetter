@@ -16,9 +16,9 @@
   -->
 
 <resources>
-    <declare-styleable name="PlaceholderFragment">
-        <attr name="fragment_layout" format="reference"/>
-        <attr name="list_fragment_keys" format="reference"/>
-        <attr name="list_fragment_values" format="reference"/>
-    </declare-styleable>
+  <declare-styleable name="PlaceholderFragment">
+    <attr name="fragment_layout" format="reference"/>
+    <attr name="list_fragment_keys" format="reference"/>
+    <attr name="list_fragment_values" format="reference"/>
+  </declare-styleable>
 </resources>

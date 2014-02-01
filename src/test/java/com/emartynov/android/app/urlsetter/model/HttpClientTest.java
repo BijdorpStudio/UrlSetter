@@ -28,7 +28,8 @@ public class HttpClientTest
     private HttpClient client = new HttpClient();
 
     @Test
-    public void correctlyCreatesConnection () throws Exception
+    public void correctlyCreatesConnection()
+        throws Exception
     {
         String address = "http://google.com";
         HttpURLConnection connection = client.open( new URL( address ) );

@@ -23,32 +23,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+  <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
 
-        <fragment
-            class="com.emartynov.android.app.urlsetter.android.ui.fragment.PlaceholderFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:fragment_layout="@layout/fragment_application_info"
-            tools:layout="@layout/fragment_application_info"/>
+    <fragment
+        class="com.emartynov.android.app.urlsetter.android.ui.fragment.PlaceholderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:fragment_layout="@layout/fragment_application_info"
+        tools:layout="@layout/fragment_application_info"/>
 
-        <fragment
-            class="com.emartynov.android.app.urlsetter.android.ui.fragment.PlaceholderFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:fragment_layout="@layout/fragment_application_explanation"
-            tools:layout="@layout/fragment_application_explanation"/>
+    <fragment
+        class="com.emartynov.android.app.urlsetter.android.ui.fragment.PlaceholderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:fragment_layout="@layout/fragment_application_explanation"
+        tools:layout="@layout/fragment_application_explanation"/>
 
-        <fragment
-            class="com.emartynov.android.app.urlsetter.android.ui.fragment.PlaceholderFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:fragment_layout="@layout/fragment_credits"
-            tools:layout="@layout/fragment_credits"/>
+    <fragment
+        class="com.emartynov.android.app.urlsetter.android.ui.fragment.PlaceholderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:fragment_layout="@layout/fragment_credits"
+        tools:layout="@layout/fragment_credits"/>
 
-    </LinearLayout>
+  </LinearLayout>
 
 </ScrollView>

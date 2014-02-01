@@ -23,7 +23,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.text.format.DateUtils;
 import android.widget.Toast;
-
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.android.packagemanager.IntentHelper;
 import com.emartynov.android.app.urlsetter.model.UrlDiskLruCache;
@@ -35,38 +34,46 @@ import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import javax.inject.Inject;
-
-public class UrlService extends Service
+public class UrlService
+    extends Service
 {
     public static final long APOLOGIZE_TIMEOUT = 10 * DateUtils.SECOND_IN_MILLIS;
+
     public static final long STOP_TIMEOUT = 5 * DateUtils.MINUTE_IN_MILLIS;
+
     private static final String FACEBOOK_HOST = "m.facebook.com";
 
     @Inject
     UrlResolver urlResolver;
+
     @Inject
     Mixpanel logger;
+
     @Inject
     UrlDiskLruCache cache;
+
     @Inject
     Crashlytics crashlytics;
+
     @Inject
     ThreadPoolExecutor executor;
+
     @Inject
     IntentHelper intentHelper;
 
     private Timer timer;
+
     private Handler handler;
 
     @Override
-    public void onCreate ()
+    public void onCreate()
     {
         handler = new Handler();
 
@@ -78,20 +85,20 @@ public class UrlService extends Service
     }
 
     @Override
-    public IBinder onBind ( Intent intent )
+    public IBinder onBind( Intent intent )
     {
         return null;
     }
 
     @Override
-    public int onStartCommand ( final Intent intent, int flags, int startId )
+    public int onStartCommand( final Intent intent, int flags, int startId )
     {
         if ( intent != null )
         {
             executor.execute( new Runnable()
             {
                 @Override
-                public void run ()
+                public void run()
                 {
                     resolveUrl( intent.getData() );
                 }
@@ -101,7 +108,7 @@ public class UrlService extends Service
         return START_NOT_STICKY;
     }
 
-    private void resolveUrl ( Uri uri )
+    private void resolveUrl( Uri uri )
     {
         boolean showMessageBefore = !cache.isLoaded();
         if ( showMessageBefore )
@@ -123,12 +130,12 @@ public class UrlService extends Service
         getFromCacheOrResolve( new ResolveUrl( targetUri ), showMessageBefore );
     }
 
-    private boolean isFacebook ( Uri uri )
+    private boolean isFacebook( Uri uri )
     {
         return FACEBOOK_HOST.equals( uri.getHost() );
     }
 
-    private void getFromCacheOrResolve ( ResolveUrl event, boolean messageShown )
+    private void getFromCacheOrResolve( ResolveUrl event, boolean messageShown )
     {
         Uri resolvedUri = cache.get( event.getUri() );
         if ( resolvedUri == null )
@@ -148,7 +155,7 @@ public class UrlService extends Service
         trackStart( isFacebook( event.getUri() ) );
     }
 
-    public void resolveUrl ( ResolveUrl event )
+    public void resolveUrl( ResolveUrl event )
     {
         createLongOperationTimer();
 
@@ -164,7 +171,7 @@ public class UrlService extends Service
         }
     }
 
-    private void trackStart ( boolean fromFacebook )
+    private void trackStart( boolean fromFacebook )
     {
         Map<String, String> params = new HashMap<String, String>();
         params.put( "facebook", String.valueOf( fromFacebook ) );
@@ -172,7 +179,7 @@ public class UrlService extends Service
         logger.trackEvent( Mixpanel.RESOLVING_STARTED_EVENT, params );
     }
 
-    private synchronized void createLongOperationTimer ()
+    private synchronized void createLongOperationTimer()
     {
         cancelTimer();
 
@@ -180,45 +187,45 @@ public class UrlService extends Service
         timer.schedule( new TimerTask()
         {
             @Override
-            public void run ()
+            public void run()
             {
                 showToastOnUI( getString( R.string.operation_takes_longer ) );
             }
         }, APOLOGIZE_TIMEOUT );
     }
 
-    private void showToastOnUI ( final String toastText )
+    private void showToastOnUI( final String toastText )
     {
         runOnUiThread( new Runnable()
         {
             @Override
-            public void run ()
+            public void run()
             {
                 showToast( toastText );
             }
         } );
     }
 
-    private void runOnUiThread ( Runnable runnable )
+    private void runOnUiThread( Runnable runnable )
     {
         handler.post( runnable );
     }
 
-    private void showToast ( String toastText )
+    private void showToast( String toastText )
     {
         Toast toast = Toast.makeText( this, toastText, Toast.LENGTH_SHORT );
         toast.show();
     }
 
     @Override
-    public void onDestroy ()
+    public void onDestroy()
     {
         super.onDestroy();
 
         logger.flush();
     }
 
-    public void launchURL ( FoundUrl event )
+    public void launchURL( FoundUrl event )
     {
         cancelTimer();
 
@@ -232,18 +239,18 @@ public class UrlService extends Service
         }
     }
 
-    private boolean checkInfiniteLoop ( FoundUrl event )
+    private boolean checkInfiniteLoop( FoundUrl event )
     {
         return event.getResolvedUri().equals( event.getUri() ) && intentHelper.isFilterUri( this, event.getUri() );
     }
 
-    private void reportUnresolvedUrlError ( FoundUrl event )
+    private void reportUnresolvedUrlError( FoundUrl event )
     {
         RuntimeException dummyException = new RuntimeException( "Resolver returned same URL" );
         downloadError( new DownloadingError( event.getUri(), event.getUri(), dummyException ) );
     }
 
-    private void launchAndCacheResolvedUri ( FoundUrl event )
+    private void launchAndCacheResolvedUri( FoundUrl event )
     {
         launchResolvedUri( event.getResolvedUri() );
 
@@ -252,14 +259,14 @@ public class UrlService extends Service
         cache.save( event.getUri(), event.getResolvedUri() );
     }
 
-    private void launchResolvedUri ( Uri uri )
+    private void launchResolvedUri( Uri uri )
     {
         intentHelper.launchUri( this, uri );
 
         checkToStop();
     }
 
-    private void checkToStop ()
+    private void checkToStop()
     {
         if ( isOnlyOne() )
         {
@@ -268,7 +275,7 @@ public class UrlService extends Service
             timer.schedule( new TimerTask()
             {
                 @Override
-                public void run ()
+                public void run()
                 {
                     if ( isIdle() )
                     {
@@ -279,22 +286,22 @@ public class UrlService extends Service
         }
     }
 
-    private boolean isOnlyOne ()
+    private boolean isOnlyOne()
     {
         return checkNumberOfTasks( 1 );
     }
 
-    private boolean isIdle ()
+    private boolean isIdle()
     {
         return checkNumberOfTasks( 0 );
     }
 
-    private boolean checkNumberOfTasks ( int numberOfTasks )
+    private boolean checkNumberOfTasks( int numberOfTasks )
     {
         return ( executor.getTaskCount() - executor.getCompletedTaskCount() ) == numberOfTasks;
     }
 
-    private synchronized void cancelTimer ()
+    private synchronized void cancelTimer()
     {
         if ( timer != null )
         {
@@ -302,7 +309,7 @@ public class UrlService extends Service
         }
     }
 
-    public void downloadError ( final DownloadingError event )
+    public void downloadError( final DownloadingError event )
     {
         cancelTimer();
 

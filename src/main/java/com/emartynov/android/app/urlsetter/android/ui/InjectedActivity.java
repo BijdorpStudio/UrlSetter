@@ -18,19 +18,19 @@ package com.emartynov.android.app.urlsetter.android.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-
 import com.emartynov.android.app.urlsetter.android.UrlApplication;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 
 import javax.inject.Inject;
 
-public class InjectedActivity extends ActionBarActivity
+public class InjectedActivity
+    extends ActionBarActivity
 {
     @Inject
     Crashlytics crashlytics;
 
     @Override
-    protected void onCreate ( Bundle savedInstanceState )
+    protected void onCreate( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
 

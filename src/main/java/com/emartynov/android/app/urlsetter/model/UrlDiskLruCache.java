@@ -17,7 +17,6 @@
 package com.emartynov.android.app.urlsetter.model;
 
 import android.net.Uri;
-
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.jakewharton.disklrucache.DiskLruCache;
 
@@ -29,24 +28,26 @@ import java.security.NoSuchAlgorithmException;
 public class UrlDiskLruCache
 {
     private final File directory;
+
     private final int appVersion;
+
     private Crashlytics crashlytics;
 
     private DiskLruCache lruCache;
 
-    public UrlDiskLruCache ( File directory, int appVersion, Crashlytics crashlytics )
+    public UrlDiskLruCache( File directory, int appVersion, Crashlytics crashlytics )
     {
         this.directory = directory;
         this.appVersion = appVersion;
         this.crashlytics = crashlytics;
     }
 
-    public synchronized Uri get ( Uri keyUri )
+    public synchronized Uri get( Uri keyUri )
     {
         return checkIfCacheInitialized() ? getCachedUriFromLruDiskCache( keyUri ) : null;
     }
 
-    private Uri getCachedUriFromLruDiskCache ( Uri keyUri )
+    private Uri getCachedUriFromLruDiskCache( Uri keyUri )
     {
         try
         {
@@ -63,7 +64,7 @@ public class UrlDiskLruCache
         }
     }
 
-    private boolean checkIfCacheInitialized ()
+    private boolean checkIfCacheInitialized()
     {
         if ( lruCache == null )
         {
@@ -81,7 +82,7 @@ public class UrlDiskLruCache
         return true;
     }
 
-    private String getUriKey ( Uri uri )
+    private String getUriKey( Uri uri )
     {
         String key;
         try
@@ -95,7 +96,8 @@ public class UrlDiskLruCache
         return key.length() > 64 ? key.substring( 0, 64 ) : key;
     }
 
-    private String getMD5 ( Uri uri ) throws NoSuchAlgorithmException
+    private String getMD5( Uri uri )
+        throws NoSuchAlgorithmException
     {
         MessageDigest digest = MessageDigest.getInstance( "MD5" );
         digest.update( uri.toString().getBytes() );
@@ -116,7 +118,7 @@ public class UrlDiskLruCache
         return hexString.toString();
     }
 
-    public synchronized void save ( Uri keyUri, Uri valueUri )
+    public synchronized void save( Uri keyUri, Uri valueUri )
     {
         if ( checkIfCacheInitialized() )
         {
@@ -124,7 +126,7 @@ public class UrlDiskLruCache
         }
     }
 
-    private void saveToDiskLruCache ( Uri keyUri, Uri valueUri )
+    private void saveToDiskLruCache( Uri keyUri, Uri valueUri )
     {
         try
         {
@@ -138,7 +140,7 @@ public class UrlDiskLruCache
         }
     }
 
-    public synchronized boolean isLoaded ()
+    public synchronized boolean isLoaded()
     {
         return lruCache != null;
     }

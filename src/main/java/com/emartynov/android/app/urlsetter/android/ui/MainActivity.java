@@ -25,7 +25,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.emartynov.android.app.urlsetter.R;
 import com.emartynov.android.app.urlsetter.android.ui.fragment.EnterShortenedUrlFragment;
 import com.emartynov.android.app.urlsetter.android.ui.fragment.UrlListFragment;
@@ -33,18 +32,18 @@ import com.emartynov.android.app.urlsetter.model.event.UserInputValue;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Inject;
-
-public class MainActivity extends InjectedActivity
+public class MainActivity
+    extends InjectedActivity
 {
     @Inject
     Bus bus;
 
     @Override
-    public void onCreate ( Bundle savedInstanceState )
+    public void onCreate( Bundle savedInstanceState )
     {
         super.onCreate( savedInstanceState );
 
@@ -60,23 +59,22 @@ public class MainActivity extends InjectedActivity
         }
     }
 
-    private List<UrlListFragment> getFragments ()
+    private List<UrlListFragment> getFragments()
     {
         return Arrays.asList(
-                new UrlListFragment( getString( R.string.services_title ), R.array.services, R.array.service_urls ),
-                new UrlListFragment( getString( R.string.applications_title ), R.array.applications, R.array.app_urls )
-        );
+            new UrlListFragment( getString( R.string.services_title ), R.array.services, R.array.service_urls ),
+            new UrlListFragment( getString( R.string.applications_title ), R.array.applications, R.array.app_urls ) );
     }
 
     @Override
-    public boolean onCreateOptionsMenu ( Menu menu )
+    public boolean onCreateOptionsMenu( Menu menu )
     {
         getMenuInflater().inflate( R.menu.main, menu );
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected ( MenuItem item )
+    public boolean onOptionsItemSelected( MenuItem item )
     {
         if ( item.getItemId() == R.id.action_about )
         {
@@ -85,8 +83,8 @@ public class MainActivity extends InjectedActivity
         }
         else if ( item.getItemId() == R.id.action_feedback )
         {
-            Intent emailIntent = new Intent( Intent.ACTION_SENDTO,
-                    Uri.fromParts( "mailto", "bijdorpstudio@gmail.com", null ) );
+            Intent emailIntent =
+                new Intent( Intent.ACTION_SENDTO, Uri.fromParts( "mailto", "bijdorpstudio@gmail.com", null ) );
             emailIntent.putExtra( Intent.EXTRA_SUBJECT, getString( R.string.feedback_subject ) );
             startActivity( Intent.createChooser( emailIntent, getString( R.string.action_feedback ) ) );
             return true;
@@ -106,7 +104,7 @@ public class MainActivity extends InjectedActivity
     }
 
     @Override
-    protected void onResume ()
+    protected void onResume()
     {
         super.onResume();
 
@@ -114,7 +112,7 @@ public class MainActivity extends InjectedActivity
     }
 
     @Override
-    protected void onPause ()
+    protected void onPause()
     {
         bus.unregister( this );
 
@@ -122,7 +120,7 @@ public class MainActivity extends InjectedActivity
     }
 
     @Subscribe
-    public void onUserInput ( UserInputValue event )
+    public void onUserInput( UserInputValue event )
     {
         Intent intent = new Intent( Intent.ACTION_SEND );
         intent.putExtra( Intent.EXTRA_TEXT, event.getUserInput() );
@@ -131,11 +129,12 @@ public class MainActivity extends InjectedActivity
         startActivity( intent );
     }
 
-    private class FragmentPageAdapter extends FragmentPagerAdapter
+    private class FragmentPageAdapter
+        extends FragmentPagerAdapter
     {
         private final List<UrlListFragment> fragments;
 
-        public FragmentPageAdapter ( FragmentManager fragmentManager, List<UrlListFragment> fragments )
+        public FragmentPageAdapter( FragmentManager fragmentManager, List<UrlListFragment> fragments )
         {
             super( fragmentManager );
 
@@ -143,19 +142,19 @@ public class MainActivity extends InjectedActivity
         }
 
         @Override
-        public int getCount ()
+        public int getCount()
         {
             return fragments.size();
         }
 
         @Override
-        public Fragment getItem ( int position )
+        public Fragment getItem( int position )
         {
             return fragments.get( position );
         }
 
         @Override
-        public CharSequence getPageTitle ( int position )
+        public CharSequence getPageTitle( int position )
         {
             return fragments.get( position ).getTitle();
         }
