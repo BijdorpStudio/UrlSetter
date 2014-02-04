@@ -41,8 +41,8 @@ import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-@Module( injects = { UrlActivity.class, UrlService.class, UrlApplication.class, MainActivity.class, AboutActivity.class,
-    EnterShortenedUrlFragment.class } )
+@Module(injects = { UrlActivity.class, UrlService.class, UrlApplication.class, MainActivity.class, AboutActivity.class,
+    EnterShortenedUrlFragment.class })
 public class UrlModule
 {
     private String mixpanelToken;

@@ -25,14 +25,14 @@
 
   <item
       android:id="@+id/action_resolve_link"
-      android:title="@string/unshort_url"
-      android:showAsAction="never"/>
+      android:showAsAction="never"
+      android:title="@string/unshort_url" />
   <item
       android:id="@+id/action_feedback"
-      android:title="@string/action_feedback"
-      android:showAsAction="never"/>
+      android:showAsAction="never"
+      android:title="@string/action_feedback" />
   <item
       android:id="@+id/action_about"
-      android:title="@string/action_about"
-      android:showAsAction="never"/>
+      android:showAsAction="never"
+      android:title="@string/action_about" />
 </menu>

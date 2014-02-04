@@ -27,13 +27,13 @@
       android:id="@+id/link_input"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:inputType="textUri"
-      android:imeOptions="actionDone"/>
+      android:imeOptions="actionDone"
+      android:inputType="textUri" />
 
   <Button
       android:id="@+id/start_button"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
-      android:text="@string/start"/>
+      android:text="@string/start" />
 </LinearLayout>

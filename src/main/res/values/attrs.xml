@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2013-2014 @BijdorpStudio
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +16,8 @@
 
 <resources>
   <declare-styleable name="PlaceholderFragment">
-    <attr name="fragment_layout" format="reference"/>
-    <attr name="list_fragment_keys" format="reference"/>
-    <attr name="list_fragment_values" format="reference"/>
+    <attr name="fragment_layout" format="reference" />
+    <attr name="list_fragment_keys" format="reference" />
+    <attr name="list_fragment_values" format="reference" />
   </declare-styleable>
 </resources>
