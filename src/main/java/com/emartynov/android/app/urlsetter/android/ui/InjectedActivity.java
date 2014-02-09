@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import com.emartynov.android.app.urlsetter.android.UrlApplication;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
+import com.emartynov.android.app.urlsetter.service.Mixpanel;
 
 import javax.inject.Inject;
 
@@ -29,6 +30,9 @@ public class InjectedActivity
     @Inject
     Crashlytics crashlytics;
 
+    @Inject
+    Mixpanel mixpanel;
+
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {
@@ -37,5 +41,15 @@ public class InjectedActivity
         ( (UrlApplication) getApplication() ).inject( this );
 
         crashlytics.start( this );
+
+        mixpanel.trackEvent( getClass().getSimpleName() );
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        mixpanel.flush();
+
+        super.onDestroy();
     }
 }
