@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 buildscript {
-    repositories {
-        mavenCentral ()
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-        maven { url 'http://download.crashlytics.com/maven' }
-    }
+  repositories {
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'http://download.crashlytics.com/maven' }
+  }
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.8.+'
-        classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
-        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
-    }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:0.8.+'
+    classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
+    classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
+  }
 }
 
 apply plugin: 'android'
@@ -34,81 +34,82 @@ apply plugin: 'android-test'
 apply plugin: 'android-apt'
 
 repositories {
-    mavenCentral ()
-    maven { url 'http://download.crashlytics.com/maven' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+  mavenCentral()
+  maven { url 'http://download.crashlytics.com/maven' }
+  maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+  compileSdkVersion 19
+  buildToolsVersion "19.0.1"
 
-    defaultConfig {
-        minSdkVersion 9
-      targetSdkVersion 19
+  defaultConfig {
+    minSdkVersion 9
+    targetSdkVersion 19
 
-      versionCode 10
-      versionName "1.1"
-    }
+    versionCode 10
+    versionName "1.1"
+  }
 
 // Load signing keys only for release
-    signingConfigs {
-        release {
-            if ( rootProject.file ( 'keys/sign.properties' ).exists () ) {
-                Properties p = new Properties ()
-                p.load ( new FileInputStream ( rootProject.file ( 'keys/sign.properties' ) ) )
+  signingConfigs {
+    release {
+      if ( rootProject.file( 'keys/sign.properties' ).exists() )
+      {
+        Properties p = new Properties()
+        p.load( new FileInputStream( rootProject.file( 'keys/sign.properties' ) ) )
 
-                storeFile file ( p.file )
-                storePassword p.password
-                keyAlias p.alias
-                keyPassword p.keyPassword
-            }
-        }
+        storeFile file( p.file )
+        storePassword p.password
+        keyAlias p.alias
+        keyPassword p.keyPassword
+      }
     }
+  }
 
-    buildTypes {
-        release {
-            signingConfig signingConfigs.release
-        }
+  buildTypes {
+    release {
+      signingConfig signingConfigs.release
     }
+  }
 
-    sourceSets {
-        instrumentTest.setRoot ( 'src/test' )
-    }
+  sourceSets {
+    instrumentTest.setRoot( 'src/test' )
+  }
 
-    lintOptions {
-        abortOnError false
-    }
+  lintOptions {
+    abortOnError false
+  }
 }
 
 dependencies {
-    // Android
-    compile 'com.android.support:support-v4:19.0.+'
-    compile 'com.android.support:appcompat-v7:19.0.+'
-    // Square
-    compile 'com.squareup.okhttp:okhttp:1.3.0'
-    compile 'com.squareup:otto:1.3.4'
-    apt 'com.squareup.dagger:dagger-compiler:1.2.0'
-    compile 'com.squareup.dagger:dagger:1.2.0'
-    // Jake Wharton
-    compile 'com.jakewharton:disklrucache:2.0.2'
-    // Crashlytics
-    compile 'com.crashlytics.android:crashlytics:1.+'
-    // MixPpanel
-    compile files ( 'libs/MixpanelAPI.jar' )
+  // Android
+  compile 'com.android.support:support-v4:19.0.+'
+  compile 'com.android.support:appcompat-v7:19.0.+'
+  // Square
+  compile 'com.squareup.okhttp:okhttp:1.3.0'
+  compile 'com.squareup:otto:1.3.4'
+  apt 'com.squareup.dagger:dagger-compiler:1.2.0'
+  compile 'com.squareup.dagger:dagger:1.2.0'
+  // Jake Wharton
+  compile 'com.jakewharton:disklrucache:2.0.2'
+  // Crashlytics
+  compile 'com.crashlytics.android:crashlytics:1.+'
+  // MixPpanel
+  compile 'com.mixpanel.android:mixpanel-android:4.0.0-RC3@aar'
 
-    // AS tests
-    instrumentTestCompile 'junit:junit:4.10'
-    instrumentTestCompile 'org.robolectric:robolectric:2.3-SNAPSHOT'
-    instrumentTestCompile 'com.squareup:fest-android:1.0.+'
-    instrumentTestCompile 'org.mockito:mockito-all:1.9.5'
-    instrumentTestCompile 'org.easytesting:fest-assert-core:2.0M10'
+  // AS tests
+  instrumentTestCompile 'junit:junit:4.10'
+  instrumentTestCompile 'org.robolectric:robolectric:2.3-SNAPSHOT'
+  instrumentTestCompile 'com.squareup:fest-android:1.0.+'
+  instrumentTestCompile 'org.mockito:mockito-all:1.9.5'
+  instrumentTestCompile 'org.easytesting:fest-assert-core:2.0M10'
 
-    // tests
-    testCompile 'junit:junit:4.10'
-    testCompile 'org.robolectric:robolectric:2.3-SNAPSHOT'
-    testCompile 'com.squareup:fest-android:1.0.+'
-    testCompile 'org.mockito:mockito-all:1.9.5'
-    testCompile 'org.easytesting:fest-assert-core:2.0M10'
-    testCompile 'com.squareup.dagger:dagger-compiler:1.2.0'
+  // tests
+  testCompile 'junit:junit:4.10'
+  testCompile 'org.robolectric:robolectric:2.3-SNAPSHOT'
+  testCompile 'com.squareup:fest-android:1.0.+'
+  testCompile 'org.mockito:mockito-all:1.9.5'
+  testCompile 'org.easytesting:fest-assert-core:2.0M10'
+  testCompile 'com.squareup.dagger:dagger-compiler:1.2.0'
 }
