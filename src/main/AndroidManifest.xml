@@ -117,6 +117,23 @@
         <data
             android:host="is.gd"
             android:scheme="https" />
+
+        <data
+            android:host="www.youtube.com"
+            android:pathPrefix="/attribution_link"
+            android:scheme="http" />
+        <data
+            android:host="www.youtube.com"
+            android:pathPrefix="/attribution_link"
+            android:scheme="https" />
+        <data
+            android:host="youtube.com"
+            android:pathPrefix="/attribution_link"
+            android:scheme="http" />
+        <data
+            android:host="youtube.com"
+            android:pathPrefix="/attribution_link"
+            android:scheme="https" />
       </intent-filter>
     </activity-alias>
 
@@ -136,34 +153,6 @@
         <data
             android:host="m.facebook.com"
             android:path="/l.php"
-            android:scheme="https" />
-      </intent-filter>
-    </activity-alias>
-
-    <activity-alias
-        android:name=".ProcessYoutubeAttributeActivity"
-        android:enabled="true"
-        android:exported="true"
-        android:targetActivity=".android.ui.UrlActivity">
-      <intent-filter>
-        <category android:name="android.intent.category.DEFAULT" />
-        <action android:name="android.intent.action.VIEW" />
-
-        <data
-            android:host="www.youtube.com"
-            android:pathPrefix="/attribution_link"
-            android:scheme="http" />
-        <data
-            android:host="www.youtube.com"
-            android:pathPrefix="/attribution_link"
-            android:scheme="https" />
-        <data
-            android:host="youtube.com"
-            android:pathPrefix="/attribution_link"
-            android:scheme="http" />
-        <data
-            android:host="youtube.com"
-            android:pathPrefix="/attribution_link"
             android:scheme="https" />
       </intent-filter>
     </activity-alias>
