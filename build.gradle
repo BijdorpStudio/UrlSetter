@@ -97,6 +97,8 @@ dependencies {
   compile 'com.crashlytics.android:crashlytics:1.+'
   // MixPpanel
   compile 'com.mixpanel.android:mixpanel-android:4.0.0-RC3@aar'
+  // NineOldAndroids
+  compile 'com.nineoldandroids:library:2.4.0'
 
   // AS tests
   instrumentTestCompile 'junit:junit:4.10'
