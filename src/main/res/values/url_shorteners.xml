@@ -22,6 +22,7 @@
     <item>Goo.gl</item>
     <item>Buff.ly</item>
     <item>Linkd.in</item>
+    <item>YouTube</item>
   </array>
   <array name="service_urls">
     <item>t.co/LrwagumK7p</item>
@@ -32,5 +33,6 @@
     <item>goo.gl/1y05hc</item>
     <item>buff.ly/1dZlzpG</item>
     <item>lnkd.in/duNz-32</item>
+    <item>www.youtube.com/attribution_link?a=kj0VtXrun5s&amp;u=/watch?v%3DfBZuoargc8U</item>
   </array>
 </resources>
