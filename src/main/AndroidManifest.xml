@@ -117,6 +117,10 @@
         <data
             android:host="is.gd"
             android:scheme="https" />
+      </intent-filter>
+      <intent-filter>
+        <category android:name="android.intent.category.DEFAULT" />
+        <action android:name="android.intent.action.VIEW" />
 
         <data
             android:host="www.youtube.com"
