@@ -111,6 +111,12 @@
         <data
             android:host="buff.ly"
             android:scheme="https" />
+        <data
+            android:host="is.gd"
+            android:scheme="http" />
+        <data
+            android:host="is.gd"
+            android:scheme="https" />
       </intent-filter>
     </activity-alias>
 
