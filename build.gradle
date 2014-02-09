@@ -13,11 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
-
-
-
 buildscript {
     repositories {
         mavenCentral ()
@@ -50,10 +45,10 @@ android {
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 16
+      targetSdkVersion 19
 
-        versionCode 9
-        versionName "1.0.1"
+      versionCode 10
+      versionName "1.1"
     }
 
 // Load signing keys only for release
