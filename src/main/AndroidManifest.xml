@@ -14,23 +14,25 @@
   ~ limitations under the License.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.emartynov.android.app.urlsetter"
-          android:versionCode="1"
-          android:versionName="1.0">
+<manifest
+    package="com.emartynov.android.app.urlsetter"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="1"
+    android:versionName="1.0">
 
   <uses-sdk
       android:minSdkVersion="9"
       android:targetSdkVersion="19" />
 
   <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
   <application
-      android:label="@string/app_name"
-      android:icon="@drawable/ic_launcher"
       android:name=".android.UrlApplication"
-      android:theme="@style/Theme.UrlSetter"
-      android:allowBackup="true">
+      android:allowBackup="true"
+      android:icon="@drawable/ic_launcher"
+      android:label="@string/app_name"
+      android:theme="@style/Theme.UrlSetter">
 
     <activity
         android:name=".android.ui.MainActivity"
@@ -48,14 +50,14 @@
 
     <activity
         android:name=".android.ui.UrlActivity"
-        android:theme="@android:style/Theme.NoDisplay"
+        android:excludeFromRecents="true"
         android:exported="false"
-        android:excludeFromRecents="true" />
+        android:theme="@android:style/Theme.NoDisplay" />
 
     <activity-alias
-        android:enabled="true"
-        android:exported="true"
         android:name=".ProcessActivity"
+        android:enabled="true"
+        android:exported="true"
         android:targetActivity=".android.ui.UrlActivity">
       <intent-filter>
         <category android:name="android.intent.category.DEFAULT" />
@@ -199,9 +201,9 @@
       </intent-filter>
     </activity-alias>
     <activity-alias
-        android:enabled="true"
-        android:exported="true"
         android:name=".ProcessFacebookActivity"
+        android:enabled="true"
+        android:exported="true"
         android:targetActivity=".android.ui.UrlActivity">
       <intent-filter>
         <category android:name="android.intent.category.DEFAULT" />
@@ -211,8 +213,8 @@
 
         <data
             android:host="m.facebook.com"
-            android:scheme="http"
-            android:path="/l.php" />
+            android:path="/l.php"
+            android:scheme="http" />
       </intent-filter>
       <intent-filter>
         <category android:name="android.intent.category.DEFAULT" />
@@ -222,15 +224,15 @@
 
         <data
             android:host="m.facebook.com"
-            android:scheme="https"
-            android:path="/l.php" />
+            android:path="/l.php"
+            android:scheme="https" />
       </intent-filter>
     </activity-alias>
 
     <activity-alias
+        android:name=".ProcessExtendedLinkActivity"
         android:enabled="true"
         android:exported="true"
-        android:name=".ProcessExtendedLinkActivity"
         android:targetActivity=".android.ui.UrlActivity">
       <intent-filter android:label="@string/unshort_url">
         <action android:name="android.intent.action.SEND" />
