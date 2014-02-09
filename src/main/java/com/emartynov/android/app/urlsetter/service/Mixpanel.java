@@ -63,4 +63,9 @@ public class Mixpanel
     {
         logger.track( name, null );
     }
+
+    public void identifyPerson( String personId )
+    {
+        logger.getPeople().identify( personId );
+    }
 }

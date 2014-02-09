@@ -19,9 +19,12 @@ package com.emartynov.android.app.urlsetter.android;
 import android.app.Application;
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
+import com.emartynov.android.app.urlsetter.service.Mixpanel;
 import dagger.ObjectGraph;
 
 import javax.inject.Inject;
+
+import static android.provider.Settings.Secure;
 
 public class UrlApplication
     extends Application
@@ -30,6 +33,9 @@ public class UrlApplication
 
     @Inject
     Crashlytics crashlytics;
+
+    @Inject
+    Mixpanel mixpanel;
 
     @Override
     public void onCreate()
@@ -42,6 +48,16 @@ public class UrlApplication
         objectGraph.inject( this );
 
         crashlytics.start( this );
+
+        mixpanel.identifyPerson( Secure.getString( getContentResolver(), Secure.ANDROID_ID ) );
+    }
+
+    @Override
+    public void onTerminate()
+    {
+        mixpanel.flush();
+
+        super.onTerminate();
     }
 
     protected Object getUrlModule()
