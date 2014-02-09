@@ -164,7 +164,7 @@
         <action android:name="android.intent.action.VIEW" />
 
         <data
-            android:host="linkd.in"
+            android:host="lnkd.in"
             android:scheme="http" />
       </intent-filter>
       <intent-filter>
@@ -174,7 +174,7 @@
         <action android:name="android.intent.action.VIEW" />
 
         <data
-            android:host="linkd.in"
+            android:host="lnkd.in"
             android:scheme="https" />
       </intent-filter>
       <intent-filter>
