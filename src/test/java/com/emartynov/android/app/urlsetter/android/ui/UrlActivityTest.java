@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowIntent;
 
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -30,6 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.robolectric.Robolectric.buildActivity;
 import static org.robolectric.Robolectric.shadowOf;
 
+@Config( emulateSdk = 18 )
 @RunWith(RobolectricTestRunner.class)
 public class UrlActivityTest
     extends UrlTestBase

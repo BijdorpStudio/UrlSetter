@@ -27,11 +27,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
+@Config( emulateSdk = 18 )
 @RunWith(RobolectricTestRunner.class)
 public class UrlServiceTest
     extends UrlTestBase
