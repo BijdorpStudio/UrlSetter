@@ -109,11 +109,15 @@ public class MainActivity
         super.onResume();
 
         bus.register( this );
+
+        mixpanel.checkForSurvey( this );
     }
 
     @Override
     protected void onPause()
     {
+        mixpanel.clearSurveyActivity();
+
         bus.unregister( this );
 
         super.onPause();

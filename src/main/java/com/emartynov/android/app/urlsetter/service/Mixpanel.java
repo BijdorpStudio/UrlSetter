@@ -16,8 +16,11 @@
 
 package com.emartynov.android.app.urlsetter.service;
 
+import android.app.Activity;
 import android.content.Context;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
+import com.mixpanel.android.mpmetrics.Survey;
+import com.mixpanel.android.mpmetrics.SurveyCallbacks;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -37,6 +40,10 @@ public class Mixpanel
     private final String token;
 
     private MixpanelAPI logger;
+
+    private SurveyCallbacks surveyCallback;
+
+    private Activity surveyActivity;
 
     public Mixpanel( String apiToken )
     {
@@ -66,6 +73,32 @@ public class Mixpanel
 
     public void identifyPerson( String personId )
     {
+        logger.identify( personId );
         logger.getPeople().identify( personId );
+    }
+
+    public void checkForSurvey( Activity surveyActivity )
+    {
+        this.surveyActivity = surveyActivity;
+        if ( surveyCallback == null )
+        {
+            surveyCallback = new SurveyCallbacks()
+            {
+                @Override
+                public void foundSurvey( Survey survey )
+                {
+                    if ( null != survey && null != Mixpanel.this.surveyActivity )
+                    {
+                        logger.getPeople().showSurvey( survey, Mixpanel.this.surveyActivity );
+                    }
+                }
+            };
+            logger.getPeople().checkForSurvey( surveyCallback );
+        }
+    }
+
+    public void clearSurveyActivity()
+    {
+        surveyActivity = null;
     }
 }

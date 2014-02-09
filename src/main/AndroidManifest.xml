@@ -41,6 +41,9 @@
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
+      <meta-data
+          android:name="com.mixpanel.android.MPConfig.AutoCheckForSurveys"
+          android:value="false" />
     </activity>
 
     <activity
@@ -53,6 +56,8 @@
         android:excludeFromRecents="true"
         android:exported="false"
         android:theme="@android:style/Theme.NoDisplay" />
+
+    <activity android:name="com.mixpanel.android.surveys.SurveyActivity" />
 
     <activity-alias
         android:name=".ProcessActivity"

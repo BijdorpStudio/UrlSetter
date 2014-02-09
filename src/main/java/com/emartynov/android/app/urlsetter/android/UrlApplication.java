@@ -49,6 +49,7 @@ public class UrlApplication
 
         crashlytics.start( this );
 
+        mixpanel.init( this );
         mixpanel.identifyPerson( Secure.getString( getContentResolver(), Secure.ANDROID_ID ) );
     }
 
