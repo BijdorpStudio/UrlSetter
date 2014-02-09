@@ -73,8 +73,8 @@ public class Mixpanel
 
     public void identifyPerson( String personId )
     {
-        logger.identify( personId );
         logger.getPeople().identify( personId );
+        logger.getPeople().set( "username", personId );
     }
 
     public void checkForSurvey( Activity surveyActivity )
