@@ -54,7 +54,7 @@ public class UrlService
     UrlResolver urlResolver;
 
     @Inject
-    Mixpanel logger;
+    Mixpanel mixpanel;
 
     @Inject
     UrlDiskLruCache cache;
@@ -81,7 +81,7 @@ public class UrlService
 
         crashlytics.start( this );
 
-        logger.init( this );
+        mixpanel.init( this );
     }
 
     @Override
@@ -176,7 +176,7 @@ public class UrlService
         Map<String, String> params = new HashMap<String, String>();
         params.put( "facebook", String.valueOf( fromFacebook ) );
 
-        logger.trackEvent( Mixpanel.RESOLVING_STARTED_EVENT, params );
+        mixpanel.trackEvent( Mixpanel.RESOLVING_STARTED_EVENT, params );
     }
 
     private synchronized void createLongOperationTimer()
@@ -220,9 +220,9 @@ public class UrlService
     @Override
     public void onDestroy()
     {
-        super.onDestroy();
+        mixpanel.flush();
 
-        logger.flush();
+        super.onDestroy();
     }
 
     public void launchURL( FoundUrl event )
@@ -254,7 +254,7 @@ public class UrlService
     {
         launchResolvedUri( event.getResolvedUri() );
 
-        logger.trackEvent( Mixpanel.RESOLVED_URL_EVENT, event.getLoggingParams() );
+        mixpanel.trackEvent( Mixpanel.RESOLVED_URL_EVENT, event.getLoggingParams() );
 
         cache.save( event.getUri(), event.getResolvedUri() );
     }
@@ -317,7 +317,7 @@ public class UrlService
 
         intentHelper.launchUriWithoutUs( this, event.getLastResolvedUri() );
 
-        logger.trackEvent( Mixpanel.RESOLVING_ERROR_EVENT, event.getLoggingParams() );
+        mixpanel.trackEvent( Mixpanel.RESOLVING_ERROR_EVENT, event.getLoggingParams() );
 
         checkToStop();
     }

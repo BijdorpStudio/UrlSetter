@@ -122,8 +122,8 @@ public class UrlActivity
     @Override
     protected void onDestroy()
     {
-        super.onDestroy();
-
         mixpanel.flush();
+
+        super.onDestroy();
     }
 }
