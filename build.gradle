@@ -16,32 +16,29 @@
 buildscript {
   repositories {
     mavenCentral()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://github.com/rockerhieu/mvn-repo/raw/master/' }
     maven { url 'http://download.crashlytics.com/maven' }
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.8.+'
-    classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
+    classpath 'com.android.tools.build:gradle:0.11.+'
+    classpath 'org.robolectric.gradle:gradle-android-test-plugin:0.10.1-SNAPSHOT'
     classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
   }
 }
 
 apply plugin: 'android'
 apply plugin: 'crashlytics'
 apply plugin: 'android-test'
-apply plugin: 'android-apt'
 
 repositories {
   mavenCentral()
   maven { url 'http://download.crashlytics.com/maven' }
-  maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 android {
   compileSdkVersion 19
-  buildToolsVersion "19.0.1"
+  buildToolsVersion "19.1.0"
 
   defaultConfig {
     minSdkVersion 9
@@ -84,12 +81,12 @@ android {
 
 dependencies {
   // Android
-  compile 'com.android.support:support-v4:19.0.+'
-  compile 'com.android.support:appcompat-v7:19.0.+'
+  compile 'com.android.support:support-v4:19.1.+'
+  compile 'com.android.support:appcompat-v7:19.1.+'
   // Square
   compile 'com.squareup.okhttp:okhttp:1.3.0'
   compile 'com.squareup:otto:1.3.4'
-  apt 'com.squareup.dagger:dagger-compiler:1.2.0'
+  provided 'com.squareup.dagger:dagger-compiler:1.2.0'
   compile 'com.squareup.dagger:dagger:1.2.0'
   // Jake Wharton
   compile 'com.jakewharton:disklrucache:2.0.2'
@@ -102,14 +99,14 @@ dependencies {
 
   // AS tests
   instrumentTestCompile 'junit:junit:4.10'
-  instrumentTestCompile 'org.robolectric:robolectric:2.3-SNAPSHOT'
+  instrumentTestCompile 'org.robolectric:robolectric:2.3'
   instrumentTestCompile 'com.squareup:fest-android:1.0.+'
   instrumentTestCompile 'org.mockito:mockito-all:1.9.5'
   instrumentTestCompile 'org.easytesting:fest-assert-core:2.0M10'
 
   // tests
   testCompile 'junit:junit:4.10'
-  testCompile 'org.robolectric:robolectric:2.3-SNAPSHOT'
+  testCompile 'org.robolectric:robolectric:2.3'
   testCompile 'com.squareup:fest-android:1.0.+'
   testCompile 'org.mockito:mockito-all:1.9.5'
   testCompile 'org.easytesting:fest-assert-core:2.0M10'
