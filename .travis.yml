@@ -13,7 +13,7 @@ jdk:
   - oraclejdk7
 
 script:
-  - ./gradlew clean check
+  - ./gradlew clean check --debug
   
 sudo: false
 
