@@ -1,29 +1,23 @@
-language: java
-jdk: oraclejdk7
-env:
-# TODO: use matrix variables in build
-  matrix:
-    - ANDROID_SDKS=android-19  ANDROID_TARGET=android-16
-branches:
-  only:
-    - master
-before_install:
-  - chmod +x gradlew
-  # Install base Android SDK
-  - sudo apt-get update -qq
-  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch > /dev/null; fi
-  - wget http://dl.google.com/android/android-sdk_r22.6.2-linux.tgz
-  - tar xzf android-sdk_r22.6.2-linux.tgz
-  - export ANDROID_HOME=$PWD/android-sdk-linux
-  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
-  # Install required components.
-  # For a full list, run `android list sdk -a --extended`
-  - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter build-tools-19.1.0 --no-ui --force
-  - echo yes | android update sdk --filter android-19 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
-install:
-  - true
+language: android
+
+android:
+  components:
+    - build-tools-21.1.1
+    - extra-android-m2repository
+    - extra-google-m2repository
+    - android-21
+  licenses:
+    - android-sdk-license-5be876d5
+
+jdk:
+  - oraclejdk7
+  - oraclejdk8
+  
 script:
-  - TERM=dumb ./gradlew test assembleDebug --stacktrace
+  - ./gradlew clean check
+  
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.gradle
