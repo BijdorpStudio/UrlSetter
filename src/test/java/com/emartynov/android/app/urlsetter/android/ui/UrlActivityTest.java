@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.robolectric.Robolectric.buildActivity;
 import static org.robolectric.Robolectric.shadowOf;
 
-@Config( emulateSdk = 18 )
+@Config(emulateSdk = 18, reportSdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class UrlActivityTest
     extends UrlTestBase
