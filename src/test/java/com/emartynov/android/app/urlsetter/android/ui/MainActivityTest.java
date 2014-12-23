@@ -9,7 +9,7 @@ import org.robolectric.annotation.Config;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.robolectric.Robolectric.buildActivity;
 
-@Config( emulateSdk = 18 )
+@Config(emulateSdk = 18, reportSdk = 18)
 @RunWith( RobolectricTestRunner.class )
 public class MainActivityTest
 {
