@@ -15,16 +15,17 @@
  */
 buildscript {
   repositories {
-    mavenCentral()
     maven { url 'http://download.crashlytics.com/maven' }
+    mavenCentral()
     jcenter()
   }
 
   dependencies {
     classpath 'com.android.tools.build:gradle:1.0.0'
     classpath 'org.robolectric:robolectric-gradle-plugin:0.14.1'
-    classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.1.1'
+    classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.7'
     classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
+    classpath 'com.github.ben-manes:gradle-versions-plugin:0.6'
   }
 }
 
@@ -32,10 +33,12 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'crashlytics'
 apply plugin: 'robolectric'
+apply plugin: 'com.github.ben-manes.versions'
 
 repositories {
-  mavenCentral()
   maven { url 'http://download.crashlytics.com/maven' }
+  mavenCentral()
+  jcenter()
 }
 
 android {
@@ -93,24 +96,28 @@ dependencies {
   // Jake Wharton
   compile 'com.jakewharton:disklrucache:2.0.2'
   // Crashlytics
-  compile 'com.crashlytics.android:crashlytics:1.1.11'
-  // MixPpanel
-  compile 'com.mixpanel.android:mixpanel-android:4.3.0@aar'
+  compile 'com.crashlytics.android:crashlytics:1.1.13'
+  // MixPanel
+  compile 'com.mixpanel.android:mixpanel-android:4.5.1@aar'
   // NineOldAndroids
   compile 'com.nineoldandroids:library:2.4.0'
 
   // AS tests
-  androidTestCompile 'junit:junit:4.11'
+  androidTestCompile 'junit:junit:4.12'
   androidTestCompile 'org.robolectric:robolectric:2.4'
-  androidTestCompile 'com.squareup:fest-android:1.0.1'
-  androidTestCompile 'org.mockito:mockito-all:1.9.5'
+  androidTestCompile 'com.squareup:fest-android:1.0.8'
+  androidTestCompile 'org.mockito:mockito-all:1.10.17'
   androidTestCompile 'org.easytesting:fest-assert-core:2.0M10'
 
   // tests
-  testCompile 'junit:junit:4.11'
-  testCompile 'org.robolectric:robolectric:2.3'
-  testCompile 'com.squareup:fest-android:1.0.1'
-  testCompile 'org.mockito:mockito-all:1.9.5'
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.robolectric:robolectric:2.4'
+  testCompile 'com.squareup:fest-android:1.0.8'
+  testCompile 'org.mockito:mockito-all:1.10.17'
   testCompile 'org.easytesting:fest-assert-core:2.0M10'
-  testCompile 'com.squareup.dagger:dagger-compiler:1.2.0'
+  testCompile 'com.squareup.dagger:dagger-compiler:1.2.2'
+}
+
+task wrapper( type: Wrapper ) {
+  gradleVersion = '2.2'
 }
