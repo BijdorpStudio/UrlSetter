@@ -145,6 +145,8 @@ task jacocoTestReport( type: JacocoReport, dependsOn: "testDebug" ) {
     xml.enabled = true
     html.enabled = true
     csv.enabled = false
+
+    xml.destination = "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
   }
 }
 
