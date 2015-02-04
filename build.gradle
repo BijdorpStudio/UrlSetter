@@ -26,6 +26,7 @@ buildscript {
     classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.7'
     classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
     classpath 'com.github.ben-manes:gradle-versions-plugin:0.6'
+    classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
   }
 }
 
@@ -143,7 +144,14 @@ task jacocoTestReport( type: JacocoReport, dependsOn: "testDebug" ) {
   reports {
     xml.enabled = true
     html.enabled = true
+    csv.enabled = false
   }
+}
+
+apply plugin: 'com.github.kt3k.coveralls'
+
+coveralls {
+  sourceDirs = files( ['src/main/java'] ).files.absolutePath
 }
 
 task wrapper( type: Wrapper ) {
