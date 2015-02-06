@@ -12,10 +12,6 @@ android:
 jdk:
   - oraclejdk7
 
-env:
-  global:
-    - secure: "UqqtEIUDUncVl8u6ghm9z9unzqd0vtvLJtPDgsUbN8aM6YI8cwXpy6zZp2Vwk0I3LB6GzWNY0UJhevna8hujwQLCXKGlgOui1ZJ1UTseL9pWNvl9eOjq2UJCOJCuNK9BKXe1vteCVgCevFsWhDNMnSa6MPoQi1e4R8e3fyQXyBw="
-
 script:
   - ./gradlew clean check jacocoTestReport
   
