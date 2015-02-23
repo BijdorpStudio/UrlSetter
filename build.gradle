@@ -21,8 +21,8 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.0.1'
-    classpath 'org.robolectric:robolectric-gradle-plugin:0.14.1'
+    classpath 'com.android.tools.build:gradle:1.1.0'
+//    classpath 'org.robolectric:robolectric-gradle-plugin:0.14.1'
     classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.7'
     classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
     classpath 'com.github.ben-manes:gradle-versions-plugin:0.6'
@@ -33,7 +33,7 @@ buildscript {
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'crashlytics'
-apply plugin: 'robolectric'
+//apply plugin: 'robolectric'
 apply plugin: 'com.github.ben-manes.versions'
 
 repositories {
@@ -81,10 +81,6 @@ android {
     }
   }
 
-  sourceSets {
-    androidTest.setRoot( 'src/test' ) // For Robolectric
-  }
-
   lintOptions {
     abortOnError false
   }
@@ -109,11 +105,11 @@ dependencies {
   compile 'com.nineoldandroids:library:2.4.0'
 
   // AS tests
-  androidTestCompile 'junit:junit:4.12'
-  androidTestCompile 'org.robolectric:robolectric:2.4'
-  androidTestCompile 'com.squareup:fest-android:1.0.8'
-  androidTestCompile 'org.mockito:mockito-all:1.10.17'
-  androidTestCompile 'org.easytesting:fest-assert-core:2.0M10'
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.robolectric:robolectric:2.4'
+  testCompile 'com.squareup:fest-android:1.0.8'
+  testCompile 'org.mockito:mockito-all:1.10.17'
+  testCompile 'org.easytesting:fest-assert-core:2.0M10'
 }
 
 apply plugin: 'jacoco'
