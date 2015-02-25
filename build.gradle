@@ -33,7 +33,6 @@ buildscript {
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'crashlytics'
-//apply plugin: 'robolectric'
 apply plugin: 'com.github.ben-manes.versions'
 
 repositories {
