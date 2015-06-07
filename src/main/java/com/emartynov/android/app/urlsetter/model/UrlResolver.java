@@ -17,112 +17,86 @@
 package com.emartynov.android.app.urlsetter.model;
 
 import android.net.Uri;
+
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
-public class UrlResolver
-{
+public class UrlResolver {
     public static final String HEAD_METHOD = "HEAD";
-
-    public static final String GET_METHOD = "GET";
 
     public static final String LOCATION_HEADER = "Location";
 
     public static final int HTTP_TEMP_REDIRECT = 307;
 
-    private final HttpClient httpClient;
+    private final OkHttpClient httpClient;
 
-    public UrlResolver( HttpClient httpClient )
-    {
+    public UrlResolver(OkHttpClient httpClient) {
         this.httpClient = httpClient;
+        httpClient.setFollowRedirects(false);
+        httpClient.setConnectTimeout(30, TimeUnit.SECONDS);
     }
 
-    public UrlEvent resolveURL( ResolveUrl event )
-    {
+    public UrlEvent resolveURL(ResolveUrl event) {
         Uri uri = event.getUri();
 
-        try
-        {
-            Uri resolvedUri = resolveUrl( uri.toString() );
+        try {
+            Uri resolvedUri = resolveUrl(uri.toString());
 
-            return new FoundUrl( uri, resolvedUri );
-        }
-        catch ( Exception e )
-        {
-            return new DownloadingError( uri, uri, e );
+            return new FoundUrl(uri, resolvedUri);
+        } catch (Exception e) {
+            return new DownloadingError(uri, uri, e);
         }
     }
 
-    private Uri resolveUrl( String startUrl )
-        throws IOException
-    {
+    private Uri resolveUrl(String startUrl)
+            throws IOException {
         String currentUrl = startUrl;
         String nextUrl = currentUrl;
 
-        do
-        {
+        do {
             currentUrl = nextUrl;
-            nextUrl = findNextUrl( currentUrl );
+            nextUrl = findNextUrl(currentUrl);
         }
-        while ( nextUrl != null && nextUrl.contains( "http" ) );
+        while (nextUrl != null && nextUrl.contains("http"));
 
-        return Uri.parse( currentUrl );
+        return Uri.parse(currentUrl);
     }
 
-    private String findNextUrl( String url )
-        throws IOException
-    {
-        return processHeadUrl( url );
+    private String findNextUrl(String url)
+            throws IOException {
+        return processUrl(url);
     }
 
-    private String processHeadUrl( String url )
-        throws IOException
-    {
-        return processUrl( url, HEAD_METHOD );
-    }
+    private String processUrl(String url)
+            throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Accept-Encoding", "")
+                .head()
+                .build();
 
-    private String processUrl( String url, String method )
-        throws IOException
-    {
-        HttpURLConnection connection = null;
+        Response response = httpClient.newCall(request).execute();
 
-        try
-        {
-            connection = httpClient.open( new URL( url ) );
-            connection.setRequestMethod( method );
-            connection.setRequestProperty( "Accept-Encoding", "" );
-            connection.setInstanceFollowRedirects( false );
-            connection.setConnectTimeout( 30000 );
-
-            int responseCode = connection.getResponseCode();
-
-            if ( isRedirection( responseCode ) )
-            {
-                return connection.getHeaderField( LOCATION_HEADER ).replace( " ", "%20" );
-            }
-            else
-            {
-                return null;
-            }
-        }
-        finally
-        {
-            if ( connection != null )
-            {
-                connection.disconnect();
-            }
+        if (isRedirection(response.code())) {
+            return response.header(LOCATION_HEADER).replace(" ", "%20");
+        } else {
+            return null;
         }
     }
 
-    private boolean isRedirection( int responseCode )
-    {
-        return responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP
-            || responseCode == HttpURLConnection.HTTP_SEE_OTHER || responseCode == HTTP_TEMP_REDIRECT;
+    private boolean isRedirection(int responseCode) {
+        return responseCode == HttpURLConnection.HTTP_MOVED_PERM ||
+                responseCode == HttpURLConnection.HTTP_MOVED_TEMP ||
+                responseCode == HttpURLConnection.HTTP_SEE_OTHER ||
+                responseCode == HTTP_TEMP_REDIRECT;
     }
 }

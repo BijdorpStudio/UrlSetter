@@ -17,10 +17,16 @@
 package com.emartynov.android.app.urlsetter.model;
 
 import android.net.Uri;
+
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,131 +35,111 @@ import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@Config( emulateSdk = 18 )
+@Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
-public class UrlResolverTest
-{
+public class UrlResolverTest {
     private UrlResolver target;
 
-    private HttpClient client = mock( HttpClient.class );
-
-    private HttpURLConnection connection = mock( HttpURLConnection.class );
+    private OkHttpClient client = mock(OkHttpClient.class);
+    private Response response = mock(Response.class);
+    private Call call = mock(Call.class);
 
     @Before
     public void setUp()
-        throws Exception
-    {
-        when( client.open( any( URL.class ) ) ).thenReturn( connection );
+            throws Exception {
+        when(client.newCall(any(Request.class))).thenReturn(call);
+        when(call.execute()).thenReturn(response);
 
-        target = new UrlResolver( client );
+        target = new UrlResolver(client);
     }
 
     @Test
     public void resolveMovePermanent()
-        throws Exception
-    {
+            throws Exception {
         String endUrl = "http://test.com";
-        redirectTo( endUrl, HttpURLConnection.HTTP_MOVED_PERM );
+        redirectTo(endUrl, HttpURLConnection.HTTP_MOVED_PERM);
 
-        FoundUrl result = (FoundUrl) resolveUrl( "http://google.com" );
+        FoundUrl result = (FoundUrl) resolveUrl("http://google.com");
 
-        checkUrlFound( result, endUrl );
+        checkUrlFound(result, endUrl);
     }
 
-    private void redirectTo( String endUrl, int moveResponseCode )
-        throws IOException
-    {
-        when( connection.getResponseCode() ).thenReturn( moveResponseCode, HttpURLConnection.HTTP_OK );
-        when( connection.getHeaderField( UrlResolver.LOCATION_HEADER ) ).thenReturn( endUrl );
+    private void redirectTo(String endUrl, int moveResponseCode)
+            throws IOException {
+        when(response.code()).thenReturn(moveResponseCode, HttpURLConnection.HTTP_OK);
+        when(response.header(UrlResolver.LOCATION_HEADER)).thenReturn(endUrl);
     }
 
-    private UrlEvent resolveUrl( String uriString )
-    {
-        ResolveUrl event = new ResolveUrl( Uri.parse( uriString ) );
-        return target.resolveURL( event );
+    private UrlEvent resolveUrl(String uriString) {
+        ResolveUrl event = new ResolveUrl(Uri.parse(uriString));
+        return target.resolveURL(event);
     }
 
-    private void checkUrlFound( FoundUrl result, String endUrl )
-    {
-        assertThat( result.getResolvedUri().toString() ).isEqualTo( endUrl );
+    private void checkUrlFound(FoundUrl result, String endUrl) {
+        assertThat(result.getResolvedUri().toString()).isEqualTo(endUrl);
     }
 
     @Test
     public void nonShortenedUrlReturnsSame()
-        throws Exception
-    {
+            throws Exception {
         String endUrl = "http://test.com";
-        when( connection.getResponseCode() ).thenReturn( HttpURLConnection.HTTP_OK );
+        when(response.code()).thenReturn(HttpURLConnection.HTTP_OK);
 
-        FoundUrl result = (FoundUrl) resolveUrl( endUrl );
+        FoundUrl result = (FoundUrl) resolveUrl(endUrl);
 
-        checkUrlFound( result, endUrl );
+        checkUrlFound(result, endUrl);
     }
 
     @Test
     public void resolveMovedTemporary()
-        throws Exception
-    {
+            throws Exception {
         String endUrl = "http://test.com";
-        redirectTo( endUrl, HttpURLConnection.HTTP_MOVED_TEMP );
+        redirectTo(endUrl, HttpURLConnection.HTTP_MOVED_TEMP);
 
-        FoundUrl result = (FoundUrl) resolveUrl( "http://google.com" );
+        FoundUrl result = (FoundUrl) resolveUrl("http://google.com");
 
-        checkUrlFound( result, endUrl );
+        checkUrlFound(result, endUrl);
     }
 
     @Test
     public void resolveSeeOther()
-        throws Exception
-    {
+            throws Exception {
         String endUrl = "http://test.com";
-        redirectTo( endUrl, HttpURLConnection.HTTP_SEE_OTHER );
+        redirectTo(endUrl, HttpURLConnection.HTTP_SEE_OTHER);
 
-        FoundUrl result = (FoundUrl) resolveUrl( "http://google.com" );
+        FoundUrl result = (FoundUrl) resolveUrl("http://google.com");
 
-        checkUrlFound( result, endUrl );
+        checkUrlFound(result, endUrl);
     }
 
     @Test
     public void resolveTemporaryRedirect()
-        throws Exception
-    {
+            throws Exception {
         String endUrl = "http://test.com";
-        redirectTo( endUrl, UrlResolver.HTTP_TEMP_REDIRECT );
+        redirectTo(endUrl, UrlResolver.HTTP_TEMP_REDIRECT);
 
-        FoundUrl result = (FoundUrl) resolveUrl( "http://google.com" );
+        FoundUrl result = (FoundUrl) resolveUrl("http://google.com");
 
-        checkUrlFound( result, endUrl );
+        checkUrlFound(result, endUrl);
     }
 
-    private void verifyErrorEventWithException( DownloadingError result, Class<? extends Exception> exceptionType )
-    {
-        assertThat( result.getException() ).isInstanceOf( exceptionType );
+    private void verifyErrorEventWithException(DownloadingError result, Class<? extends Exception> exceptionType) {
+        assertThat(result.getException()).isInstanceOf(exceptionType);
     }
 
     @Test
     public void whenIOExceptionThenEventFired()
-        throws Exception
-    {
-        when( connection.getResponseCode() ).thenThrow( IOException.class );
+            throws Exception {
+        when(call.execute()).thenThrow(new IOException());
 
-        DownloadingError result = (DownloadingError) resolveUrl( "http://google.com" );
+        DownloadingError result = (DownloadingError) resolveUrl("http://google.com");
 
-        verifyErrorEventWithException( result, IOException.class );
-    }
-
-    @Test
-    public void runHeadRequestFirst()
-        throws Exception
-    {
-        resolveUrl( "http://google.com" );
-
-        verify( connection, atLeastOnce() ).setRequestMethod( UrlResolver.HEAD_METHOD );
+        verifyErrorEventWithException(result, IOException.class);
     }
 }
