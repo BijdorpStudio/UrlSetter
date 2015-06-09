@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/BijdorpStudio/UrlSetter.png?label=ready&title=Ready)](https://waffle.io/BijdorpStudio/UrlSetter)
 #UrlSetter  [![Build Status](https://travis-ci.org/emartynov/UrlSetter.png?branch=master)](https://travis-ci.org/emartynov/UrlSetter)[![Coverage Status](https://coveralls.io/repos/emartynov/UrlSetter/badge.svg)](https://coveralls.io/r/emartynov/UrlSetter)
 
 One Sunday idea. Android app to solve redirect with annoying browser opening.
