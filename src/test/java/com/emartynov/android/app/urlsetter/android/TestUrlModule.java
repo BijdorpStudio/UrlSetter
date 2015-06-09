@@ -33,8 +33,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.mockito.Mockito.mock;
 
-@Module(overrides = true, includes = UrlModule.class,
-        injects = { UrlActivity.class, TestUrlApplication.class, UrlService.class })
+@Module( overrides = true, includes = UrlModule.class,
+    injects = { UrlActivity.class, TestUrlApplication.class, UrlService.class } )
 public class TestUrlModule
 {
     private Crashlytics crashlytics = mock( Crashlytics.class );
