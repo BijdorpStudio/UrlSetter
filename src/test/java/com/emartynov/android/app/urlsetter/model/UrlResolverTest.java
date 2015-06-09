@@ -17,11 +17,19 @@
 package com.emartynov.android.app.urlsetter.model;
 
 import android.net.Uri;
+
 import com.emartynov.android.app.urlsetter.model.event.DownloadingError;
 import com.emartynov.android.app.urlsetter.model.event.FoundUrl;
 import com.emartynov.android.app.urlsetter.model.event.ResolveUrl;
 import com.emartynov.android.app.urlsetter.model.event.UrlEvent;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Protocol;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -29,27 +37,27 @@ import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Config( emulateSdk = 18 )
-@RunWith(RobolectricTestRunner.class)
+@RunWith( RobolectricTestRunner.class )
 public class UrlResolverTest
 {
     private UrlResolver target;
 
-    private HttpClient client = mock( HttpClient.class );
+    private OkHttpClient client = mock( OkHttpClient.class );
 
-    private HttpURLConnection connection = mock( HttpURLConnection.class );
+    private Call call = mock( Call.class );
 
     @Before
     public void setUp()
         throws Exception
     {
-        when( client.open( any( URL.class ) ) ).thenReturn( connection );
+        when( client.newCall( any( Request.class ) ) ).thenReturn( call );
 
         target = new UrlResolver( client );
     }
@@ -66,11 +74,17 @@ public class UrlResolverTest
         checkUrlFound( result, endUrl );
     }
 
-    private void redirectTo( String endUrl, int moveResponseCode )
+    private void redirectTo( String endUrl, int responseCode )
         throws IOException
     {
-        when( connection.getResponseCode() ).thenReturn( moveResponseCode, HttpURLConnection.HTTP_OK );
-        when( connection.getHeaderField( UrlResolver.LOCATION_HEADER ) ).thenReturn( endUrl );
+        Request request = new Request.Builder().url( endUrl ).build();
+        Response moveResponse = new Response.Builder().code( responseCode ).protocol( Protocol.HTTP_1_1 ).addHeader(
+            UrlResolver.LOCATION_HEADER, endUrl ).request( request ).build();
+        Response okResponse =
+            new Response.Builder().code( HttpURLConnection.HTTP_OK ).protocol( Protocol.HTTP_1_1 ).addHeader(
+                UrlResolver.LOCATION_HEADER, endUrl ).request( request ).build();
+
+        when( call.execute() ).thenReturn( moveResponse, okResponse );
     }
 
     private UrlEvent resolveUrl( String uriString )
@@ -89,7 +103,7 @@ public class UrlResolverTest
         throws Exception
     {
         String endUrl = "http://test.com";
-        when( connection.getResponseCode() ).thenReturn( HttpURLConnection.HTTP_OK );
+        redirectTo( endUrl, HttpURLConnection.HTTP_OK );
 
         FoundUrl result = (FoundUrl) resolveUrl( endUrl );
 
@@ -141,19 +155,10 @@ public class UrlResolverTest
     public void whenIOExceptionThenEventFired()
         throws Exception
     {
-        when( connection.getResponseCode() ).thenThrow( IOException.class );
+        when( call.execute() ).thenThrow( new IOException() );
 
         DownloadingError result = (DownloadingError) resolveUrl( "http://google.com" );
 
         verifyErrorEventWithException( result, IOException.class );
-    }
-
-    @Test
-    public void runHeadRequestFirst()
-        throws Exception
-    {
-        resolveUrl( "http://google.com" );
-
-        verify( connection, atLeastOnce() ).setRequestMethod( UrlResolver.HEAD_METHOD );
     }
 }

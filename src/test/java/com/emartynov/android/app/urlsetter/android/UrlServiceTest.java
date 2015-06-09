@@ -33,8 +33,8 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
-@Config(emulateSdk = 18, reportSdk = 18, manifest = "src/main/AndroidManifest.xml")
-@RunWith(RobolectricTestRunner.class)
+@Config( emulateSdk = 18, reportSdk = 18, manifest = "src/main/AndroidManifest.xml" )
+@RunWith( RobolectricTestRunner.class )
 public class UrlServiceTest
     extends UrlTestBase
 {

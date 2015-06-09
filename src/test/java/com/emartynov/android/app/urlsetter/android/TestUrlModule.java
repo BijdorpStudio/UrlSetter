@@ -19,11 +19,11 @@ package com.emartynov.android.app.urlsetter.android;
 import com.emartynov.android.app.urlsetter.android.packagemanager.IntentHelper;
 import com.emartynov.android.app.urlsetter.android.ui.UrlActivity;
 import com.emartynov.android.app.urlsetter.inject.UrlModule;
-import com.emartynov.android.app.urlsetter.model.HttpClient;
 import com.emartynov.android.app.urlsetter.model.UrlDiskLruCache;
 import com.emartynov.android.app.urlsetter.model.UrlResolver;
 import com.emartynov.android.app.urlsetter.service.Crashlytics;
 import com.emartynov.android.app.urlsetter.service.Mixpanel;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
@@ -33,8 +33,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.mockito.Mockito.mock;
 
-@Module(overrides = true, includes = UrlModule.class,
-        injects = { UrlActivity.class, TestUrlApplication.class, UrlService.class })
+@Module( overrides = true, includes = UrlModule.class,
+    injects = { UrlActivity.class, TestUrlApplication.class, UrlService.class } )
 public class TestUrlModule
 {
     private Crashlytics crashlytics = mock( Crashlytics.class );
@@ -49,7 +49,7 @@ public class TestUrlModule
 
     private ThreadPoolExecutor executor = mock( ThreadPoolExecutor.class );
 
-    private HttpClient httpClient = mock( HttpClient.class );
+    private OkHttpClient httpClient = mock( OkHttpClient.class );
 
     private IntentHelper intentHelper = mock( IntentHelper.class );
 
@@ -88,14 +88,14 @@ public class TestUrlModule
 
     @Provides
     @Singleton
-    public UrlResolver getURLResolver( HttpClient httpClient )
+    public UrlResolver getURLResolver( OkHttpClient httpClient )
     {
         return resolver;
     }
 
     @Provides
     @Singleton
-    public HttpClient getHttpClient()
+    public OkHttpClient getHttpClient()
     {
         return httpClient;
     }
