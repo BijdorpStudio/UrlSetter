@@ -4,6 +4,8 @@
 [![Stories in Ready](https://badge.waffle.io/BijdorpStudio/UrlSetter.png?label=ready&title=Ready)](https://waffle.io/BijdorpStudio/UrlSetter)
 
 
+**DISCONITUNED**
+
 One Sunday idea. Android app to solve redirect with annoying browser opening.
 
 Follow us on twitter @BijdorpStudio
