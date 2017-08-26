@@ -1,6 +1,7 @@
 #UrlSetter
-[![Build Status](https://travis-ci.org/BijdorpStudio/UrlSetter.png?branch=master)](https://travis-ci.org/emartynov/UrlSetter)
-[![Coverage Status](https://coveralls.io/repos/BijdorpStudio/UrlSetter/badge.svg)](https://coveralls.io/r/emartynov/UrlSetter)
+
+[![Build Status](https://api.travis-ci.org/BijdorpStudio/UrlSetter.svg?branch=develop)](https://travis-ci.org/BijdorpStudio/UrlSetter)
+[![Coverage Status](https://coveralls.io/repos/github/emartynov/UrlSetter/badge.svg?branch=develop)](https://coveralls.io/github/emartynov/UrlSetter)
 [![Stories in Ready](https://badge.waffle.io/BijdorpStudio/UrlSetter.png?label=ready&title=Ready)](https://waffle.io/BijdorpStudio/UrlSetter)
 
 
