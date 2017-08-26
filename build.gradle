@@ -16,7 +16,6 @@
 buildscript {
   repositories {
     maven { url 'http://download.crashlytics.com/maven' }
-    mavenCentral()
     jcenter()
   }
 
@@ -36,7 +35,7 @@ apply plugin: 'com.github.ben-manes.versions'
 
 repositories {
   maven { url 'http://download.crashlytics.com/maven' }
-  mavenCentral()
+  maven { url 'http://maven.google.com' }
   jcenter()
 }
 
